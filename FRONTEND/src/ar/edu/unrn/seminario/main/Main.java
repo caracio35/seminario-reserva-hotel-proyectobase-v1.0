@@ -9,6 +9,7 @@ import ar.edu.unrn.seminario.gui.VentanaPrincipal;
 public class Main {
 
 	public static void main(String[] args) {
+		//RAma mia
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
