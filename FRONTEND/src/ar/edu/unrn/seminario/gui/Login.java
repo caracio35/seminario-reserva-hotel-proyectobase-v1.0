@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -68,6 +69,16 @@ public class Login extends JFrame {
 		JButton btnBotonInvitado = new JButton("Iniciar como invitado");
 		btnBotonInvitado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int response = JOptionPane.showConfirmDialog(null, 
+                        "¿Está seguro de que desea iniciar como invitado?", 
+                        "Usted perdera los beneficios de estar registrado", 
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE);
+                
+              /*  if (response == JOptionPane.YES_OPTION) {
+                    // Lógica para activar la habitación
+                    JOptionPane.showMessageDialog(null, "Habitación activada.");
+                }*/
 			}
 		});
 		btnBotonInvitado.setBounds(136, 306, 143, 23);
