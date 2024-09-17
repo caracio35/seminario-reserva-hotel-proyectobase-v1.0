@@ -68,8 +68,6 @@ public class Login extends JFrame {
 		JButton btnBotonInvitado = new JButton("Iniciar como invitado");
 		btnBotonInvitado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Advertencia a = new Advertencia();
-				a.setVisible(true);
 			}
 		});
 		btnBotonInvitado.setBounds(136, 306, 143, 23);
