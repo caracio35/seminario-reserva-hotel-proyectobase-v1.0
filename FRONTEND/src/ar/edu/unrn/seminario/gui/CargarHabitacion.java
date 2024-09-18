@@ -1,14 +1,14 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class CargarHabitacion extends JFrame {
 
@@ -17,7 +17,7 @@ public class CargarHabitacion extends JFrame {
 
 	public CargarHabitacion() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 301);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -25,7 +25,7 @@ public class CargarHabitacion extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 10, 416, 243);
+		panel.setBounds(10, 10, 416, 342);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -34,27 +34,27 @@ public class CargarHabitacion extends JFrame {
 		panel.add(textFieldNumeroHabitacion);
 
 		TextField textFieldCamas = new TextField();
-		textFieldCamas.setBounds(243, 39, 150, 21);
+		textFieldCamas.setBounds(203, 39, 150, 21);
 		panel.add(textFieldCamas);
 
 		TextField textFieldDescripccion = new TextField();
-		textFieldDescripccion.setBounds(120, 87, 150, 21);
+		textFieldDescripccion.setBounds(10, 96, 150, 21);
 		panel.add(textFieldDescripccion);
 
 		TextField textFieldPrecioRegistrado = new TextField();
-		textFieldPrecioRegistrado.setBounds(243, 172, 150, 21);
+		textFieldPrecioRegistrado.setBounds(203, 96, 150, 21);
 		panel.add(textFieldPrecioRegistrado);
 
 		TextField textFieldPrecioNoRegistrado = new TextField();
-		textFieldPrecioNoRegistrado.setBounds(10, 172, 150, 21);
+		textFieldPrecioNoRegistrado.setBounds(10, 150, 150, 21);
 		panel.add(textFieldPrecioNoRegistrado);
 
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
-		btnSubirInformacion.setBounds(126, 222, 144, 21);
+		btnSubirInformacion.setBounds(136, 204, 144, 21);
 		panel.add(btnSubirInformacion);
 
 		JButton btnCargarImagen = new JButton("Cargar Imagen");
-		btnCargarImagen.setBounds(0, 222, 116, 21);
+		btnCargarImagen.setBounds(10, 204, 116, 21);
 		panel.add(btnCargarImagen);
 
 		JLabel lblNumeroHabitacion = new JLabel("Numero Habitacion");
@@ -62,28 +62,28 @@ public class CargarHabitacion extends JFrame {
 		panel.add(lblNumeroHabitacion);
 
 		JLabel lblCamas = new JLabel("Camas");
-		lblCamas.setBounds(243, 20, 45, 13);
+		lblCamas.setBounds(203, 20, 45, 13);
 		panel.add(lblCamas);
 
 		JLabel lblDescripcion = new JLabel("Descripccion");
-		lblDescripcion.setBounds(120, 68, 107, 13);
+		lblDescripcion.setBounds(10, 77, 107, 13);
 		panel.add(lblDescripcion);
 
 		JLabel lblPrecioRegistrado = new JLabel("Precio Registrado");
-		lblPrecioRegistrado.setBounds(10, 153, 106, 13);
+		lblPrecioRegistrado.setBounds(10, 131, 106, 13);
 		panel.add(lblPrecioRegistrado);
 
 		JLabel lblPrecioNoRegistrado = new JLabel("Precio No Registrado");
-		lblPrecioNoRegistrado.setBounds(243, 153, 107, 13);
+		lblPrecioNoRegistrado.setBounds(203, 77, 107, 13);
 		panel.add(lblPrecioNoRegistrado);
-		
+
 		JButton btnSalircancelar = new JButton("salir/cancelar");
 		btnSalircancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnSalircancelar.setBounds(280, 222, 144, 21);
+		btnSalircancelar.setBounds(272, 204, 144, 21);
 		panel.add(btnSalircancelar);
 	}
 }
