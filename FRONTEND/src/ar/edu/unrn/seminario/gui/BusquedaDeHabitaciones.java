@@ -8,8 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class BúsquedaDeHabitaciones extends JFrame {
+public class BusquedaDeHabitaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
@@ -23,14 +26,16 @@ public class BúsquedaDeHabitaciones extends JFrame {
 	private JLabel lblNewLabel_6;
 	private JTable table;
 	private JTable table_1;
+	private JTextField textFieldHuespedes;
+	private JButton btnCancelarsalir;
 
 	/**
 	 * Create the frame.
 	 */
-	public BúsquedaDeHabitaciones() {
+	public BusquedaDeHabitaciones() {
 		// Configurar el JFrame
 		setTitle("Búsqueda de Habitaciones");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 550, 450);
 		getContentPane().setLayout(null);
 
@@ -43,6 +48,18 @@ public class BúsquedaDeHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column", "New column", "New column"
+			}
+		));
 		scrollPane.setViewportView(table_1);
 
 		textField = new JTextField();
@@ -103,12 +120,28 @@ public class BúsquedaDeHabitaciones extends JFrame {
 		comboBox_2.setBounds(10, 172, 62, 19);
 		getContentPane().add(comboBox_2);
 
-		JComboBox<String> comboBox_2_1 = new JComboBox<>();
-		comboBox_2_1.setBounds(10, 314, 62, 19);
-		getContentPane().add(comboBox_2_1);
-
-		JButton btnNewButton = new JButton("Aceptar");
-		btnNewButton.setBounds(136, 346, 85, 21);
-		getContentPane().add(btnNewButton);
+		JButton btnReservar = new JButton("RESERVAR");
+		btnReservar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConfirmarReserva confirmacion=new ConfirmarReserva();
+				confirmacion.setVisible(true);
+			}
+		});
+		btnReservar.setBounds(136, 346, 116, 21);
+		getContentPane().add(btnReservar);
+		
+		textFieldHuespedes = new JTextField();
+		textFieldHuespedes.setColumns(10);
+		textFieldHuespedes.setBounds(10, 314, 96, 19);
+		getContentPane().add(textFieldHuespedes);
+		
+		btnCancelarsalir = new JButton("CANCELAR/SALIR");
+		btnCancelarsalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnCancelarsalir.setBounds(381, 346, 116, 21);
+		getContentPane().add(btnCancelarsalir);
 	}
 }

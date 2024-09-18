@@ -6,6 +6,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.gui.ListadoHabitaciones;
 import ar.edu.unrn.seminario.gui.VentanaPrincipal;
+import ar.edu.unrn.seminario.gui.VerReservas;
 
 public class Main {
 
@@ -17,7 +18,6 @@ public class Main {
 
 					IApi api = new MemoryApi();
 					VentanaPrincipal frame = new VentanaPrincipal(api);
-
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

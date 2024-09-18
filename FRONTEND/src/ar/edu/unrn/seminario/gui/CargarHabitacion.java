@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CargarHabitacion extends JFrame {
 
@@ -74,5 +76,14 @@ public class CargarHabitacion extends JFrame {
 		JLabel lblPrecioNoRegistrado = new JLabel("Precio No Registrado");
 		lblPrecioNoRegistrado.setBounds(243, 153, 107, 13);
 		panel.add(lblPrecioNoRegistrado);
+		
+		JButton btnSalircancelar = new JButton("salir/cancelar");
+		btnSalircancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnSalircancelar.setBounds(280, 222, 144, 21);
+		panel.add(btnSalircancelar);
 	}
 }

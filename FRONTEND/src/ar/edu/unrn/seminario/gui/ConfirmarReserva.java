@@ -11,6 +11,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ConfirmarReserva extends JFrame {
 
@@ -78,10 +80,21 @@ public class ConfirmarReserva extends JFrame {
 		textFieldFechaSalida.setColumns(10);
 
 		JButton btnRealizarPago = new JButton("Realizar Pago");
+		btnRealizarPago.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PagarReserva pagar=new PagarReserva();
+				pagar.setVisible(true);
+			}
+		});
 		btnRealizarPago.setBounds(289, 367, 117, 21);
 		panel.add(btnRealizarPago);
 
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnCancelar.setBounds(194, 367, 85, 21);
 		panel.add(btnCancelar);
 

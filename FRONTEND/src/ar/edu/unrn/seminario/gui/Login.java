@@ -51,6 +51,11 @@ public class Login extends JFrame {
 		contentPane.add(passwordField);
 		
 		JButton btnBotonIniciar = new JButton("Iniciar");
+		btnBotonIniciar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnBotonIniciar.setBounds(101, 176, 89, 23);
 		contentPane.add(btnBotonIniciar);
 		

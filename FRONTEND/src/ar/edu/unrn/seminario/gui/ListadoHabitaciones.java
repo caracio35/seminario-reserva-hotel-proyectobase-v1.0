@@ -4,13 +4,14 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import com.toedter.calendar.JDateChooser;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
+import java.text.SimpleDateFormat;
 
 public class ListadoHabitaciones extends JFrame {
 
@@ -30,8 +31,8 @@ public class ListadoHabitaciones extends JFrame {
         scrollPane.setBounds(10, 39, 516, 133);
         getContentPane().add(scrollPane);
 
-        table = new JTable();
-        table.setModel(new DefaultTableModel(
+        // Definir el modelo de la tabla
+        DefaultTableModel model = new DefaultTableModel(
             new Object[][] {
                 {1, Boolean.TRUE, 8, Boolean.TRUE, ""},
                 {2, null, 3, Boolean.TRUE, null},
@@ -48,29 +49,59 @@ public class ListadoHabitaciones extends JFrame {
             }
         ) {
             private static final long serialVersionUID = 1L;
-            Class[] columnTypes = new Class[] {
-                Object.class, Boolean.class, Object.class, Boolean.class, Object.class
-            };
-            public Class getColumnClass(int columnIndex) {
-                return columnTypes[columnIndex];
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer que la tabla no sea editable
             }
+        };
+        
+        table = new JTable(new DefaultTableModel(
+        	new Object[][] {
+        		{new Integer(1), Boolean.TRUE, new Integer(8), Boolean.TRUE, ""},
+        		{new Integer(2), null, new Integer(3), Boolean.TRUE, null},
+        		{new Integer(3), Boolean.TRUE, new Integer(5), Boolean.TRUE, null},
+        		{new Integer(4), Boolean.TRUE, new Integer(5), null, "25/12/2024"},
+        		{new Integer(5), null, new Integer(4), null, "25/01/2025"},
+        		{new Integer(6), Boolean.TRUE, new Integer(4), null, "12/12/2024"},
+        		{new Integer(7), Boolean.TRUE, "3", Boolean.TRUE, null},
+        		{new Integer(8), Boolean.TRUE, "7", Boolean.FALSE, "indefinido"},
+        		{new Integer(9), null, "4", Boolean.TRUE, null},
+        	},
+        	new String[] {
+        		"Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible", "no disponible Hasta"
+        	}
+        ) {
+        	Class[] columnTypes = new Class[] {
+        		Object.class, Boolean.class, Object.class, Boolean.class, Object.class
+        	};
+        	public Class getColumnClass(int columnIndex) {
+        		return columnTypes[columnIndex];
+        	}
         });
-        table.getColumnModel().getColumn(0).setPreferredWidth(124);
-        table.getColumnModel().getColumn(4).setPreferredWidth(127);
         scrollPane.setViewportView(table);
         
         JButton btnActivarHabitacion = new JButton("Activar");
         btnActivarHabitacion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(null, 
-                        "¿Está seguro de que desea activar esta habitación?", 
-                        "Confirmación", 
-                        JOptionPane.YES_NO_OPTION, 
-                        JOptionPane.QUESTION_MESSAGE);
-                
-                if (response == JOptionPane.YES_OPTION) {
-                    // Lógica para activar la habitación
-                    JOptionPane.showMessageDialog(null, "Habitación activada.");
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) { // Verificar si se ha seleccionado una fila
+                    int response = JOptionPane.showConfirmDialog(null, 
+                            "¿Está seguro de que desea activar esta habitación?", 
+                            "Confirmación", 
+                            JOptionPane.YES_NO_OPTION, 
+                            JOptionPane.QUESTION_MESSAGE);
+                    
+                    if (response == JOptionPane.YES_OPTION) {
+                        // Actualizar la tabla
+                        table.setValueAt(Boolean.TRUE, selectedRow, 3); // Activar la habitación
+                        table.setValueAt("", selectedRow, 4); // Limpiar la fecha de desactivación
+
+                        // Lógica para activar la habitación
+                        JOptionPane.showMessageDialog(null, "Habitación activada.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
                 }
             }
         });
@@ -80,30 +111,49 @@ public class ListadoHabitaciones extends JFrame {
         JButton btnDesactivar = new JButton("Desactivar");
         btnDesactivar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Solicitar fecha al usuario
-                JPanel panel = new JPanel();
-                panel.add(new JLabel("Ingrese fecha de desactivación (dd/mm/aaaa):"));
-                JTextField txtFecha = new JTextField(10);
-                panel.add(txtFecha);
-                
-                int option = JOptionPane.showConfirmDialog(null, panel, 
-                        "Ingrese fecha de desactivación", 
-                        JOptionPane.OK_CANCEL_OPTION, 
-                        JOptionPane.PLAIN_MESSAGE);
-                
-                if (option == JOptionPane.OK_OPTION) {
-                    String fecha = txtFecha.getText();
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) { // Verificar si se ha seleccionado una fila
+                    // Crear el panel con JDateChooser
+                    JPanel panel = new JPanel();
+                    panel.add(new JLabel("Seleccione la fecha de desactivación:"));
+
+                    // Crear JDateChooser
+                    JDateChooser dateChooser = new JDateChooser();
+                    dateChooser.setDateFormatString("dd/MM/yyyy"); // Establecer el formato de la fecha
+                    panel.add(dateChooser);
+
+                    int option = JOptionPane.showConfirmDialog(null, panel, 
+                            "Ingrese fecha de desactivación", 
+                            JOptionPane.OK_CANCEL_OPTION, 
+                            JOptionPane.PLAIN_MESSAGE);
                     
-                    int response = JOptionPane.showConfirmDialog(null, 
-                            "¿Está seguro de que desea desactivar esta habitación hasta el " + fecha + "?", 
-                            "Confirmación", 
-                            JOptionPane.YES_NO_OPTION, 
-                            JOptionPane.QUESTION_MESSAGE);
-                    
-                    if (response == JOptionPane.YES_OPTION) {
-                        // Lógica para desactivar la habitación
-                        JOptionPane.showMessageDialog(null, "Habitación desactivada hasta " + fecha + ".");
+                    if (option == JOptionPane.OK_OPTION) {
+                        java.util.Date fecha = dateChooser.getDate();
+                        if (fecha != null) {
+                            // Formatear la fecha para mostrar
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            String fechaFormateada = sdf.format(fecha);
+
+                            int response = JOptionPane.showConfirmDialog(null, 
+                                    "¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada + "?", 
+                                    "Confirmación", 
+                                    JOptionPane.YES_NO_OPTION, 
+                                    JOptionPane.QUESTION_MESSAGE);
+                            
+                            if (response == JOptionPane.YES_OPTION) {
+                                // Actualizar la tabla
+                                table.setValueAt(fechaFormateada, selectedRow, 4);
+                                table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
+                                
+                                // Lógica para desactivar la habitación
+                                JOptionPane.showMessageDialog(null, "Habitación desactivada hasta " + fechaFormateada + ".");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.");
+                        }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
                 }
             }
         });
@@ -123,8 +173,24 @@ public class ListadoHabitaciones extends JFrame {
         JButton btnEliminarHabitacion = new JButton("Eliminar Habitacion");
         btnEliminarHabitacion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar la habitación
-                JOptionPane.showMessageDialog(null, "Funcionalidad de eliminación aún no implementada.");
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) { // Verificar si se ha seleccionado una fila
+                    int response = JOptionPane.showConfirmDialog(null, 
+                            "¿Está seguro de que desea eliminar esta habitación?", 
+                            "Confirmación", 
+                            JOptionPane.YES_NO_OPTION, 
+                            JOptionPane.QUESTION_MESSAGE);
+                    
+                    if (response == JOptionPane.YES_OPTION) {
+                        // Eliminar la fila de la tabla
+                        ((DefaultTableModel) table.getModel()).removeRow(selectedRow);
+                        
+                        // Lógica para eliminar la habitación
+                        JOptionPane.showMessageDialog(null, "Habitación eliminada.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+                }
             }
         });
         btnEliminarHabitacion.setBounds(395, 206, 131, 21);
@@ -140,7 +206,7 @@ public class ListadoHabitaciones extends JFrame {
                         JOptionPane.QUESTION_MESSAGE);
                 
                 if (response == JOptionPane.YES_OPTION) {
-                    System.exit(0);
+                	dispose();
                 }
             }
         });
@@ -148,9 +214,5 @@ public class ListadoHabitaciones extends JFrame {
         getContentPane().add(btnSalir);
     }
 
-    public static void main(String[] args) {
-        // Crear e iniciar el JFrame
-        ListadoHabitaciones frame = new ListadoHabitaciones();
-        frame.setVisible(true);
-    }
+   
 }

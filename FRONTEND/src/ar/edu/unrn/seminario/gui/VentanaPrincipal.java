@@ -53,6 +53,50 @@ public class VentanaPrincipal extends JFrame {
 			
 		});
 		usuarioMenu.add(listadoUsuarioMenuItem);
+		
+		JMenu mnHabitaciones = new JMenu("Habitaciones");
+		menuBar.add(mnHabitaciones);
+		
+		JMenuItem mntmCarcarHabitacion = new JMenuItem("Cargar Habitacion");
+		mntmCarcarHabitacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CargarHabitacion cargaH=new CargarHabitacion();
+				cargaH.setVisible(true);
+			}
+		});
+		mnHabitaciones.add(mntmCarcarHabitacion);
+		
+		JMenuItem mntmListadoHabitaciones = new JMenuItem("Listado Habitaciones");
+		mntmListadoHabitaciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListadoHabitaciones listaHabitaciones=new ListadoHabitaciones();
+				listaHabitaciones.setVisible(true);
+			}
+		});
+		mntmListadoHabitaciones.setSelected(true);
+		mnHabitaciones.add(mntmListadoHabitaciones);
+		
+		JMenu mnReservas = new JMenu("Reservas");
+		menuBar.add(mnReservas);
+		
+		JMenuItem mntmBuscarhabitacion = new JMenuItem("buscarHabitacion");
+		mntmBuscarhabitacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BusquedaDeHabitaciones busqueda=new BusquedaDeHabitaciones();
+				busqueda.setVisible(true);
+			}
+		});
+		mnReservas.add(mntmBuscarhabitacion);
+		
+		JMenuItem mntmListadoHabitaciones_1 = new JMenuItem("Mis Reservas");
+		mntmListadoHabitaciones_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VerReservas misReservas=new VerReservas();
+				misReservas.setVisible(true);
+			}
+		});
+		mntmListadoHabitaciones_1.setSelected(true);
+		mnReservas.add(mntmListadoHabitaciones_1);
 
 		JMenu configuracionMenu = new JMenu("Configuración");
 		menuBar.add(configuracionMenu);

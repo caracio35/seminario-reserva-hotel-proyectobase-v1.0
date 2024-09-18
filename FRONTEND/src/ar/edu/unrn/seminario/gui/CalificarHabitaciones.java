@@ -11,6 +11,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CalificarHabitaciones extends JFrame {
 
@@ -27,20 +29,16 @@ public class CalificarHabitaciones extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Selecione Habitacion:");
+		JLabel lblNewLabel = new JLabel("Habitacion N^:");
 		lblNewLabel.setBounds(10, 21, 113, 14);
 		contentPane.add(lblNewLabel);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(10, 39, 154, 22);
-		contentPane.add(comboBox);
-		
 		JLabel lblNewLabel_1 = new JLabel("Califique del 1 al 5:");
-		lblNewLabel_1.setBounds(189, 21, 113, 14);
+		lblNewLabel_1.setBounds(249, 21, 113, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBounds(189, 40, 154, 20);
+		formattedTextField.setBounds(249, 40, 154, 20);
 		contentPane.add(formattedTextField);
 		
 		JFormattedTextField formattedTextField_1 = new JFormattedTextField();
@@ -52,11 +50,24 @@ public class CalificarHabitaciones extends JFrame {
 		contentPane.add(lblNewLabel_2);
 		
 		JButton btnNewButton = new JButton("Cancelar ");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnNewButton.setBounds(232, 243, 89, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Calificar");
 		btnNewButton_1.setBounds(331, 243, 89, 23);
 		contentPane.add(btnNewButton_1);
+		
+		JLabel lblReservadaDesdeY = new JLabel("reservada desde y hasta ");
+		lblReservadaDesdeY.setBounds(10, 45, 135, 14);
+		contentPane.add(lblReservadaDesdeY);
+		
+		JLabel lblNewLabel_3 = new JLabel("**/**/****/    **/**/****");
+		lblNewLabel_3.setBounds(10, 69, 135, 14);
+		contentPane.add(lblNewLabel_3);
 	}
 }
