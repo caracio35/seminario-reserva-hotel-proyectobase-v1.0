@@ -10,7 +10,6 @@ public class Rol {
 	}
 
 	public Rol(Integer codigo, String nombre) {
-		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 	}

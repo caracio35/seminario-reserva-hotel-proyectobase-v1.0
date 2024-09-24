@@ -1,0 +1,61 @@
+package ar.edu.unrn.seminario.dto;
+
+import java.util.ArrayList;
+
+public class HabitacionDTO {
+	
+	private int cantidadDeCamas;
+	private String descripcion;
+	private double precio;
+	private boolean habilitado;
+	private int numHabitaciones;
+	private ArrayList<CaracteristicaEspecialDTO> caracteristicasEspeciales;
+
+	public HabitacionDTO(int cantidadDeCamas, String descripcion, int precio, boolean habilitado, int numHabitaciones,
+			ArrayList<CaracteristicaEspecialDTO> caracteristicasEspeciales) {
+		this.cantidadDeCamas = cantidadDeCamas;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.habilitado = habilitado;
+		this.numHabitaciones = numHabitaciones;
+		this.caracteristicasEspeciales = caracteristicasEspeciales;
+	}
+
+	public void setCantidadDeCamas(int cantidadDeCamas) {
+		this.cantidadDeCamas = cantidadDeCamas;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
+	}
+	public void setNumHabitaciones(int numHabitaciones) {
+		this.numHabitaciones = numHabitaciones;
+	}
+	public void setCaracteristicasEspeciale(ArrayList<CaracteristicaEspecialDTO> caracteristicasEspeciale) {
+		this.caracteristicasEspeciales = caracteristicasEspeciale;
+	}
+	public int getCantidadDeCamas() {
+		return cantidadDeCamas;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public double getPrecio() {
+		return precio;
+	}
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+	public int getNumHabitaciones() {
+		return numHabitaciones;
+	}
+	public ArrayList<CaracteristicaEspecialDTO> getCaracteristicasEspeciale() {
+		return caracteristicasEspeciales;
+	}
+
+}

@@ -9,7 +9,7 @@ public class Usuario {
 	private boolean activo;
 
 	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol) {
-
+		
 		this.usuario = usuario;
 		this.contrasena = contrasena;
 		this.nombre = nombre;

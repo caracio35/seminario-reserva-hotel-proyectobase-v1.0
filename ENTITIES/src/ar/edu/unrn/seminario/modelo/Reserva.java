@@ -22,8 +22,7 @@ public class Reserva {
 	public Reserva(ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate fechaDeInicio,
 			LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio> servicios, boolean checkIn,
 			boolean checkOut, Factura factura, LocalDate fechaDeReserva, Calificacion calificacion,
-			boolean pagoMinimo) {
-		super();
+			boolean pagoMinimo){
 		this.habitaciones = habitaciones;
 		this.usuario = usuario;
 		this.fechaDeInicio = fechaDeInicio;

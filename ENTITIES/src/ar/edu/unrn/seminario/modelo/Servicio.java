@@ -8,11 +8,9 @@ public class Servicio {
 		this.precio = precio;
 		this.descripcion = descripcion;
 	}
-
 	public int getPrecio() {
 		return precio;
 	}
-
 	public void setPrecio(int precio) {
 		this.precio = precio;
 	}

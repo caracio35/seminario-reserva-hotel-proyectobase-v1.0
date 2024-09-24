@@ -8,7 +8,6 @@ public class Factura {
 	private String descripcion;
 
 	public Factura(Reserva reserva, int fecha, Integer codigo, int monto, String descripcion) {
-
 		this.reserva = reserva;
 		this.fecha = fecha;
 		this.codigo = codigo;

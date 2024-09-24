@@ -11,7 +11,6 @@ public class UsuarioDTO {
 
 	public UsuarioDTO(String username, String password, String nombre, String email, String rol, boolean activo,
 			String estado) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.nombre = nombre;

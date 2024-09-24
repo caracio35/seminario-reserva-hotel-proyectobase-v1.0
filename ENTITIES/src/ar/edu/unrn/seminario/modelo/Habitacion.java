@@ -12,7 +12,6 @@ public class Habitacion {
 
 	public Habitacion(int cantidadDeCamas, String descripcion, int precio, boolean habilitado, int numHabitaciones,
 			ArrayList<CaracteristicaEspecial> caracteristicasEspeciales) {
-		super();
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -26,7 +25,7 @@ public class Habitacion {
 		for (CaracteristicaEspecial caracteristicaEspecial : caracteristicasEspeciales) {
 			precioFinal += caracteristicaEspecial.getPrecio();
 		}
-		return 0.0;
+		return precioFinal;
 	}
 
 	public int getCantidadDeCamas() {
@@ -45,11 +44,11 @@ public class Habitacion {
 		this.descripcion = descripcion;
 	}
 
-	public int getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(int precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 
