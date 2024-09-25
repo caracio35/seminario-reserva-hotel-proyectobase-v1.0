@@ -1,24 +1,23 @@
 package ar.edu.unrn.seminario.dto;
-import java.time.LocalDate;
 
 public class FacturaDTO{
-	private ReservaDTO reserva ;
-	private LocalDate fecha ; 
+	private int reserva ;
+	private String fecha ; 
 	private Integer codigo ; 
 	private double monto;
 	private String decripcion ; 
 	
-	public FacturaDTO(ReservaDTO reserva , LocalDate fecha , Integer codigo , double monto , String decripcion) {
+	public FacturaDTO(int reserva , String fecha , Integer codigo , double monto , String decripcion) {
 		this.reserva = reserva ; 
 		this.fecha = fecha ; 
 		this.codigo = codigo ;
 		this.monto = monto ; 
 		this.decripcion = decripcion ; 
 	}
-	void setReserva(ReservaDTO reserva) {
+	void setReserva(int reserva) {
 		this.reserva = reserva ;
 	}
-	void setFecha(LocalDate fecha) {
+	void setFecha(String fecha) {
 		this.fecha = fecha ;
 	}
 	void setCodigo(Integer codigo) {
@@ -30,10 +29,10 @@ public class FacturaDTO{
 	void decripcion(String descripcion) {
 		this.decripcion = descripcion ; 
 	}
-	ReservaDTO getReserva() {
+	int getReserva() {
 		return reserva ; 
 	}
-	LocalDate getFecha() {
+	String getFecha() {
 		return fecha ; 
 	}
 	Integer getCodigo() {

@@ -1,29 +1,24 @@
 package ar.edu.unrn.seminario.dto;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import ar.edu.unrn.seminario.modelo.Habitacion;
-import ar.edu.unrn.seminario.modelo.Servicio;
-
 public class ReservaDTO {
 	
-	private ArrayList<Habitacion> habitaciones;
-	private UsuarioDTO usuario;
-	private LocalDate fechaDeInicio;
-	private LocalDate fechaDESalida;
+	private int [] habitaciones;
+	private String usuario;
+	private String fechaDeInicio;
+	private String fechaDESalida;
 	private int cantidadDePersonas;
-	private ArrayList<Servicio> servicios;
+	private String [] servicios;
 	private boolean checkIn;
 	private boolean checkOut;
-	private FacturaDTO factura;
-	private LocalDate fechaDeReserva;
-	private CalificacionDTO calificacion;
+	private int  factura;
+	private String fechaDeReserva;
+	private String [] calificacion;
 	private double saldoFavor;
 	private boolean pagoMinimo;
 
-	public ReservaDTO(ArrayList<Habitacion> habitaciones, UsuarioDTO usuario, LocalDate fechaDeInicio,
-			LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio> servicios, boolean checkIn,
-			boolean checkOut, FacturaDTO factura, LocalDate fechaDeReserva, CalificacionDTO calificacion,
+	public ReservaDTO(int[] habitaciones, String usuario, String fechaDeInicio,
+			String fechaDESalida, int cantidadDePersonas, String[] servicios, boolean checkIn,
+			boolean checkOut, int factura, String fechaDeReserva, String[] calificacion,
 			boolean pagoMinimo) {
 		this.habitaciones = habitaciones;
 		this.usuario = usuario;
@@ -39,19 +34,19 @@ public class ReservaDTO {
 		this.saldoFavor = 0;
 		this.pagoMinimo = pagoMinimo;
 	}
-	public void setHabitacion(ArrayList<Habitacion> habitacion) {
+	public void setHabitacion(int[] habitacion) {
 		this.habitaciones = habitacion;
 	}
-	public void setFechaDeInicio(LocalDate fechaDeInicio) {
+	public void setFechaDeInicio(String fechaDeInicio) {
 		this.fechaDeInicio = fechaDeInicio;
 	}
-	public void setFechaDESalida(LocalDate fechaDESalida) {
+	public void setFechaDESalida(String fechaDESalida) {
 		this.fechaDESalida = fechaDESalida;
 	}
 	public void setCantidadDePersonas(int cantidadDePersonas) {
 		this.cantidadDePersonas = cantidadDePersonas;
 	}
-	public void setServicios(ArrayList<Servicio> servicios) {
+	public void setServicios(String[] servicios) {
 		this.servicios = servicios;
 	}
 	public void setCheckOut(boolean checkOut) {
@@ -63,37 +58,38 @@ public class ReservaDTO {
 	public void setPagoMinimo(boolean pagoMinimo) {
 		this.pagoMinimo = pagoMinimo;
 	}
-	public LocalDate getFechaDeInicio() {
+	public String getFechaDeInicio() {
 		return fechaDeInicio;
 	}
-	public LocalDate getFechaDeSalida() {
+	public String getFechaDeSalida() {
 		return fechaDESalida;
 	}
 	public int getCantidadDePersonas() {
 		return cantidadDePersonas;
 	}
-	public ArrayList<Servicio> getServicios() {
+	public String[] getServicios() {
 		return servicios;
 	}
-	public ArrayList<Habitacion> getHabitacion() {
+	public int [] getHabitacion() {
+		
 		return habitaciones;
 	}
-	public UsuarioDTO getUsuario() {
+	public String getUsuario() {
 		return usuario;
 	}
 	public double getSaldoFavor() {
 		return saldoFavor;
 	}
-	public FacturaDTO getFactura() {
+	public int getFactura() {
 		return factura;
 	}
 	public boolean getPagoMinimo() {
 		return pagoMinimo; 
 	}
-	public LocalDate getFechaDeReserva() {
+	public String getFechaDeReserva() {
 		return fechaDeReserva;
 	}
-	public CalificacionDTO getCalificacion() {
+	public String[] getCalificacion() {
 		return calificacion;
 	}
 	public boolean isCheckOut() {

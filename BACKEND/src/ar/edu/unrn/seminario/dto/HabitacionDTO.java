@@ -9,10 +9,10 @@ public class HabitacionDTO {
 	private double precio;
 	private boolean habilitado;
 	private int numHabitaciones;
-	private ArrayList<CaracteristicaEspecialDTO> caracteristicasEspeciales;
+	private String [] caracteristicasEspeciales;
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, int precio, boolean habilitado, int numHabitaciones,
-			ArrayList<CaracteristicaEspecialDTO> caracteristicasEspeciales) {
+			String [] caracteristicasEspeciales) {
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -36,7 +36,7 @@ public class HabitacionDTO {
 	public void setNumHabitaciones(int numHabitaciones) {
 		this.numHabitaciones = numHabitaciones;
 	}
-	public void setCaracteristicasEspeciale(ArrayList<CaracteristicaEspecialDTO> caracteristicasEspeciale) {
+	public void setCaracteristicasEspeciale(String[] caracteristicasEspeciale) {
 		this.caracteristicasEspeciales = caracteristicasEspeciale;
 	}
 	public int getCantidadDeCamas() {
@@ -54,7 +54,7 @@ public class HabitacionDTO {
 	public int getNumHabitaciones() {
 		return numHabitaciones;
 	}
-	public ArrayList<CaracteristicaEspecialDTO> getCaracteristicasEspeciale() {
+	public String[] getCaracteristicasEspeciale() {
 		return caracteristicasEspeciales;
 	}
 
