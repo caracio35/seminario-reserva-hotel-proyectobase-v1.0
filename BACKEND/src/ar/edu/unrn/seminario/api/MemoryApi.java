@@ -1,10 +1,13 @@
 package ar.edu.unrn.seminario.api;
 
 import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Objects;
 
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
@@ -12,9 +15,12 @@ public class MemoryApi implements IApi {
 
 	private ArrayList<Rol> roles = new ArrayList();
 	private ArrayList<Usuario> usuarios = new ArrayList<>();
-
+	private List<Habitacion> coleccionList = new ArrayList<>();
+	
 	public MemoryApi() {
-
+		
+		
+		
 		// datos iniciales
 		this.roles.add(new Rol(1, "ADMIN"));
 		this.roles.add(new Rol(2, "ESTUDIANTE"));
@@ -131,4 +137,22 @@ public class MemoryApi implements IApi {
 		}
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(coleccionList);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MemoryApi other = (MemoryApi) obj;
+		return Objects.equals(coleccionList, other.coleccionList);
+	}
+	
 }
