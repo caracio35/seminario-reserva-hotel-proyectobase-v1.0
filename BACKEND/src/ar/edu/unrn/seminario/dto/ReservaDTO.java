@@ -10,7 +10,7 @@ public class ReservaDTO {
 	private String [] servicios;
 	private boolean checkIn;
 	private boolean checkOut;
-	private int  factura;
+	private Integer  factura;
 	private String fechaDeReserva;
 	private String [] calificacion;
 	private double saldoFavor;
