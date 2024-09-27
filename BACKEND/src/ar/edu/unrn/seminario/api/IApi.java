@@ -30,4 +30,14 @@ public interface IApi {
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
+	
+	void cargarHabitacion(int cantidadDeCamas, String descripcion, double precio , boolean habilitado , int numeroHabitacion , String nombre );
+	
+	void cargarCaracteristicaEspecial(String nombre , String descripcion , int precio); 
+	
+	void generarCalificacionHabitacion(int valor , String comentario , int idReserva);
+	
+	boolean autenticarContraseña(String username, String password) ; 
+	
+	void crearFactura(int reserva , String fecha , Integer codigo , double monto , String descripcion);
 }

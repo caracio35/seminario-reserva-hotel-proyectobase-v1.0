@@ -1,12 +1,14 @@
 package ar.edu.unrn.seminario.api;
-
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-
+import java.util.Map;
+import java.util.Set;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.modelo.Calificacion;
+import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Usuario;
@@ -15,17 +17,20 @@ public class MemoryApi implements IApi {
 
 	private ArrayList<Rol> roles = new ArrayList();
 	private ArrayList<Usuario> usuarios = new ArrayList<>();
-	private List<Habitacion> coleccionList = new ArrayList<>();
+	private Set<Habitacion> habitacion = new HashSet<>();; 
+	private ArrayList<CaracteristicaEspecial> caracteristicaEspecial = new ArrayList<>();
+	private Map<String , String > usuarios1 = new HashMap<>();
 	
 	public MemoryApi() {
-		
-		
 		
 		// datos iniciales
 		this.roles.add(new Rol(1, "ADMIN"));
 		this.roles.add(new Rol(2, "ESTUDIANTE"));
 		this.roles.add(new Rol(3, "INVITADO"));
 		inicializarUsuarios();
+		
+		// 
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Pileta", "pileta Grande", 100.00));
 	}
 
 	private void inicializarUsuarios() {
@@ -41,9 +46,10 @@ public class MemoryApi implements IApi {
 		Rol role = this.buscarRol(rol);
 		Usuario usuario = new Usuario(username, password, nombre, email, role);
 		this.usuarios.add(usuario);
+		this.usuarios1.put(username, password);
 
 	}
-
+	 
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
@@ -137,22 +143,39 @@ public class MemoryApi implements IApi {
 		}
 		return null;
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(coleccionList);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MemoryApi other = (MemoryApi) obj;
-		return Objects.equals(coleccionList, other.coleccionList);
-	}
 	
+	@Override
+	public void cargarHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numeroHabitacion, String nombre) {
+		// TODO Auto-generated method stub
+		Habitacion primerHabitacion = new Habitacion(cantidadDeCamas , descripcion , precio , habilitado, numeroHabitacion , caracteristicaEspecial); 
+		this.habitacion.add(primerHabitacion);
+	}
+
+	@Override
+	public void cargarCaracteristicaEspecial(String nombre, String descripcion, int precio) {
+		CaracteristicaEspecial primerCaracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
+		this.caracteristicaEspecial.add(primerCaracteristica);
+	}
+
+	@Override
+	public void generarCalificacionHabitacion(int valor, String comentario , int idReserva) {
+		
+		Calificacion calificacion = new Calificacion(valor, comentario);
+		
+	}
+
+	@Override
+	public boolean autenticarContraseña(String username, String password) {
+		 if (usuarios1.containsKey(username)) {
+	            String compararContrasenia = usuarios1.get(username);
+	            return compararContrasenia.equals(password); 
+	        }
+		return false;
+	}
+
+	@Override
+	public void crearFactura(int reserva, String fecha, Integer codigo, double monto, String descripcion) {
+		
+	}
 }

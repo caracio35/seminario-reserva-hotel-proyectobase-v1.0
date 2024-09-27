@@ -1,6 +1,5 @@
 package ar.edu.unrn.seminario.dto;
 
-import java.util.ArrayList;
 
 public class HabitacionDTO {
 	
@@ -11,7 +10,7 @@ public class HabitacionDTO {
 	private int numHabitaciones;
 	private String [] caracteristicasEspeciales;
 
-	public HabitacionDTO(int cantidadDeCamas, String descripcion, int precio, boolean habilitado, int numHabitaciones,
+	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado, int numHabitaciones,
 			String [] caracteristicasEspeciales) {
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
