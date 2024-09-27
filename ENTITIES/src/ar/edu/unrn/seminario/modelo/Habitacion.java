@@ -10,7 +10,7 @@ public class Habitacion {
 	private int numHabitaciones;
 	private ArrayList<CaracteristicaEspecial> caracteristicasEspeciales;
 
-	public Habitacion(int cantidadDeCamas, String descripcion, int precio, boolean habilitado, int numHabitaciones,
+	public Habitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado, int numHabitaciones,
 			ArrayList<CaracteristicaEspecial> caracteristicasEspeciales) {
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
