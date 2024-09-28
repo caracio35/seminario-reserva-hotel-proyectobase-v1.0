@@ -31,19 +31,19 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	void crearHabitacion(int cantidadDeCamas, String descripcion, double precio , boolean habilitado , int numeroHabitacion , String nombre );
+	void crearHabitacion(int cantidadDeCamas, String descripcion, double precio , boolean habilitado , int numeroHabitacion , String nombre ); //CREA EL OBJETO DE DOMINIO HABITACION
 	
-	void crearCaracteristicaEspecial(String nombre , String descripcion , int precio); 
+	void crearCaracteristicaEspecial(String nombre , String descripcion , int precio);  //CREA EL OBJETO DE CARACTERISTICA ESPECIAL DEL DOMINIO 
 	
-	void cargarCaracteristica(String nombreCaracteristica[] , int numeroHabitacion []);
+	void cargarCaracteristica(String nombreCaracteristica[] , int numeroHabitacion []); // CARGA LAS CARACTERISTICAS MISMAS CARACTERISTICAS A UNA O VARIAS HABITACION 
 	
-	void generarCalificacionHabitacion(int valor , String comentario , int idReserva);
+	void generarCalificacionHabitacion(int valor , String comentario , int idReserva); //CREA LA CALIFICACION Y LA CARGA A UNA RESERVA 
 	
-	boolean autenticarContraseña(String username, String password) ; 
+	boolean autenticarContraseña(String username, String password) ; //VERIFICA QUE LA CONTRASENIA SEA CORRECTA 
 	
-	void generarReserva(int habitaciones[] , String usuario , String fechaInicio , String fechaFin , int cantidadPersonas , int iDservicios[] );
+	void generarReserva(int habitaciones[] , String usuario , String fechaInicio , String fechaFin , int cantidadPersonas , int iDservicios[] ); //CREA LA RESERVA DEL DOMINIO 
 	
-	void modificarReserva(); 
+	void modificarReserva(int idReserva , int habitaciones[] , String fechaInico , String fechaDeSalida, int cantidadDePersona , String servicio); //MODIFICA LA RESERVA 
 	
-	void darDeBajaHabitacion(int numeroHabitacion);
+	void darDeBajaHabitacion(int numeroHabitacion); //GENERA UNA BAJA DE LA HABITACION 
 }
