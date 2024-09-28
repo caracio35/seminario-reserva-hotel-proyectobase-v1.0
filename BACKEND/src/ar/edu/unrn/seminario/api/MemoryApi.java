@@ -186,24 +186,24 @@ public class MemoryApi implements IApi {
 	public void generarReserva(int[] habitaciones, String usuario, String fechaInicio, String fechaFin,
 			int cantidadPersonas, int[] iDservicios) {
 		
-		ArrayList<Habitacion> habitacionesObtenidas = this.obtenerHabitacionesPorNumero(habitaciones); 
+		ArrayList<Habitacion> habitacionesObtenidas = this.obtenerHabitacionesPorNumero(habitaciones);
 		ArrayList<Servicio> serviciosOctenido = this.buscarServicio(iDservicios);
-		Usuario usuarioOctenido = this.buscarUsuario(usuario);
+		Usuario usuarioOctenido = buscarUsuario(usuario);
 		LocalDate fech = this.convertirAfecha(fechaInicio);
 		LocalDate fechFin = this.convertirAfecha(fechaFin);
-		int idReserva = this.generadorID();
+		int idReserva = generadorID();
 		Reserva reserva = new Reserva(idReserva ,habitacionesObtenidas, usuarioOctenido, fech, fechFin, cantidadPersonas, serviciosOctenido, false, false, null, null, null, false);
 		reservas.add(reserva);
 	}
 	private ArrayList<Habitacion> obtenerHabitacionesPorNumero(int[] numHabitaciones) {
-	    ArrayList<Habitacion> habitacionesObtenidas = new ArrayList<>(); // SE CREA UNA LISTA DONDE SE FUARDALAS HABITACIONES 
+	    ArrayList<Habitacion> habitacionesObtenidas = new ArrayList<>();
 	    int i = 0;
 	    // Recorrer el array de números de habitación
 	    while (i < numHabitaciones.length) {
-	        int numeroHabitacion = numHabitaciones[i]; //GUARDA EN LA VARIABLE DE TIPO INT EL NUMERO QUE ESTA EN LA POSICION i DEL VECTOR\ARREGLO 
+	        int numeroHabitacion = numHabitaciones[i];
 	        for(Habitacion h : habitaciones) {
 	        	if(h.getNumHabitaciones()== numeroHabitacion) {
-	        		habitacionesObtenidas.add(h); //GUARDA LA ABITACION EN LA LISTA DE HABITACIONES OBTENIDAS
+	        		habitacionesObtenidas.add(h);
 	        	}
 	        }
 	        i++;
@@ -214,13 +214,13 @@ public class MemoryApi implements IApi {
 	private ArrayList<Servicio> buscarServicio(int[] IdServicio) {
 	    ArrayList<Servicio> serviciosObtenidos = new ArrayList<>();
 	    int i = 0;
-	    // Recorrer el array de números de habitación 
+	    // Recorrer el array de números de habitación
 	    while (i <  IdServicio.length) {
-	        int num = IdServicio[i]; //INICIALIZA LA VARIABLE NUM CON EL ID DE LA POSICION I DEL ARRAY 
+	        int num = IdServicio[i];
 	        
-	        for(Servicio s : this.servicios ) {//RECORRE LA ARRY DE SERVICOS Y COMPARA POR EL NUMERO DE ID DEL SERVICIO
+	        for(Servicio s : this.servicios ) {
 	        	if (s.getIdServicio() == num) {
-					serviciosObtenidos.add(s);//GUARDA EN EL ARRAY DE SERVICOOBTENIDOS 
+					serviciosObtenidos.add(s);
 				}
 	        }
 	        
@@ -228,9 +228,9 @@ public class MemoryApi implements IApi {
 	    }
 	    return serviciosObtenidos;
 	}
-	private LocalDate convertirAfecha(String fechaTexto) { //COMBIERTE UNA FECHA DE TIPO STRING EN UNA FECHA LOCALDATE
-         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); //CREA EL FOMATO DE LA FECHA
-        return LocalDate.parse(fechaTexto, formato); //COMBIETE EL TEXTO DE TIPO FECHA A UN OBJETO LOCALDATE Y LO RETORNA
+	private LocalDate convertirAfecha(String fechaTexto) {
+         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(fechaTexto, formato);
     }
 	private int generadorID() {
 	        ultimoIdReserva++;  // Incrementar el ID
@@ -262,7 +262,11 @@ public class MemoryApi implements IApi {
 		}
 	}
 
-
+	@Override
+	public void modificarReserva() {
+		// TODO Auto-generated method stub
+		
+	}
 	private ArrayList<CaracteristicaEspecial> buscarCaracteristica(String caracteristica [] ){
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 	    int i = 0;
@@ -289,19 +293,11 @@ public class MemoryApi implements IApi {
 	            }
 			 }
 	}
-
-	@Override
-	public void modificarReserva(int idReserva, int[] habitaciones, String fechaInico, String fechaDeSalida,
-			int cantidadDePersona, String servicio) {
-		// TODO Auto-generated method stub
-		
-	}
 }
 	///Cargar una habitación
 	//Dar de baja una habitación
 	//Modificar habitación 
 	//Calificar Habitación 
 
-//AGREGAR ESEPCIONES CUNADO NOS LO EXPLIQUEN !!!
 
 
