@@ -1,22 +1,45 @@
 package ar.edu.unrn.seminario.modelo;
 
+import java.util.Objects;
+
 public class Servicio {
-	private int precio;
+	private int IdServico; 
+	private double precio;
 	private String descripcion;
 
-	public Servicio(int precio, String descripcion) {
+	public Servicio(int IdServico ,double precio, String descripcion) {
+		this.IdServico  = IdServico; 
 		this.precio = precio;
 		this.descripcion = descripcion;
 	}
-	public int getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
-	public void setPrecio(int precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
+	}
+	public int getIdServicio(){
+		return IdServico;
 	}
 
 	public String getDescripcion() {
 		return descripcion;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(IdServico, descripcion, precio);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Servicio other = (Servicio) obj;
+		return IdServico == other.IdServico && Objects.equals(descripcion, other.descripcion)
+				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio);
 	}
 
 }

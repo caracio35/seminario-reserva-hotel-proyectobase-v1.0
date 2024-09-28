@@ -1,13 +1,16 @@
 package ar.edu.unrn.seminario.modelo;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 public class Factura {
 	private Reserva reserva;
-	private int fecha;
+	private LocalDate fecha;
 	private Integer codigo;
-	private int monto;
+	private double monto;
 	private String descripcion;
 
-	public Factura(Reserva reserva, int fecha, Integer codigo, int monto, String descripcion) {
+	public Factura(Reserva reserva,  LocalDate fecha, Integer codigo, double monto, String descripcion) {
 		this.reserva = reserva;
 		this.fecha = fecha;
 		this.codigo = codigo;
@@ -23,11 +26,11 @@ public class Factura {
 		this.reserva = reserva;
 	}
 
-	int getFecha() {
+	LocalDate getFecha() {
 		return fecha;
 	}
 
-	void setFecha(int fecha) {
+	void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -39,7 +42,7 @@ public class Factura {
 		this.codigo = codigo;
 	}
 
-	int getMonto() {
+	double getMonto() {
 		return monto;
 	}
 
@@ -54,5 +57,27 @@ public class Factura {
 	void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo, descripcion, fecha, monto, reserva);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Factura other = (Factura) obj;
+		return Objects.equals(codigo, other.codigo) && Objects.equals(descripcion, other.descripcion)
+				&& Objects.equals(fecha, other.fecha)
+				&& Double.doubleToLongBits(monto) == Double.doubleToLongBits(other.monto)
+				&& Objects.equals(reserva, other.reserva);
+	}
+
+	
 
 }

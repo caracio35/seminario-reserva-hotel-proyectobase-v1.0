@@ -3,8 +3,10 @@ package ar.edu.unrn.seminario.modelo;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Reserva {
+	private int id ; 
 	private ArrayList<Habitacion> habitaciones;
 	private Usuario usuario;
 	private LocalDate fechaDeInicio;
@@ -19,10 +21,11 @@ public class Reserva {
 	private double saldoFavor;
 	private boolean pagoMinimo;
 
-	public Reserva(ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate fechaDeInicio,
+	public Reserva(int id , ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate fechaDeInicio,
 			LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio> servicios, boolean checkIn,
 			boolean checkOut, Factura factura, LocalDate fechaDeReserva, Calificacion calificacion,
 			boolean pagoMinimo){
+		this.id = id;
 		this.habitaciones = habitaciones;
 		this.usuario = usuario;
 		this.fechaDeInicio = fechaDeInicio;
@@ -144,5 +147,36 @@ public class Reserva {
 	public Calificacion getCalificacion() {
 		return calificacion;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setCalificacion(Calificacion calificacion) {
+		this.calificacion = calificacion;
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(calificacion, cantidadDePersonas, checkIn, checkOut, factura, fechaDESalida, fechaDeInicio,
+				fechaDeReserva, habitaciones, id, pagoMinimo, saldoFavor, servicios, usuario);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Reserva other = (Reserva) obj;
+		return Objects.equals(calificacion, other.calificacion) && cantidadDePersonas == other.cantidadDePersonas
+				&& checkIn == other.checkIn && checkOut == other.checkOut && Objects.equals(factura, other.factura)
+				&& Objects.equals(fechaDESalida, other.fechaDESalida)
+				&& Objects.equals(fechaDeInicio, other.fechaDeInicio)
+				&& Objects.equals(fechaDeReserva, other.fechaDeReserva)
+				&& Objects.equals(habitaciones, other.habitaciones) && id == other.id && pagoMinimo == other.pagoMinimo
+				&& Double.doubleToLongBits(saldoFavor) == Double.doubleToLongBits(other.saldoFavor)
+				&& Objects.equals(servicios, other.servicios) && Objects.equals(usuario, other.usuario);
+	}
+	
 }

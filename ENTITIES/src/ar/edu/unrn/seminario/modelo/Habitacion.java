@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.modelo;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Habitacion {
 	private int cantidadDeCamas;
@@ -75,5 +76,29 @@ public class Habitacion {
 	public void setCaracteristicasEspeciale(ArrayList<CaracteristicaEspecial> caracteristicasEspeciale) {
 		this.caracteristicasEspeciales = caracteristicasEspeciale;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cantidadDeCamas, caracteristicasEspeciales, descripcion, habilitado, numHabitaciones,
+				precio);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Habitacion other = (Habitacion) obj;
+		return cantidadDeCamas == other.cantidadDeCamas
+				&& Objects.equals(caracteristicasEspeciales, other.caracteristicasEspeciales)
+				&& Objects.equals(descripcion, other.descripcion) && habilitado == other.habilitado
+				&& numHabitaciones == other.numHabitaciones
+				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio);
+	}
+
+
 
 }
