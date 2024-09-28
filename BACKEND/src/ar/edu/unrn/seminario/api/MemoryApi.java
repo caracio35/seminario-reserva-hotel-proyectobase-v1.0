@@ -274,7 +274,7 @@ public class MemoryApi implements IApi {
 	    while (i < caracteristica.length) {
 	        String nombreCar = caracteristica[i];
 	        for(CaracteristicaEspecial c : caracteristicaEspecial) {
-	            if (c.getNombre() == nombreCar) {
+	            if (c.getNombre().equals(nombreCar)) {
 	            	caracteristicas.add(c);
 	            }
 	        }
