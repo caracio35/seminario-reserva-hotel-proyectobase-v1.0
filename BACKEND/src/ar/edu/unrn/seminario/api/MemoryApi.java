@@ -32,7 +32,7 @@ public class MemoryApi implements IApi {
 		
 		// datos iniciales
 		this.roles.add(new Rol(1, "ADMIN"));
-		this.roles.add(new Rol(2, "ESTUDIANTE"));
+		this.roles.add(new Rol(2, "USUARIO REGISTRADO"));
 		this.roles.add(new Rol(3, "INVITADO"));
 		inicializarUsuarios();
 		
