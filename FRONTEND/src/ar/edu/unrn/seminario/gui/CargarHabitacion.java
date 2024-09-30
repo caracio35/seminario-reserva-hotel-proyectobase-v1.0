@@ -10,12 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ar.edu.unrn.seminario.api.IApi;
+
 public class CargarHabitacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	public CargarHabitacion() {
+	public CargarHabitacion(IApi api) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 301);
 		contentPane = new JPanel();
