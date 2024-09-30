@@ -210,10 +210,10 @@ public class MemoryApi implements IApi {
 	    // Recorrer el array de números de habitación
 	    while (i < numHabitaciones.length) {
 	        int numeroHabitacion = numHabitaciones[i];
-	        for(Habitacion h : habitaciones) {
-	        	if(h.getNumHabitaciones()== numeroHabitacion) {
-	        		habitacionesObtenidas.add(h);
-	        	}
+	        Habitacion habitacionBuscada = buscarHabitacion(numeroHabitacion);
+	        if(habitacionBuscada!= null) {
+	        	habitacionesObtenidas.add(habitacionBuscada);
+	        	i++;
 	        }
 	        i++;
 	    }
@@ -273,7 +273,7 @@ public class MemoryApi implements IApi {
 	public void cargarCaracteristica( int numeroHabitacion, String[] nombreCaracteristica) {
 		//falta agregar excepciones
 		ArrayList<CaracteristicaEspecial> caracteriticaObtenida = this.buscarCaracteristica(nombreCaracteristica);
-		Habitacion habitacionesObtenida = this.buscarHabitacion(numeroHabitacion); 
+		Habitacion habitacionesObtenida = this.buscarHabitacion(numeroHabitacion);
 		habitacionesObtenida.setCaracteristicasEspeciale(caracteriticaObtenida);
 	}	
 	
@@ -324,6 +324,5 @@ public class MemoryApi implements IApi {
 	//Dar de baja una habitación
 	//Modificar habitación 
 	//Calificar Habitación 
-
 
 
