@@ -151,7 +151,7 @@ public class MemoryApi implements IApi {
 		return null;
 	}
 	
-	@Override
+	
 	//Crea una habitacion nueva
 	public void crearHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numeroHabitacion) {
@@ -268,7 +268,7 @@ public class MemoryApi implements IApi {
     }
 
 	
-	@Override
+	
 	// cargar caracteristicas especial a una habitacion en especifico
 	public void cargarCaracteristica( int numeroHabitacion, String[] nombreCaracteristica) {
 		//falta agregar excepciones
