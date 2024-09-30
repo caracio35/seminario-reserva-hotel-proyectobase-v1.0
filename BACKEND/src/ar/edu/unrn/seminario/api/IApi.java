@@ -31,19 +31,19 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	void crearHabitacion(int cantidadDeCamas, String descripcion, double precio , boolean habilitado , int numeroHabitacion , String nombre );
+	void crearHabitacion(int cantidadDeCamas, String descripcion, double precio , boolean habilitado , int numeroHabitacion ); //crea una nueva habitación con las características proporcionadas
 	
-	void crearCaracteristicaEspecial(String nombre , String descripcion , int precio); 
+	void crearCaracteristicaEspecial(String nombre , String descripcion , int precio); // crea una nueva caracteristica especial y la agrega a la lista de caracteristicas especiale
 	
-	void cargarCaracteristica(String nombreCaracteristica[] , int numeroHabitacion []);
+	void cargarCaracteristica(int numeroHabitacion ,String nombreCaracteristica[] );//carga una o mas caracteristica especiales a una habitación especifica
 	
-	void generarCalificacionHabitacion(int valor , String comentario , int idReserva);
+	void generarCalificacionHabitacion(int valor , String comentario , int idReserva);//genera una calificacion para una habitacion basada en una reserva
 	
-	boolean autenticarContraseña(String username, String password) ; 
+	boolean autenticarContraseña(String username, String password) ;//autentica un usuario verificando su nombre de usuario y contrasena
 	
-	void generarReserva(int habitaciones[] , String usuario , String fechaInicio , String fechaFin , int cantidadPersonas , int iDservicios[] );
+	void generarReserva(int habitaciones[] , String usuario , String fechaInicio , String fechaFin , int cantidadPersonas , int iDservicios[] );//Genera una reserva para una o mas habitaciones durante un periodo especifico de tiempo
 	
-	void modificarReserva(); 
+	void modificarReserva(); //modifica una reserva existente
 	
-	void darDeBajaHabitacion(int numeroHabitacion);
+	void darDeBajaHabitacion(int numeroHabitacion);//marca una habitacion como no habilitada segun su numero de habitacion
 }

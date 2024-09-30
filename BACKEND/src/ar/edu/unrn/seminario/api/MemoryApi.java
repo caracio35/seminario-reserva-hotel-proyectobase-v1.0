@@ -152,22 +152,26 @@ public class MemoryApi implements IApi {
 	}
 	
 	@Override
+	//Crea una habitacion nueva
 	public void crearHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numeroHabitacion, String nombre) {
-		// TODO Auto-generated method stub
-		Habitacion primerHabitacion = new Habitacion(cantidadDeCamas ,descripcion,precio ,habilitado, numeroHabitacion , caracteristicaEspecial); 
+			int numeroHabitacion) {
+		//falta agregar excepciones
+		Habitacion primerHabitacion = new Habitacion(cantidadDeCamas ,descripcion,precio ,habilitado, numeroHabitacion , null); 
 		this.habitaciones.add(primerHabitacion);
 	}
 	@Override
+	//Crea una nueva caracteristica
 	public void crearCaracteristicaEspecial(String nombre, String descripcion, int precio) {
-		CaracteristicaEspecial primerCaracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
-		this.caracteristicaEspecial.add(primerCaracteristica);
+		//falta agregar excepciones
+		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
+		this.caracteristicaEspecial.add(caracteristica);
 	}
 
 	@Override
+	//Genera una calificación y la guarda en la reserva
 	public void generarCalificacionHabitacion(int valor, String comentario , int idReserva) {
-		
-		Reserva reservaOctenida = buscarReserva(idReserva);
+		//falta agregar excepciones
+		Reserva reservaOctenida =this.buscarReserva(idReserva);
 		Calificacion calificacion = new Calificacion(valor, comentario);
 		reservaOctenida.setCalificacion(calificacion); 
 	}
@@ -183,18 +187,23 @@ public class MemoryApi implements IApi {
 
 	
 	@Override
+	//Genera una reserva nueva
 	public void generarReserva(int[] habitaciones, String usuario, String fechaInicio, String fechaFin,
 			int cantidadPersonas, int[] iDservicios) {
+		//falta agregar excepciones
 		
 		ArrayList<Habitacion> habitacionesObtenidas = this.obtenerHabitacionesPorNumero(habitaciones);
 		ArrayList<Servicio> serviciosOctenido = this.buscarServicio(iDservicios);
-		Usuario usuarioOctenido = buscarUsuario(usuario);
+		Usuario usuarioOctenido = this.buscarUsuario(usuario);
 		LocalDate fech = this.convertirAfecha(fechaInicio);
 		LocalDate fechFin = this.convertirAfecha(fechaFin);
-		int idReserva = generadorID();
+		int idReserva = this.generadorID();
 		Reserva reserva = new Reserva(idReserva ,habitacionesObtenidas, usuarioOctenido, fech, fechFin, cantidadPersonas, serviciosOctenido, false, false, null, null, null, false);
 		reservas.add(reserva);
 	}
+	
+	//obtiene una lista de habitaciones que coinciden con los números de habitacion 
+	//si no se encuentran ninguna habitacion la lista retornada sera vacía
 	private ArrayList<Habitacion> obtenerHabitacionesPorNumero(int[] numHabitaciones) {
 	    ArrayList<Habitacion> habitacionesObtenidas = new ArrayList<>();
 	    int i = 0;
@@ -211,6 +220,9 @@ public class MemoryApi implements IApi {
 
 	    return habitacionesObtenidas;
 	}
+	
+	//busca y devuelve una lista de servicios según los identificadores pasado por parametro
+	//   Si no se encuentra ningun servicio se devuelve una lista vacia
 	private ArrayList<Servicio> buscarServicio(int[] IdServicio) {
 	    ArrayList<Servicio> serviciosObtenidos = new ArrayList<>();
 	    int i = 0;
@@ -232,6 +244,8 @@ public class MemoryApi implements IApi {
          DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return LocalDate.parse(fechaTexto, formato);
     }
+	
+	//crea identificadores unico para la reserva
 	private int generadorID() {
 	        ultimoIdReserva++;  // Incrementar el ID
 	        return ultimoIdReserva;
@@ -253,20 +267,34 @@ public class MemoryApi implements IApi {
         return reservaEncontrada;
     }
 
+	
 	@Override
-	public void cargarCaracteristica(String[] nombreCaracteristica, int numeroHabitacion[]) {
+	// cargar caracteristicas especial a una habitacion en especifico
+	public void cargarCaracteristica( int numeroHabitacion, String[] nombreCaracteristica) {
+		//falta agregar excepciones
 		ArrayList<CaracteristicaEspecial> caracteriticaObtenida = this.buscarCaracteristica(nombreCaracteristica);
-		ArrayList<Habitacion> habitacionesObtenidas = this.obtenerHabitacionesPorNumero(numeroHabitacion); 
-		for(Habitacion h : habitacionesObtenidas) {
-			h.setCaracteristicasEspeciale(caracteriticaObtenida);
+		Habitacion habitacionesObtenida = this.buscarHabitacion(numeroHabitacion); 
+		habitacionesObtenida.setCaracteristicasEspeciale(caracteriticaObtenida);
+	}	
+	
+	//busca y devuelve una habitacion especifica basada en su numero de habitacin
+	//si no se encuentra ninguna habitacion con ese numero devuelve null
+	private Habitacion buscarHabitacion(int numeroHabitacion) {
+		for(Habitacion h : habitaciones) {
+			if(h.getNumHabitaciones() == numeroHabitacion) {
+				return h ;  
+			}
 		}
-	}
+		return null ;
+	} 
 
 	@Override
 	public void modificarReserva() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//busca y devuelve una lista de caracteristica especiale que coincidan con los nombre pasados 
 	private ArrayList<CaracteristicaEspecial> buscarCaracteristica(String caracteristica [] ){
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 	    int i = 0;
@@ -285,13 +313,11 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
+	//busca una habitacion y la da de baja
 	public void darDeBajaHabitacion(int numeroHabitacion) {
-		 for(Habitacion h : habitaciones ) {
-			 if (h.getNumHabitaciones() == numeroHabitacion) 
-			 {
-	            h.setHabilitado(false);
-	            }
-			 }
+		//falta agregar excepciones
+		 Habitacion habitacionOctenida = this.buscarHabitacion(numeroHabitacion);
+		 habitacionOctenida.setHabilitado(false);
 	}
 }
 	///Cargar una habitación
