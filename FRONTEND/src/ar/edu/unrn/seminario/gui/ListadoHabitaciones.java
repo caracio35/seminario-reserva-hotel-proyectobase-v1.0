@@ -27,6 +27,7 @@ public class ListadoHabitaciones extends JFrame {
 
 	public ListadoHabitaciones(ArrayList<HabitacionDTO> habitacionDTOs) {
 		// Configurar el JFrame
+		this.habitacionDTOs = habitacionDTOs;
 		setTitle("Lista de Habitaciones");
 		setSize(555, 400); // Establece el tamaño del JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana

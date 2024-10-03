@@ -103,6 +103,11 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(configuracionMenu);
 
 		JMenuItem salirMenuItem = new JMenuItem("Salir");
+		salirMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaPrincipal.this.dispose();
+			}
+		});
 		configuracionMenu.add(salirMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

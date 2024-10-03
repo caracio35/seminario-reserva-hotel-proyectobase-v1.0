@@ -11,13 +11,16 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.dto.HabitacionDTO;
 
 public class CargarHabitacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private IApi api;
 
 	public CargarHabitacion(IApi api) {
+		this.api = api;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 301);
 		contentPane = new JPanel();
@@ -52,6 +55,20 @@ public class CargarHabitacion extends JFrame {
 		panel.add(textFieldPrecioNoRegistrado);
 
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
+		btnSubirInformacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HabitacionDTO havitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
+						textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
+						true,
+						Integer.parseInt(textFieldNumeroHabitacion.getText()),
+						new String[] { textFieldCamas.getText() });
+			}
+			/*
+			 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo
+			 * trabaja con DTO que devo crear en el backend??
+			 */
+
+		});
 		btnSubirInformacion.setBounds(136, 204, 144, 21);
 		panel.add(btnSubirInformacion);
 
