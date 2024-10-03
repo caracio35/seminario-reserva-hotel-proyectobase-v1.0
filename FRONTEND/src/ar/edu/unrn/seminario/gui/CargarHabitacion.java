@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCero;
 
 public class CargarHabitacion extends JFrame {
 
@@ -61,22 +62,23 @@ public class CargarHabitacion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				HabitacionDTO habitacionDTO;
 				try {
-					habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
+					habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 							true,
 							Integer.parseInt(textFieldNumeroHabitacion.getText()),
-							new String[] { textFieldCamas.getText() });
+							null);
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, "El campo numHabitacion no puede ser cero o no estar definido");
 				} catch (CampoVacioExeption e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
+				} catch (EnterosEnCero e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				System.out.println(textFieldDescripccion.getText());
 			}
 		}
-
 
 		);
 		btnSubirInformacion.setBounds(136, 204, 144, 21);

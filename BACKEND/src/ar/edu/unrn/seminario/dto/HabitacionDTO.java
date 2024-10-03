@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.dto;
 
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCero;
 
 public class HabitacionDTO {
 
@@ -13,12 +14,15 @@ public class HabitacionDTO {
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitaciones,
-			String[] caracteristicasEspeciales) throws CampoVacioExeption {
+			String[] caracteristicasEspeciales) throws CampoVacioExeption, EnterosEnCero {
 		if (descripcion.isEmpty()) {
 			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
 		}
-		if (descripcion.equals(" ")) {
+		if (descripcion.trim().isEmpty()) {
 			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
+		}
+		if (cantidadDeCamas < 1 || numHabitaciones < 1) {
+			throw new EnterosEnCero("El campo cantidadDeCamas y o numHabitaciones no puede ser cero o negativos ");
 		}
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
