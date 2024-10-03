@@ -36,8 +36,8 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-	void crearHabitacion(HabitacionDTO habitacionDTO) throws CampoVacioExeption; // crea una nueva habitación con las
-																					// características proporcionadas
+	void crearHabitacion(HabitacionDTO habitacionDTO); // crea una nueva habitación con las
+														// características proporcionadas
 
 	void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO); // crea una nueva
 																							// caracteristica especial y

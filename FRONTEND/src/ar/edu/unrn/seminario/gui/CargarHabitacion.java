@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 
 public class CargarHabitacion extends JFrame {
 
@@ -58,27 +59,30 @@ public class CargarHabitacion extends JFrame {
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(textFieldDescripccion.getText());
-				HabitacionDTO havitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
-						textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
-						true,
-						Integer.parseInt(textFieldNumeroHabitacion.getText()),
-						new String[] { textFieldCamas.getText() });
-						System.out.println(textFieldDescripccion.getText());
+				System.out.println("aca =" + textFieldDescripccion.getText() + "esta es la descripcion");
+				HabitacionDTO havitacionDTO;
 				try {
-					api.crearHabitacion(havitacionDTO);
-				} catch (Exception e1) {
+					havitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
+							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
+							true,
+							Integer.parseInt(textFieldNumeroHabitacion.getText()),
+							new String[] { textFieldCamas.getText() });
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "El campo numHabitacion no puede ser cero o no estar definido");
+				} catch (CampoVacioExeption e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
-				JOptionPane.showMessageDialog(null, "Habitacion creada con exito");
+				System.out.println(textFieldDescripccion.getText());
 			}
-			/*
-			 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo
-			 * trabaja con DTO que devo crear en el backend??
-			 */
+		}
+		/*
+		 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo
+		 * trabaja con DTO que devo crear en el backend??
+		 */
 
-		});
+		);
 		btnSubirInformacion.setBounds(136, 204, 144, 21);
 		panel.add(btnSubirInformacion);
 
