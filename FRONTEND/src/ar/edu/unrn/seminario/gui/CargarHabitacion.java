@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 
 public class CargarHabitacion extends JFrame {
 
@@ -62,13 +64,19 @@ public class CargarHabitacion extends JFrame {
 						true,
 						Integer.parseInt(textFieldNumeroHabitacion.getText()),
 						new String[] { textFieldCamas.getText() });
-				api.crearHabitacion(havitacionDTO);
+				try {
+					api.crearHabitacion(havitacionDTO);
+					JOptionPane.showMessageDialog(null, "Habitacion creada con exito");
+				} catch (CampoVacioExeption e1) {
+					// al capturar el campo vacio se muestra un mensaje
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+
+				}
 			}
 			/*
 			 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo
 			 * trabaja con DTO que devo crear en el backend??
 			 */
-		
 
 		});
 		btnSubirInformacion.setBounds(136, 204, 144, 21);

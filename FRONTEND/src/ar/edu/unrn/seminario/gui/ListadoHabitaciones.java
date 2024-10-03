@@ -206,7 +206,7 @@ public class ListadoHabitaciones extends JFrame {
 		modelo.setRowCount(0);
 		for (HabitacionDTO habitacionDTO : habitacionDTOs) {
 			Object[] fila = new Object[5];
-			fila[0] = habitacionDTO.getNumHabitaciones();
+			fila[0] = habitacionDTO.getNumHabitacion();
 			fila[2] = habitacionDTO.getCantidadDeCamas();
 			fila[3] = habitacionDTO.isHabilitado();
 			model.addRow(fila);

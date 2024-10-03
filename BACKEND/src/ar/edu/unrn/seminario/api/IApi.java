@@ -8,6 +8,7 @@ import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 
 public interface IApi {
 
@@ -34,20 +35,30 @@ public interface IApi {
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
-	
-	 void crearHabitacion(HabitacionDTO habitacionDTO); //crea una nueva habitación con las características proporcionadas
-	
-	void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO); // crea una nueva caracteristica especial y la agrega a la lista de caracteristicas especiale
-	
-	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);//carga una o mas caracteristica especiales a una habitación especifica
-	
-	void generarCalificacionHabitacion(CalificacionDTO calificacionDTO , int idReserva );//genera una calificacion para una habitacion basada en una reserva
-	
-	boolean autenticarContraseña(String username, String password) ;//autentica un usuario verificando su nombre de usuario y contrasena
-	
-	void generarReserva(ReservaDTO reservaDTO);//Genera una reserva para una o mas habitaciones durante un periodo especifico de tiempo
-	
-	void modificarReserva(); //modifica una reserva existente
-	
-	void darDeBajaHabitacion(int numeroHabitacion);//marca una habitacion como no habilitada segun su numero de habitacion
+
+	void crearHabitacion(HabitacionDTO habitacionDTO) throws CampoVacioExeption; // crea una nueva habitación con las
+																					// características proporcionadas
+
+	void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO); // crea una nueva
+																							// caracteristica especial y
+																							// la agrega a la lista de
+																							// caracteristicas especiale
+
+	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);// carga una o mas caracteristica especiales
+																			// a una habitación especifica
+
+	void generarCalificacionHabitacion(CalificacionDTO calificacionDTO, int idReserva);// genera una calificacion para
+																						// una habitacion basada en una
+																						// reserva
+
+	boolean autenticarContraseña(String username, String password);// autentica un usuario verificando su nombre de
+																	// usuario y contrasena
+
+	void generarReserva(ReservaDTO reservaDTO);// Genera una reserva para una o mas habitaciones durante un periodo
+												// especifico de tiempo
+
+	void modificarReserva(); // modifica una reserva existente
+
+	void darDeBajaHabitacion(int numeroHabitacion);// marca una habitacion como no habilitada segun su numero de
+													// habitacion
 }
