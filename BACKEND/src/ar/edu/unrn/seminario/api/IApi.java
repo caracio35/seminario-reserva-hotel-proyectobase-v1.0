@@ -60,5 +60,6 @@ public interface IApi {
 	void modificarReserva(); // modifica una reserva existente
 
 	void darDeBajaHabitacion(int numeroHabitacion);// marca una habitacion como no habilitada segun su numero de
-													// habitacion
+	
+	List<HabitacionDTO>obtenerHabitaciones();												// habitacion
 }

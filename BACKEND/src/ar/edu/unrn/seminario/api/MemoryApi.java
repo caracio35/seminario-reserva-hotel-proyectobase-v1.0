@@ -16,6 +16,8 @@ import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCero;
+import ar.edu.unrn.seminario.exception.PrecioCero;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -337,6 +339,27 @@ public class MemoryApi implements IApi {
 		Habitacion habitacion2 = new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas);
 		habitaciones.add(habitacion);
 	}
+
+	@Override
+	public List<HabitacionDTO> obtenerHabitaciones() {
+		List<HabitacionDTO> obtenerHabitacon = new ArrayList<>();
+		for(Habitacion h : habitaciones) {
+				try {
+					try {
+						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(), true, h.getNumHabitaciones(), null));
+					} catch (PrecioCero e) {
+						System.out.println("Este campo no pueden estar en cero ");
+					}
+				} catch (CampoVacioExeption e ) {
+					System.out.println("Este campo no puede estar vacio");
+				}catch ( EnterosEnCero e) {
+					System.out.println("Este campo no puede estar en cero ");
+				}
+			
+		}
+		return obtenerHabitacon;
+	}
+	
 }
 // Dar de baja una habitación
 // Modificar habitación
