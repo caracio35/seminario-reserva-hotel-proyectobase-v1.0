@@ -15,6 +15,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCero;
+import ar.edu.unrn.seminario.exception.PrecioCero;
 
 public class CargarHabitacion extends JFrame {
 
@@ -69,11 +70,13 @@ public class CargarHabitacion extends JFrame {
 							null);
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, "El campo numHabitacion no puede ser cero o no estar definido");
+					JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
 				} catch (CampoVacioExeption e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				} catch (EnterosEnCero e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				} catch (PrecioCero e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				System.out.println(textFieldDescripccion.getText());
