@@ -18,7 +18,8 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 public class VentanaPrincipal extends JFrame {
 
 	private JPanel contentPane;
-	//andres gei
+
+	// andres gei
 	public VentanaPrincipal(IApi api) {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,66 +33,66 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem altaUsuarioMenuItem = new JMenuItem("Alta/Modificación");
 		altaUsuarioMenuItem.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				AltaUsuario alta = new AltaUsuario(api);
 				alta.setLocationRelativeTo(null);
 				alta.setVisible(true);
 			}
-			
+
 		});
 		usuarioMenu.add(altaUsuarioMenuItem);
 
 		JMenuItem listadoUsuarioMenuItem = new JMenuItem("Listado");
 		listadoUsuarioMenuItem.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
-				ListadoUsuario listado= new ListadoUsuario(api);
+				ListadoUsuario listado = new ListadoUsuario(api);
 				listado.setLocationRelativeTo(null);
 				listado.setVisible(true);
 			}
-			
+
 		});
 		usuarioMenu.add(listadoUsuarioMenuItem);
-		
+
 		JMenu mnHabitaciones = new JMenu("Habitaciones");
 		menuBar.add(mnHabitaciones);
-		
+
 		JMenuItem mntmCarcarHabitacion = new JMenuItem("Cargar Habitacion");
 		mntmCarcarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CargarHabitacion cargaH=new CargarHabitacion();
+				CargarHabitacion cargaH = new CargarHabitacion(api);
 				cargaH.setVisible(true);
 			}
 		});
 		mnHabitaciones.add(mntmCarcarHabitacion);
-		
+
 		JMenuItem mntmListadoHabitaciones = new JMenuItem("Listado Habitaciones");
 		mntmListadoHabitaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListadoHabitaciones listaHabitaciones=new ListadoHabitaciones();
+				ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(null);
 				listaHabitaciones.setVisible(true);
 			}
 		});
 		mntmListadoHabitaciones.setSelected(true);
 		mnHabitaciones.add(mntmListadoHabitaciones);
-		
+
 		JMenu mnReservas = new JMenu("Reservas");
 		menuBar.add(mnReservas);
-		
+
 		JMenuItem mntmBuscarhabitacion = new JMenuItem("buscarHabitacion");
 		mntmBuscarhabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BusquedaDeHabitaciones busqueda=new BusquedaDeHabitaciones();
+				BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones();
 				busqueda.setVisible(true);
 			}
 		});
 		mnReservas.add(mntmBuscarhabitacion);
-		
+
 		JMenuItem mntmListadoHabitaciones_1 = new JMenuItem("Mis Reservas");
 		mntmListadoHabitaciones_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VerReservas misReservas=new VerReservas();
+				VerReservas misReservas = new VerReservas();
 				misReservas.setVisible(true);
 			}
 		});

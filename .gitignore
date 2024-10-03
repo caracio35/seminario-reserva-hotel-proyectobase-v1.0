@@ -11,3 +11,8 @@ tmp/**/*
 .settings/
 .loadpath
 /bin/
+BACKEND/.DS_Store
+/BACKEND/src
+
+.vscode/settings.json
+.gitignore
