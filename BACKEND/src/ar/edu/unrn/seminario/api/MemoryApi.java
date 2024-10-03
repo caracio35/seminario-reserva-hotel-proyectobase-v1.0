@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import ar.edu.unrn.seminario.dto.CalificacionDTO;
+import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
+import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.modelo.Calificacion;
@@ -150,30 +155,12 @@ public class MemoryApi implements IApi {
 		}
 		return null;
 	}
-	
-	
-	//Crea una habitacion nueva
-	public void crearHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numeroHabitacion) {
-		//falta agregar excepciones
-		Habitacion primerHabitacion = new Habitacion(cantidadDeCamas ,descripcion,precio ,habilitado, numeroHabitacion , null); 
-		this.habitaciones.add(primerHabitacion);
-	}
 	@Override
 	//Crea una nueva caracteristica
-	public void crearCaracteristicaEspecial(String nombre, String descripcion, int precio) {
+	public void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO) {
 		//falta agregar excepciones
-		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
-		this.caracteristicaEspecial.add(caracteristica);
-	}
-
-	@Override
-	//Genera una calificación y la guarda en la reserva
-	public void generarCalificacionHabitacion(int valor, String comentario , int idReserva) {
-		//falta agregar excepciones
-		Reserva reservaOctenida =this.buscarReserva(idReserva);
-		Calificacion calificacion = new Calificacion(valor, comentario);
-		reservaOctenida.setCalificacion(calificacion); 
+		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(caracteristicaEspecialDTO.getNombre(),caracteristicaEspecialDTO.getDescricion(), caracteristicaEspecialDTO.getPrecio());
+		caracteristicaEspecial.add(caracteristica);
 	}
 
 	@Override
@@ -185,23 +172,6 @@ public class MemoryApi implements IApi {
 		return false;
 	}
 
-	
-	@Override
-	//Genera una reserva nueva
-	public void generarReserva(int[] habitaciones, String usuario, String fechaInicio, String fechaFin,
-			int cantidadPersonas, int[] iDservicios) {
-		//falta agregar excepciones
-		
-		ArrayList<Habitacion> habitacionesObtenidas = this.obtenerHabitacionesPorNumero(habitaciones);
-		ArrayList<Servicio> serviciosOctenido = this.buscarServicio(iDservicios);
-		Usuario usuarioOctenido = this.buscarUsuario(usuario);
-		LocalDate fech = this.convertirAfecha(fechaInicio);
-		LocalDate fechFin = this.convertirAfecha(fechaFin);
-		int idReserva = this.generadorID();
-		Reserva reserva = new Reserva(idReserva ,habitacionesObtenidas, usuarioOctenido, fech, fechFin, cantidadPersonas, serviciosOctenido, false, false, null, null, null, false);
-		reservas.add(reserva);
-	}
-	
 	//obtiene una lista de habitaciones que coinciden con los números de habitacion 
 	//si no se encuentran ninguna habitacion la lista retornada sera vacía
 	private ArrayList<Habitacion> obtenerHabitacionesPorNumero(int[] numHabitaciones) {
@@ -268,15 +238,6 @@ public class MemoryApi implements IApi {
     }
 
 	
-	
-	// cargar caracteristicas especial a una habitacion en especifico
-	public void cargarCaracteristica( int numeroHabitacion, String[] nombreCaracteristica) {
-		//falta agregar excepciones
-		ArrayList<CaracteristicaEspecial> caracteriticaObtenida = this.buscarCaracteristica(nombreCaracteristica);
-		Habitacion habitacionesObtenida = this.buscarHabitacion(numeroHabitacion);
-		habitacionesObtenida.setCaracteristicasEspeciale(caracteriticaObtenida);
-	}	
-	
 	//busca y devuelve una habitacion especifica basada en su numero de habitacin
 	//si no se encuentra ninguna habitacion con ese numero devuelve null
 	private Habitacion buscarHabitacion(int numeroHabitacion) {
@@ -318,6 +279,43 @@ public class MemoryApi implements IApi {
 		//falta agregar excepciones
 		 Habitacion habitacionOctenida = this.buscarHabitacion(numeroHabitacion);
 		 habitacionOctenida.setHabilitado(false);
+	}
+
+	@Override
+	public void crearHabitacion(HabitacionDTO habitacionDTO) {
+		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(habitacionDTO.getCaracteristicasEspeciale());
+		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(),habitacionDTO.getDescripcion(), habitacionDTO.getPrecio(), true , habitacionDTO.getNumHabitaciones(), caracteristicas );
+		habitaciones.add(habitacion);
+		
+	}
+
+	@Override
+	public void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO) {
+		
+		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(caracteristicaDTO.getNombre() , caracteristicaDTO.getDescricion(), caracteristicaDTO.getPrecio());
+		caracteristicaEspecial.add(caracteristica);
+	}
+
+	@Override
+	public void generarCalificacionHabitacion(CalificacionDTO calificacioDTO , int idReserva ) {
+		Reserva reservaObtenida = this.buscarReserva(idReserva);
+		reservaObtenida.setCalificacion(new Calificacion(calificacioDTO.getValor(), calificacioDTO.getComentario()));
+		
+		
+	}
+
+	@Override
+	public void generarReserva(ReservaDTO reservaDTO) {
+		
+		ArrayList<Habitacion> habitacinesObtenidos = this.obtenerHabitacionesPorNumero(reservaDTO.getHabitacion());
+		Usuario usuario = this.buscarUsuario(reservaDTO.getUsuario());
+		LocalDate fechaIni = this.convertirAfecha(reservaDTO.getFechaDeInicio());
+		LocalDate fechaFin = this.convertirAfecha(reservaDTO.getFechaDeSalida());
+		ArrayList<Servicio> serviciosObtenidos = this.buscarServicio(null);//pregunta como hacer esto 
+		LocalDate fechaReserva = this.convertirAfecha(reservaDTO.getFechaDeReserva());
+		
+		Reserva reserva = new Reserva(generadorID(),habitacinesObtenidos, usuario, fechaIni, fechaFin, reservaDTO.getCantidadDePersonas(), serviciosObtenidos, false, false, null, fechaReserva, null, reservaDTO.getPagoMinimo());
+		reservas.add(reserva);
 	}
 }
 	///Cargar una habitación

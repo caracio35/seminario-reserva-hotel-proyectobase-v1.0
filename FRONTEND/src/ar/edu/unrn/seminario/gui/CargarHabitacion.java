@@ -62,11 +62,13 @@ public class CargarHabitacion extends JFrame {
 						true,
 						Integer.parseInt(textFieldNumeroHabitacion.getText()),
 						new String[] { textFieldCamas.getText() });
+				api.crearHabitacion(havitacionDTO);
 			}
 			/*
 			 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo
 			 * trabaja con DTO que devo crear en el backend??
 			 */
+		
 
 		});
 		btnSubirInformacion.setBounds(136, 204, 144, 21);
