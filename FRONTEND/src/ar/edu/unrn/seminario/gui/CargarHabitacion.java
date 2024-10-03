@@ -59,10 +59,9 @@ public class CargarHabitacion extends JFrame {
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("aca =" + textFieldDescripccion.getText() + "esta es la descripcion");
-				HabitacionDTO havitacionDTO;
+				HabitacionDTO habitacionDTO;
 				try {
-					havitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
+					habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 							true,
 							Integer.parseInt(textFieldNumeroHabitacion.getText()),
@@ -77,10 +76,7 @@ public class CargarHabitacion extends JFrame {
 				System.out.println(textFieldDescripccion.getText());
 			}
 		}
-		/*
-		 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo
-		 * trabaja con DTO que devo crear en el backend??
-		 */
+
 
 		);
 		btnSubirInformacion.setBounds(136, 204, 144, 21);
