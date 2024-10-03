@@ -13,7 +13,6 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
-import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 
 public class CargarHabitacion extends JFrame {
 
@@ -59,19 +58,20 @@ public class CargarHabitacion extends JFrame {
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(textFieldDescripccion.getText());
 				HabitacionDTO havitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldNumeroHabitacion.getText()),
 						textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 						true,
 						Integer.parseInt(textFieldNumeroHabitacion.getText()),
 						new String[] { textFieldCamas.getText() });
+						System.out.println(textFieldDescripccion.getText());
 				try {
 					api.crearHabitacion(havitacionDTO);
-					JOptionPane.showMessageDialog(null, "Habitacion creada con exito");
-				} catch (CampoVacioExeption e1) {
-					// al capturar el campo vacio se muestra un mensaje
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
-
 				}
+				JOptionPane.showMessageDialog(null, "Habitacion creada con exito");
 			}
 			/*
 			 * api.crearHabitacion????? que recibe y que hace aca en backend si front solo

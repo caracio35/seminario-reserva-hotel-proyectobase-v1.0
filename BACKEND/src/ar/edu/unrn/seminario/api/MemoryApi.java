@@ -292,7 +292,7 @@ public class MemoryApi implements IApi {
 	public void crearHabitacion(HabitacionDTO habitacionDTO) throws CampoVacioExeption {
 		ArrayList<CaracteristicaEspecial> caracteristicas = this
 				.buscarCaracteristica(habitacionDTO.getCaracteristicasEspeciale());
-		if (habitacionDTO.getDescripcion() == null) { // Assuming 0 means the number is not set
+		if (habitacionDTO.getDescripcion() == "") { // Assuming 0 means the number is not set
 			throw new CampoVacioExeption("El campo numHabitacion no puede ser cero o no estar definido");
 		}
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
