@@ -61,13 +61,14 @@ public class CargarHabitacion extends JFrame {
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				HabitacionDTO habitacionDTO;
+				;
 				try {
-					habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
+					HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 							true,
 							Integer.parseInt(textFieldNumeroHabitacion.getText()),
 							null);
+					api.crearHabitacion(habitacionDTO); 
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
@@ -79,7 +80,6 @@ public class CargarHabitacion extends JFrame {
 				} catch (PrecioCero e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
-				System.out.println(textFieldDescripccion.getText());
 			}
 		}
 

@@ -292,8 +292,8 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void crearHabitacion(HabitacionDTO habitacionDTO) {
-		ArrayList<CaracteristicaEspecial> caracteristicas = this
-				.buscarCaracteristica(habitacionDTO.getCaracteristicasEspeciale());
+		ArrayList<CaracteristicaEspecial> caracteristicas = null;
+		
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
 				habitacionDTO.getPrecio(), true, habitacionDTO.getNumHabitacion(), caracteristicas);
 		habitaciones.add(habitacion);
@@ -329,15 +329,6 @@ public class MemoryApi implements IApi {
 				reservaDTO.getCantidadDePersonas(), serviciosObtenidos, false, false, null, fechaReserva, null,
 				reservaDTO.getPagoMinimo());
 		reservas.add(reserva);
-	}
-
-	private void crearHabitacionesPrueba() {
-		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
-		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial("Pileta", "pileta Grande", 100.00);
-		caracteristicas.add(caracteristica);
-		Habitacion habitacion = new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas);
-		Habitacion habitacion2 = new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas);
-		habitaciones.add(habitacion);
 	}
 
 	@Override

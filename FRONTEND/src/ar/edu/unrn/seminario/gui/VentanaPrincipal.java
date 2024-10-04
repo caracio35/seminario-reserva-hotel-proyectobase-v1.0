@@ -83,7 +83,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmBuscarhabitacion = new JMenuItem("buscarHabitacion");
 		mntmBuscarhabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones();
+				BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones(api);
 				busqueda.setVisible(true);
 			}
 		});

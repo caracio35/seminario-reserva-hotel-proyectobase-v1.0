@@ -9,7 +9,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.dto.HabitacionDTO;
+
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
 public class BusquedaDeHabitaciones extends JFrame {
@@ -28,17 +34,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private JTable table_1;
 	private JTextField textFieldHuespedes;
 	private JButton btnCancelarsalir;
-
+	private DefaultTableModel modelo;
+	private IApi api ; 
 	/**
 	 * Create the frame.
 	 */
-	public BusquedaDeHabitaciones() {
+	public BusquedaDeHabitaciones(IApi api) {
+		this.api = api ; 
 		// Configurar el JFrame
 		setTitle("Búsqueda de Habitaciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 550, 450);
 		getContentPane().setLayout(null);
-
+		
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 349, 502, -331);
 		getContentPane().add(panel);
@@ -47,19 +55,12 @@ public class BusquedaDeHabitaciones extends JFrame {
 		scrollPane.setBounds(136, 105, 376, 233);
 		getContentPane().add(scrollPane);
 
-		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"New column", "New column", "New column", "New column", "New column"
-			}
-		));
+		modelo = new DefaultTableModel(new Object[][] {}, new String[]{"Camas", "Descripcion", "Precio" , "Numero de Habitacion", "Caracteristicas" });
+		table_1 = new JTable(modelo);
+		scrollPane.setViewportView(table_1);
+		this.cargarHabitaciones();
+		
+		
 		scrollPane.setViewportView(table_1);
 
 		textField = new JTextField();
@@ -144,4 +145,21 @@ public class BusquedaDeHabitaciones extends JFrame {
 		btnCancelarsalir.setBounds(381, 346, 116, 21);
 		getContentPane().add(btnCancelarsalir);
 	}
+	public void cargarHabitaciones() {
+	    List<HabitacionDTO> habitaciones = api.obtenerHabitaciones();
+
+	    modelo.setRowCount(0);
+	    
+	    for (HabitacionDTO habitacion : habitaciones) {
+	        modelo.addRow(new Object[]{
+	            habitacion.getCantidadDeCamas(),
+	            habitacion.getDescripcion(),
+	            habitacion.getPrecio(),
+	            habitacion.getNumHabitacion(),
+	            habitacion.getCaracteristicasEspeciale()
+	        });
+	    }
+	}
+	
 }
+
