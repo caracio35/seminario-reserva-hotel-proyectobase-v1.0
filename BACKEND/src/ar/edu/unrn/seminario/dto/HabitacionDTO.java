@@ -1,5 +1,7 @@
 package ar.edu.unrn.seminario.dto;
 
+import java.util.List;
+
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCero;
 import ar.edu.unrn.seminario.exception.PrecioCero;
@@ -11,11 +13,11 @@ public class HabitacionDTO {
 	private double precio;
 	private boolean habilitado;
 	private int numHabitaciones;
-	private String[] caracteristicasEspeciales;
+	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitaciones,
-			String[] caracteristicasEspeciales) throws CampoVacioExeption, EnterosEnCero, PrecioCero {
+			List<CaracteristicaEspecialDTO> caracteristicasEspeciales) throws CampoVacioExeption, EnterosEnCero, PrecioCero {
 		if (descripcion.isEmpty()) {
 			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
 		}
@@ -56,7 +58,7 @@ public class HabitacionDTO {
 		this.numHabitaciones = numHabitaciones;
 	}
 
-	public void setCaracteristicasEspeciale(String[] caracteristicasEspeciale) {
+	public void setCaracteristicasEspeciale(List<CaracteristicaEspecialDTO> caracteristicasEspeciale) {
 		this.caracteristicasEspeciales = caracteristicasEspeciale;
 	}
 
@@ -80,7 +82,7 @@ public class HabitacionDTO {
 		return numHabitaciones;
 	}
 
-	public String[] getCaracteristicasEspeciale() {
+	public List<CaracteristicaEspecialDTO> getCaracteristicasEspeciale() {
 		return caracteristicasEspeciales;
 	}
 

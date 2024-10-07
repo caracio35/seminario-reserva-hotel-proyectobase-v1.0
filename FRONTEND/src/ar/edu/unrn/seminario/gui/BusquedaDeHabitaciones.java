@@ -11,10 +11,12 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
@@ -151,12 +153,14 @@ public class BusquedaDeHabitaciones extends JFrame {
 	    modelo.setRowCount(0);
 	    
 	    for (HabitacionDTO habitacion : habitaciones) {
+	    	
+	    	List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
+	    	String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre).collect(Collectors.joining(", "));
 	        modelo.addRow(new Object[]{
 	            habitacion.getCantidadDeCamas(),
 	            habitacion.getDescripcion(),
 	            habitacion.getPrecio(),
-	            habitacion.getNumHabitacion(),
-	            habitacion.getCaracteristicasEspeciale()
+	            habitacion.getNumHabitacion(),caracteristicas
 	        });
 	    }
 	}

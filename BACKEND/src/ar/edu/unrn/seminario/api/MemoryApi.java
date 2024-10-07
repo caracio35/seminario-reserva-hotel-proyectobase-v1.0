@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
+
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
@@ -47,6 +49,8 @@ public class MemoryApi implements IApi {
 
 		//
 		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Pileta", "pileta Grande", 100.00));
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("jacuzzi", "Grande", 100.00));
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Balcon",  " Grande", 100.00));
 	}
 
 	private void inicializarUsuarios() {
@@ -292,7 +296,8 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void crearHabitacion(HabitacionDTO habitacionDTO) {
-		ArrayList<CaracteristicaEspecial> caracteristicas = null;
+		String[] car = {"Pileta", "jacuzzi", "balcon"};
+		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(car);
 		
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
 				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(), caracteristicas);
@@ -335,10 +340,14 @@ public class MemoryApi implements IApi {
 	public List<HabitacionDTO> obtenerHabitacionesHabilitada() {
 		List<HabitacionDTO> obtenerHabitacon = new ArrayList<>();
 		for(Habitacion h : habitaciones) {
-			if(!h.isHabilitado()==true) {
+			if(h.isHabilitado()==true) {
 				try {
 					try {
-						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(), true, h.getNumHabitaciones(), null));
+						List<CaracteristicaEspecialDTO> car =  new ArrayList<>(); 
+						for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
+							car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(), carac.getPrecio()));
+						}
+						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),h.isHabilitado(), h.getNumHabitaciones(),car));
 					} catch (PrecioCero e) {
 						System.out.println("Este campo no pueden estar en cero ");
 					}
@@ -350,6 +359,15 @@ public class MemoryApi implements IApi {
 			}	
 		}
 		return obtenerHabitacon;
+	}
+
+	@Override
+	public List<CaracteristicaEspecialDTO> obtenerCaracteristica() {
+		List<CaracteristicaEspecialDTO> obtenerCaracteristicas = new ArrayList<>();
+		for(CaracteristicaEspecial car : caracteristicaEspecial) {
+			obtenerCaracteristicas.add(new CaracteristicaEspecialDTO(car.getNombre(), car.getDescripcion(), car.getPrecio()));
+		}
+		return obtenerCaracteristicas;
 	}
 	
 }

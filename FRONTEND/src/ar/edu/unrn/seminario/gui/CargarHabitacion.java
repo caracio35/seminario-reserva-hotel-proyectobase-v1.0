@@ -63,9 +63,13 @@ public class CargarHabitacion extends JFrame {
 		buttonDesabilitado.setBounds(201, 126, 109, 23);
 		panel.add(buttonDesabilitado);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Habilitado");
-		rdbtnNewRadioButton.setBounds(201, 94, 109, 23);
-		panel.add(rdbtnNewRadioButton);
+		JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
+		buttonHabilitado.setBounds(201, 94, 109, 23);
+		panel.add(buttonHabilitado);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(buttonDesabilitado);
+		group.add(buttonHabilitado);
 		
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
@@ -73,11 +77,12 @@ public class CargarHabitacion extends JFrame {
 				;
 				try {
 					  boolean habilitado = false;
-			            if (rdbtnNewRadioButton.isSelected()) {
+			            if (buttonHabilitado.isSelected()) {
 			                habilitado = true;  
 			            } else if (buttonDesabilitado.isSelected()) {
-			                habilitado = false;
+			                habilitado = false; 
 			            }
+			          
 					HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 							habilitado,
