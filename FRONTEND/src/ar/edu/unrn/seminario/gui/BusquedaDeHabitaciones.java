@@ -146,7 +146,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(btnCancelarsalir);
 	}
 	public void cargarHabitaciones() {
-	    List<HabitacionDTO> habitaciones = api.obtenerHabitaciones();
+	    List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 
 	    modelo.setRowCount(0);
 	    

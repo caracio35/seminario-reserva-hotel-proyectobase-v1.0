@@ -295,7 +295,7 @@ public class MemoryApi implements IApi {
 		ArrayList<CaracteristicaEspecial> caracteristicas = null;
 		
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
-				habitacionDTO.getPrecio(), true, habitacionDTO.getNumHabitacion(), caracteristicas);
+				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(), caracteristicas);
 		habitaciones.add(habitacion);
 
 	}
@@ -332,9 +332,10 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerHabitaciones() {
+	public List<HabitacionDTO> obtenerHabitacionesHabilitada() {
 		List<HabitacionDTO> obtenerHabitacon = new ArrayList<>();
 		for(Habitacion h : habitaciones) {
+			if(!h.isHabilitado()==true) {
 				try {
 					try {
 						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(), true, h.getNumHabitaciones(), null));
@@ -346,7 +347,7 @@ public class MemoryApi implements IApi {
 				}catch ( EnterosEnCero e) {
 					System.out.println("Este campo no puede estar en cero ");
 				}
-			
+			}	
 		}
 		return obtenerHabitacon;
 	}

@@ -3,7 +3,7 @@ package ar.edu.unrn.seminario.gui;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
@@ -16,6 +16,7 @@ import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCero;
 import ar.edu.unrn.seminario.exception.PrecioCero;
+import javax.swing.JRadioButton;
 
 public class CargarHabitacion extends JFrame {
 
@@ -51,29 +52,41 @@ public class CargarHabitacion extends JFrame {
 		panel.add(textFieldDescripccion);
 
 		TextField textFieldPrecioRegistrado = new TextField();
-		textFieldPrecioRegistrado.setBounds(203, 96, 150, 21);
+		textFieldPrecioRegistrado.setBounds(10, 150, 150, 21);
 		panel.add(textFieldPrecioRegistrado);
+		
+		JLabel lblNewLabel = new JLabel("Estado De Habitacion");
+		lblNewLabel.setBounds(202, 76, 151, 14);
+		panel.add(lblNewLabel);
 
-		TextField textFieldPrecioNoRegistrado = new TextField();
-		textFieldPrecioNoRegistrado.setBounds(10, 150, 150, 21);
-		panel.add(textFieldPrecioNoRegistrado);
-
+		JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
+		buttonDesabilitado.setBounds(201, 126, 109, 23);
+		panel.add(buttonDesabilitado);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Habilitado");
+		rdbtnNewRadioButton.setBounds(201, 94, 109, 23);
+		panel.add(rdbtnNewRadioButton);
+		
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				;
 				try {
+					  boolean habilitado = false;
+			            if (rdbtnNewRadioButton.isSelected()) {
+			                habilitado = true;  
+			            } else if (buttonDesabilitado.isSelected()) {
+			                habilitado = false;
+			            }
 					HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
-							true,
+							habilitado,
 							Integer.parseInt(textFieldNumeroHabitacion.getText()),
 							null);
 					api.crearHabitacion(habitacionDTO); 
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
 				} catch (CampoVacioExeption e1) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				} catch (EnterosEnCero e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -107,10 +120,6 @@ public class CargarHabitacion extends JFrame {
 		lblPrecioRegistrado.setBounds(10, 131, 106, 13);
 		panel.add(lblPrecioRegistrado);
 
-		JLabel lblPrecioNoRegistrado = new JLabel("Precio No Registrado");
-		lblPrecioNoRegistrado.setBounds(203, 77, 107, 13);
-		panel.add(lblPrecioNoRegistrado);
-
 		JButton btnSalircancelar = new JButton("salir/cancelar");
 		btnSalircancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,5 +128,6 @@ public class CargarHabitacion extends JFrame {
 		});
 		btnSalircancelar.setBounds(272, 204, 144, 21);
 		panel.add(btnSalircancelar);
+		
 	}
 }

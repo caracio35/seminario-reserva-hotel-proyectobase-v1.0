@@ -61,5 +61,5 @@ public interface IApi {
 
 	void darDeBajaHabitacion(int numeroHabitacion);// marca una habitacion como no habilitada segun su numero de
 	
-	List<HabitacionDTO>obtenerHabitaciones();												// habitacion
+	List<HabitacionDTO>obtenerHabitacionesHabilitada();												// habitacion
 }
