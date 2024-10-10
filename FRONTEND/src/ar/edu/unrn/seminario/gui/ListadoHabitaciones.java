@@ -39,22 +39,7 @@ public class ListadoHabitaciones extends JFrame {
 		scrollPane.setBounds(10, 39, 516, 133);
 		getContentPane().add(scrollPane);
 
-		// Definir el modelo de la tabla
-		DefaultTableModel model = new DefaultTableModel(
-				new Object[][] { { 1, Boolean.TRUE, 8, Boolean.TRUE, "" }, { 2, null, 3, Boolean.TRUE, null },
-						{ 3, Boolean.TRUE, 5, Boolean.TRUE, null }, { 4, Boolean.TRUE, 5, null, "25/12/2024" },
-						{ 5, null, 4, null, "25/01/2025" }, { 6, Boolean.TRUE, 4, null, "12/12/2024" },
-						{ 7, Boolean.TRUE, "3", Boolean.TRUE, null },
-						{ 8, Boolean.TRUE, "7", Boolean.FALSE, "indefinido" }, { 9, null, "4", Boolean.TRUE, null }, },
-				new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible",
-						"no disponible Hasta" }) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // Hacer que la tabla no sea editable
-			}
-		};
+		
 
 		table = new JTable(new DefaultTableModel(
 				new Object[][] { { new Integer(1), Boolean.TRUE, new Integer(8), Boolean.TRUE, "" },
@@ -70,6 +55,12 @@ public class ListadoHabitaciones extends JFrame {
 						"no disponible Hasta" }) {
 			Class[] columnTypes = new Class[] { Object.class, Boolean.class, Object.class, Boolean.class,
 					Object.class };
+
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Hacer que la tabla no sea editable
+			}
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
