@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
-
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
@@ -56,7 +54,7 @@ public class MemoryApi implements IApi {
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 		caracteristicas.add(caracteristicaEspecial.get(0));
 		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
-		caracteristicas.add(caracteristicas.get(1));
+		caracteristicas.add(caracteristicaEspecial.get(1));
 		this.habitaciones.add(new Habitacion(3, "habitacion grande para una familia", 250, true, 2, caracteristicas));
 	}
 
