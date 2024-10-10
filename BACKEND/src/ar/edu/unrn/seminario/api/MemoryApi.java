@@ -42,15 +42,34 @@ public class MemoryApi implements IApi {
 	public MemoryApi() {
 
 		// datos iniciales
+		inicializarPrueva();
+	}
+
+	private void inicializarPrueva() {
+		rolesPrueva();
+		inicializarUsuarios();
+		caracteristicasPrueva();
+		habitacionesPrueba();
+	}
+
+	private void habitacionesPrueba() {
+		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
+		caracteristicas.add(caracteristicaEspecial.get(0));
+		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
+		caracteristicas.add(caracteristicas.get(1));
+		this.habitaciones.add(new Habitacion(3, "habitacion grande para una familia", 250, true, 2, caracteristicas));
+	}
+
+	private void caracteristicasPrueva() {
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Pileta", "pileta Grande", 100.00));
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("jacuzzi", "Grande", 100.00));
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Balcon", " Grande", 100.00));
+	}
+
+	private void rolesPrueva() {
 		this.roles.add(new Rol(1, "ADMIN"));
 		this.roles.add(new Rol(2, "USUARIO REGISTRADO"));
 		this.roles.add(new Rol(3, "INVITADO"));
-		inicializarUsuarios();
-
-		//
-		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Pileta", "pileta Grande", 100.00));
-		this.caracteristicaEspecial.add(new CaracteristicaEspecial("jacuzzi", "Grande", 100.00));
-		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Balcon",  " Grande", 100.00));
 	}
 
 	private void inicializarUsuarios() {
@@ -296,11 +315,12 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void crearHabitacion(HabitacionDTO habitacionDTO) {
-		String[] car = {"Pileta", "jacuzzi", "balcon"};
+		String[] car = { "Pileta", "jacuzzi", "balcon" };
 		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(car);
-		
+
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
-				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(), caracteristicas);
+				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
+				caracteristicas);
 		habitaciones.add(habitacion);
 
 	}
@@ -339,24 +359,26 @@ public class MemoryApi implements IApi {
 	@Override
 	public List<HabitacionDTO> obtenerHabitacionesHabilitada() {
 		List<HabitacionDTO> obtenerHabitacon = new ArrayList<>();
-		for(Habitacion h : habitaciones) {
-			if(h.isHabilitado()==true) {
+		for (Habitacion h : habitaciones) {
+			if (h.isHabilitado() == true) {
 				try {
 					try {
-						List<CaracteristicaEspecialDTO> car =  new ArrayList<>(); 
+						List<CaracteristicaEspecialDTO> car = new ArrayList<>();
 						for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
-							car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(), carac.getPrecio()));
+							car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
+									carac.getPrecio()));
 						}
-						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),h.isHabilitado(), h.getNumHabitaciones(),car));
+						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(),
+								h.getPrecio(), h.isHabilitado(), h.getNumHabitaciones(), car));
 					} catch (PrecioCero e) {
 						System.out.println("Este campo no pueden estar en cero ");
 					}
-				} catch (CampoVacioExeption e ) {
+				} catch (CampoVacioExeption e) {
 					System.out.println("Este campo no puede estar vacio");
-				}catch ( EnterosEnCero e) {
+				} catch (EnterosEnCero e) {
 					System.out.println("Este campo no puede estar en cero ");
 				}
-			}	
+			}
 		}
 		return obtenerHabitacon;
 	}
@@ -364,12 +386,13 @@ public class MemoryApi implements IApi {
 	@Override
 	public List<CaracteristicaEspecialDTO> obtenerCaracteristica() {
 		List<CaracteristicaEspecialDTO> obtenerCaracteristicas = new ArrayList<>();
-		for(CaracteristicaEspecial car : caracteristicaEspecial) {
-			obtenerCaracteristicas.add(new CaracteristicaEspecialDTO(car.getNombre(), car.getDescripcion(), car.getPrecio()));
+		for (CaracteristicaEspecial car : caracteristicaEspecial) {
+			obtenerCaracteristicas
+					.add(new CaracteristicaEspecialDTO(car.getNombre(), car.getDescripcion(), car.getPrecio()));
 		}
 		return obtenerCaracteristicas;
 	}
-	
+
 }
 // Dar de baja una habitación
 // Modificar habitación

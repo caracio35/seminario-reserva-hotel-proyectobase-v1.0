@@ -16,3 +16,4 @@ BACKEND/.DS_Store
 
 .vscode/settings.json
 .gitignore
+/.vscode

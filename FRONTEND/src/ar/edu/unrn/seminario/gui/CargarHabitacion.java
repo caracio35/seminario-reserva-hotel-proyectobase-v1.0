@@ -54,7 +54,7 @@ public class CargarHabitacion extends JFrame {
 		TextField textFieldPrecioRegistrado = new TextField();
 		textFieldPrecioRegistrado.setBounds(10, 150, 150, 21);
 		panel.add(textFieldPrecioRegistrado);
-		
+
 		JLabel lblNewLabel = new JLabel("Estado De Habitacion");
 		lblNewLabel.setBounds(202, 76, 151, 14);
 		panel.add(lblNewLabel);
@@ -62,33 +62,33 @@ public class CargarHabitacion extends JFrame {
 		JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
 		buttonDesabilitado.setBounds(201, 126, 109, 23);
 		panel.add(buttonDesabilitado);
-		
+
 		JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
 		buttonHabilitado.setBounds(201, 94, 109, 23);
 		panel.add(buttonHabilitado);
-		
+
 		ButtonGroup group = new ButtonGroup();
 		group.add(buttonDesabilitado);
 		group.add(buttonHabilitado);
-		
+
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				;
 				try {
-					  boolean habilitado = false;
-			            if (buttonHabilitado.isSelected()) {
-			                habilitado = true;  
-			            } else if (buttonDesabilitado.isSelected()) {
-			                habilitado = false; 
-			            }
-			          
+					boolean habilitado = false;
+					if (buttonHabilitado.isSelected()) {
+						habilitado = true;
+					} else if (buttonDesabilitado.isSelected()) {
+						habilitado = false;
+					}
+
 					HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 							habilitado,
 							Integer.parseInt(textFieldNumeroHabitacion.getText()),
 							null);
-					api.crearHabitacion(habitacionDTO); 
+					api.crearHabitacion(habitacionDTO);
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
 				} catch (CampoVacioExeption e1) {
@@ -133,6 +133,7 @@ public class CargarHabitacion extends JFrame {
 		});
 		btnSalircancelar.setBounds(272, 204, 144, 21);
 		panel.add(btnSalircancelar);
-		
+
 	}
+
 }
