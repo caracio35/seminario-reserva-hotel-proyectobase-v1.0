@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 
 public class ListadoHabitaciones extends JFrame {
@@ -24,10 +26,12 @@ public class ListadoHabitaciones extends JFrame {
 	private JTable table;
 	private ArrayList<HabitacionDTO> habitacionDTOs;
 	private DefaultTableModel model;
-
-	public ListadoHabitaciones(ArrayList<HabitacionDTO> habitacionDTOs) {
+	private IApi api ; 
+	
+	public ListadoHabitaciones(IApi api) {
 		// Configurar el JFrame
-		this.habitacionDTOs = habitacionDTOs;
+		//this.habitacionDTOs = habitacionDTOs;
+		this.api = api ;
 		setTitle("Lista de Habitaciones");
 		setSize(555, 400); // Establece el tamaño del JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
@@ -39,44 +43,29 @@ public class ListadoHabitaciones extends JFrame {
 		scrollPane.setBounds(10, 39, 516, 133);
 		getContentPane().add(scrollPane);
 
-		// Definir el modelo de la tabla
-		DefaultTableModel model = new DefaultTableModel(
-				new Object[][] { { 1, Boolean.TRUE, 8, Boolean.TRUE, "" }, { 2, null, 3, Boolean.TRUE, null },
-						{ 3, Boolean.TRUE, 5, Boolean.TRUE, null }, { 4, Boolean.TRUE, 5, null, "25/12/2024" },
-						{ 5, null, 4, null, "25/01/2025" }, { 6, Boolean.TRUE, 4, null, "12/12/2024" },
-						{ 7, Boolean.TRUE, "3", Boolean.TRUE, null },
-						{ 8, Boolean.TRUE, "7", Boolean.FALSE, "indefinido" }, { 9, null, "4", Boolean.TRUE, null }, },
-				new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible",
-						"no disponible Hasta" }) {
-			private static final long serialVersionUID = 1L;
+		// Crear el modelo de la tabla
+		model = new DefaultTableModel(new Object[][] {}, 
+		        new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible", "No disponible Hasta" }) {
 
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // Hacer que la tabla no sea editable
-			}
-		};
-
-		table = new JTable(new DefaultTableModel(
-				new Object[][] { { new Integer(1), Boolean.TRUE, new Integer(8), Boolean.TRUE, "" },
-						{ new Integer(2), null, new Integer(3), Boolean.TRUE, null },
-						{ new Integer(3), Boolean.TRUE, new Integer(5), Boolean.TRUE, null },
-						{ new Integer(4), Boolean.TRUE, new Integer(5), null, "25/12/2024" },
-						{ new Integer(5), null, new Integer(4), null, "25/01/2025" },
-						{ new Integer(6), Boolean.TRUE, new Integer(4), null, "12/12/2024" },
-						{ new Integer(7), Boolean.TRUE, "3", Boolean.TRUE, null },
-						{ new Integer(8), Boolean.TRUE, "7", Boolean.FALSE, "indefinido" },
-						{ new Integer(9), null, "4", Boolean.TRUE, null }, },
-				new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible",
-						"no disponible Hasta" }) {
+		    private static final long serialVersionUID = 1L;
+		    
 			Class[] columnTypes = new Class[] { Object.class, Boolean.class, Object.class, Boolean.class,
 					Object.class };
+			
+			public boolean isCellEditable(int row, int column) {
+		        // Ejemplo: Hacer que la columna 3 (Disponible) no sea editable
+		        return column != 3;
+		    }
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
-		});
+		};
+		// Crear la tabla utilizando el modelo corregido
+		table = new JTable(model);
+		this.llenarTabla();
 		scrollPane.setViewportView(table);
-
+		
 		JButton btnActivarHabitacion = new JButton("Activar");
 		btnActivarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -202,9 +191,10 @@ public class ListadoHabitaciones extends JFrame {
 	}
 
 	public void llenarTabla() {
-		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-		modelo.setRowCount(0);
-		for (HabitacionDTO habitacionDTO : habitacionDTOs) {
+
+		List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+		model.setRowCount(0);
+		for (HabitacionDTO habitacionDTO : habitaciones) {
 			Object[] fila = new Object[5];
 			fila[0] = habitacionDTO.getNumHabitacion();
 			fila[2] = habitacionDTO.getCantidadDeCamas();

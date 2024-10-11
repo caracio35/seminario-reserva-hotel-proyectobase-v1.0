@@ -70,7 +70,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmListadoHabitaciones = new JMenuItem("Listado Habitaciones");
 		mntmListadoHabitaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(null);
+				ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(api);
 				listaHabitaciones.setVisible(true);
 			}
 		});
