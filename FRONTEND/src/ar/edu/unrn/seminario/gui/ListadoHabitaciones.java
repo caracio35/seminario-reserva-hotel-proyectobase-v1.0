@@ -34,7 +34,7 @@ public class ListadoHabitaciones extends JFrame {
 		this.api = api ;
 		setTitle("Lista de Habitaciones");
 		setSize(555, 400); // Establece el tamaño del JFrame
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
 		setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 		getContentPane().setLayout(null); // Establecer el layout como nulo para usar coordenadas absolutas
 
@@ -192,7 +192,7 @@ public class ListadoHabitaciones extends JFrame {
 
 	public void llenarTabla() {
 
-		List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+		List<HabitacionDTO> habitaciones = api.obtenerTodasLasHabitaciones();
 		model.setRowCount(0);
 		for (HabitacionDTO habitacionDTO : habitaciones) {
 			Object[] fila = new Object[5];
