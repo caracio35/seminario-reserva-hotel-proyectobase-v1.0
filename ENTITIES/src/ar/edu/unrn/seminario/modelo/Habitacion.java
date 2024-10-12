@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.modelo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class Habitacion {
 	private String descripcion;
 	private double precio;
 	private boolean habilitado;
+	private LocalDate fechaHastaCuandoEstaDesactivado;
 	private int numHabitaciones;
 	private ArrayList<CaracteristicaEspecial> caracteristicasEspeciales;
 
@@ -98,7 +100,5 @@ public class Habitacion {
 				&& numHabitaciones == other.numHabitaciones
 				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio);
 	}
-
-
 
 }

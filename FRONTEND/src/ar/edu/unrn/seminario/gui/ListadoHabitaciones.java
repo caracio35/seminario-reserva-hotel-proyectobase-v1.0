@@ -26,12 +26,12 @@ public class ListadoHabitaciones extends JFrame {
 	private JTable table;
 	private ArrayList<HabitacionDTO> habitacionDTOs;
 	private DefaultTableModel model;
-	private IApi api ; 
-	
+	private IApi api;
+
 	public ListadoHabitaciones(IApi api) {
 		// Configurar el JFrame
-		//this.habitacionDTOs = habitacionDTOs;
-		this.api = api ;
+		// this.habitacionDTOs = habitacionDTOs;
+		this.api = api;
 		setTitle("Lista de Habitaciones");
 		setSize(555, 400); // Establece el tamaño del JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
@@ -44,18 +44,19 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		// Crear el modelo de la tabla
-		model = new DefaultTableModel(new Object[][] {}, 
-		        new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible", "No disponible Hasta" }) {
+		model = new DefaultTableModel(new Object[][] {},
+				new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible",
+						"No disponible Hasta" }) {
 
-		    private static final long serialVersionUID = 1L;
-		    
+			private static final long serialVersionUID = 1L;
+
 			Class[] columnTypes = new Class[] { Object.class, Boolean.class, Object.class, Boolean.class,
 					Object.class };
-			
+
 			public boolean isCellEditable(int row, int column) {
-		        // Ejemplo: Hacer que la columna 3 (Disponible) no sea editable
-		        return column != 3;
-		    }
+				// Ejemplo: Hacer que la columna 3 (Disponible) no sea editable
+				return column != 3;
+			}
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -65,7 +66,7 @@ public class ListadoHabitaciones extends JFrame {
 		table = new JTable(model);
 		this.llenarTabla();
 		scrollPane.setViewportView(table);
-		
+
 		JButton btnActivarHabitacion = new JButton("Activar");
 		btnActivarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -129,9 +130,12 @@ public class ListadoHabitaciones extends JFrame {
 								JOptionPane.showMessageDialog(null,
 										"Habitación desactivada hasta " + fechaFormateada + ".");
 							}
+							api.darDeBajaHabitacion(2);
+							llenarTabla();
 						} else {
 							JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.");
 						}
+
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");

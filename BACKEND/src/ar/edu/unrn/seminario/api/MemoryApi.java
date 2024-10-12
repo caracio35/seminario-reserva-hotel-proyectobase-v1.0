@@ -308,7 +308,9 @@ public class MemoryApi implements IApi {
 	public void darDeBajaHabitacion(int numeroHabitacion) {
 		// falta agregar excepciones
 		Habitacion habitacionOctenida = this.buscarHabitacion(numeroHabitacion);
+		habitaciones.remove(habitacionOctenida);
 		habitacionOctenida.setHabilitado(false);
+		habitaciones.add(habitacionOctenida);
 	}
 
 	@Override
@@ -353,43 +355,41 @@ public class MemoryApi implements IApi {
 				reservaDTO.getPagoMinimo());
 		reservas.add(reserva);
 	}
-	
-	public List<HabitacionDTO> obtenerTodasLasHabitaciones() {
-	    List<HabitacionDTO> habitacionesDTO = new ArrayList<>();
-	    
-	    for (Habitacion h : habitaciones) {
-	        try {
-	            // Crear la lista de características especiales para la habitación
-	            List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
-	            for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
-	                caracteristicasDTO.add(new CaracteristicaEspecialDTO(
-	                    carac.getNombre(), 
-	                    carac.getDescripcion(), 
-	                    carac.getPrecio()
-	                ));
-	            }
 
-	            // Crear el objeto HabitacionDTO y agregarlo a la lista
-	            habitacionesDTO.add(new HabitacionDTO(
-	                h.getCantidadDeCamas(), 
-	                h.getDescripcion(), 
-	                h.getPrecio(), 
-	                h.isHabilitado(), 
-	                h.getNumHabitaciones(), 
-	                caracteristicasDTO
-	            ));
-	        } catch (PrecioCero e) {
-	            System.out.println("El precio no puede ser cero.");
-	        } catch (CampoVacioExeption e) {
-	            System.out.println("Un campo requerido está vacío.");
-	        } catch (EnterosEnCero e) {
-	            System.out.println("Un campo que requiere un número mayor a cero tiene un valor inválido.");
-	        }
-	    }
-	    
-	    return habitacionesDTO;
+	public List<HabitacionDTO> obtenerTodasLasHabitaciones() {
+		List<HabitacionDTO> habitacionesDTO = new ArrayList<>();
+
+		for (Habitacion h : habitaciones) {
+			try {
+				// Crear la lista de características especiales para la habitación
+				List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
+				for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
+					caracteristicasDTO.add(new CaracteristicaEspecialDTO(
+							carac.getNombre(),
+							carac.getDescripcion(),
+							carac.getPrecio()));
+				}
+
+				// Crear el objeto HabitacionDTO y agregarlo a la lista
+				habitacionesDTO.add(new HabitacionDTO(
+						h.getCantidadDeCamas(),
+						h.getDescripcion(),
+						h.getPrecio(),
+						h.isHabilitado(),
+						h.getNumHabitaciones(),
+						caracteristicasDTO));
+			} catch (PrecioCero e) {
+				System.out.println("El precio no puede ser cero.");
+			} catch (CampoVacioExeption e) {
+				System.out.println("Un campo requerido está vacío.");
+			} catch (EnterosEnCero e) {
+				System.out.println("Un campo que requiere un número mayor a cero tiene un valor inválido.");
+			}
+		}
+
+		return habitacionesDTO;
 	}
-	
+
 	@Override
 	public List<HabitacionDTO> obtenerHabitacionesHabilitada() {
 		List<HabitacionDTO> obtenerHabitacon = new ArrayList<>();
