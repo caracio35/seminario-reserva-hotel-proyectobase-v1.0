@@ -11,7 +11,7 @@ import ar.edu.unrn.seminario.gui.VerReservas;
 public class Main {
 
 	public static void main(String[] args) {
-		//hp
+		// hp
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
