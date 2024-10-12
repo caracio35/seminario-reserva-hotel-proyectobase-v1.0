@@ -19,13 +19,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class BusquedaDeHabitaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private JTextField textField_2;
-	private JTextField textField_3;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
@@ -46,7 +45,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		// Configurar el JFrame
 		setTitle("Búsqueda de Habitaciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 550, 450);
+		setBounds(100, 100, 1001, 416);
 		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -54,11 +53,22 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(panel);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(136, 105, 376, 233);
+		scrollPane.setBounds(136, 53, 815, 277);
 		getContentPane().add(scrollPane);
+		
 
-		modelo = new DefaultTableModel(new Object[][] {}, new String[]{"Camas", "Descripcion", "Precio" , "Numero de Habitacion", "Caracteristicas" });
-		table_1 = new JTable(modelo);
+		modelo = new DefaultTableModel(new Object[][] {}, new String[]{"Camas", "Descripcion", "Precio" , "Numero de Habitacion", "  Caracteristicas Especiales   " });
+		table_1 = new JTable(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Camas", "Descripcion", "Precio", "Numero de Habitacion", "  Caracteristicas Especiales   "
+			}
+			
+		));
+		table_1.setShowGrid(false);
+	
+		
 		scrollPane.setViewportView(table_1);
 		this.cargarHabitaciones();
 		
@@ -70,26 +80,16 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(textField);
 		textField.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(10, 262, 96, 19);
-		getContentPane().add(textField_2);
-		textField_2.setColumns(10);
-
-		textField_3 = new JTextField();
-		textField_3.setBounds(10, 218, 96, 19);
-		getContentPane().add(textField_3);
-		textField_3.setColumns(10);
-
 		JLabel lblNewLabel = new JLabel("Fecha Inicio");
-		lblNewLabel.setBounds(10, 197, 85, 13);
+		lblNewLabel.setBounds(10, 192, 85, 13);
 		getContentPane().add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Fecha Fin");
-		lblNewLabel_1.setBounds(10, 247, 45, 13);
+		lblNewLabel_1.setBounds(10, 236, 96, 13);
 		getContentPane().add(lblNewLabel_1);
 
 		lblNewLabel_2 = new JLabel("Total Huéspedes");
-		lblNewLabel_2.setBounds(10, 291, 96, 13);
+		lblNewLabel_2.setBounds(10, 280, 96, 13);
 		getContentPane().add(lblNewLabel_2);
 
 		lblNewLabel_3 = new JLabel("Buscar");
@@ -116,11 +116,11 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(lblNewLabel_6);
 
 		JComboBox<String> comboBox = new JComboBox<>();
-		comboBox.setBounds(10, 120, 62, 19);
+		comboBox.setBounds(10, 120, 96, 19);
 		getContentPane().add(comboBox);
 
 		JComboBox<String> comboBox_2 = new JComboBox<>();
-		comboBox_2.setBounds(10, 172, 62, 19);
+		comboBox_2.setBounds(10, 161, 96, 19);
 		getContentPane().add(comboBox_2);
 
 		JButton btnReservar = new JButton("RESERVAR");
@@ -135,7 +135,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		
 		textFieldHuespedes = new JTextField();
 		textFieldHuespedes.setColumns(10);
-		textFieldHuespedes.setBounds(10, 314, 96, 19);
+		textFieldHuespedes.setBounds(10, 293, 96, 19);
 		getContentPane().add(textFieldHuespedes);
 		
 		btnCancelarsalir = new JButton("CANCELAR/SALIR");
@@ -144,8 +144,16 @@ public class BusquedaDeHabitaciones extends JFrame {
 				dispose();
 			}
 		});
-		btnCancelarsalir.setBounds(381, 346, 116, 21);
+		btnCancelarsalir.setBounds(599, 346, 116, 21);
 		getContentPane().add(btnCancelarsalir);
+		
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBounds(10, 204, 96, 20);
+		getContentPane().add(dateChooser);
+		
+		JDateChooser dateChooser_1 = new JDateChooser();
+		dateChooser_1.setBounds(10, 249, 96, 20);
+		getContentPane().add(dateChooser_1);
 	}
 	public void cargarHabitaciones() {
 	    List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
@@ -164,6 +172,5 @@ public class BusquedaDeHabitaciones extends JFrame {
 	        });
 	    }
 	}
-	
 }
 
