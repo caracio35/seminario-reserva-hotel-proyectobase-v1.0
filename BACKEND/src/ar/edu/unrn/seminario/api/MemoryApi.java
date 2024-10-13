@@ -421,7 +421,7 @@ public class MemoryApi implements IApi {
 									carac.getPrecio()));
 						}
 						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(),
-								h.getPrecio(), h.isHabilitado(), h.getNumHabitaciones(), car));
+								h.getPrecio(), h.isHabilitado(), h.getNumHabitaciones(), car, null));
 					} catch (PrecioCero e) {
 						System.out.println("Este campo no pueden estar en cero ");
 					}
