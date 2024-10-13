@@ -27,7 +27,8 @@ public class ListadoHabitaciones extends JFrame {
 	private ArrayList<HabitacionDTO> habitacionDTOs;
 	private DefaultTableModel model;
 	private IApi api;
-
+	private String fechaFormateada;
+	private int numHabitacionSelected;
 	public ListadoHabitaciones(IApi api) {
 		// Configurar el JFrame
 		// this.habitacionDTOs = habitacionDTOs;
@@ -114,7 +115,7 @@ public class ListadoHabitaciones extends JFrame {
 						if (fecha != null) {
 							// Formatear la fecha para mostrar
 							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-							String fechaFormateada = sdf.format(fecha);
+							fechaFormateada = sdf.format(fecha);
 
 							int response = JOptionPane.showConfirmDialog(null,
 									"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada
@@ -125,7 +126,7 @@ public class ListadoHabitaciones extends JFrame {
 								// Actualizar la tabla
 								//table.setValueAt(fechaFormateada, selectedRow, 4);
 								//table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
-								int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+								numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 								api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
 								llenarTabla();
 								// Lógica para desactivar la habitación
@@ -204,7 +205,10 @@ public class ListadoHabitaciones extends JFrame {
 			fila[0] = habitacionDTO.getNumHabitacion();
 			fila[2] = habitacionDTO.getCantidadDeCamas();
 			fila[3] = habitacionDTO.isHabilitado();
-			fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado();
+			if (numHabitacionSelected == habitacionDTO.getNumHabitacion()) {
+				habitacionDTO.setFechaHastaCuandoEstaDesactivado(fechaFormateada);
+				fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado();
+			}
 			model.addRow(fila);
 		}
 		table.setModel(model);

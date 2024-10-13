@@ -13,7 +13,7 @@ public class HabitacionDTO {
 	private String descripcion;
 	private double precio;
 	private boolean habilitado;
-	private LocalDate fechaHastaCuandoEstaDesactivado;
+	private String fechaHastaCuandoEstaDesactivado;
 	private int numHabitaciones;
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
@@ -90,12 +90,13 @@ public class HabitacionDTO {
 		return caracteristicasEspeciales;
 	}
 
-	public LocalDate getFechaHastaCuandoEstaDesactivado() {
+	public String getFechaHastaCuandoEstaDesactivado() {
 		return fechaHastaCuandoEstaDesactivado;
 	}
 
-	public void setFechaHastaCuandoEstaDesactivado(LocalDate fechaHastaCuandoEstaDesactivado) {
+	public void setFechaHastaCuandoEstaDesactivado(String fechaHastaCuandoEstaDesactivado) {
 		this.fechaHastaCuandoEstaDesactivado = fechaHastaCuandoEstaDesactivado;
 	}
+
 
 }

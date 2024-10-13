@@ -315,14 +315,15 @@ public class MemoryApi implements IApi {
 		// falta agregar excepciones
 		
 		Habitacion habitacionOctenida = this.buscarHabitacion(numeroHabitacion);
+        habitaciones.remove(habitacionOctenida);
+		habitacionOctenida.setHabilitado(false);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fechacambiar = LocalDate.parse(fecha, formatter);
         habitacionOctenida.setFechaHastaCuandoEstaDesactivado(fechacambiar);
-        habitaciones.remove(x);
-		habitacionOctenida.setHabilitado(false);
 		habitaciones.add(habitacionOctenida);
 			
 	}
+	
 
 	@Override
 	public void crearHabitacion(HabitacionDTO habitacionDTO , String nombreCaracteristicas[]) {
@@ -388,6 +389,7 @@ public class MemoryApi implements IApi {
 						h.isHabilitado(),
 						h.getNumHabitaciones(),
 						caracteristicasDTO));
+						h.getFechaHastaCuandoEstaDesactivado();
 			} catch (PrecioCero e) {
 				System.out.println("El precio no puede ser cero.");
 			} catch (CampoVacioExeption e) {
