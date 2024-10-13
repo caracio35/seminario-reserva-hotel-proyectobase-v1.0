@@ -36,18 +36,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private JTextField textFieldHuespedes;
 	private JButton btnCancelarsalir;
 	private DefaultTableModel modelo;
-	private IApi api ; 
+	private IApi api;
+
 	/**
 	 * Create the frame.
 	 */
 	public BusquedaDeHabitaciones(IApi api) {
-		this.api = api ; 
+		this.api = api;
 		// Configurar el JFrame
 		setTitle("Búsqueda de Habitaciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1001, 416);
 		getContentPane().setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 349, 502, -331);
 		getContentPane().add(panel);
@@ -55,24 +56,18 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(136, 53, 815, 277);
 		getContentPane().add(scrollPane);
-		
 
-		modelo = new DefaultTableModel(new Object[][] {}, new String[]{"Camas", "Descripcion", "Precio" , "Numero de Habitacion", "  Caracteristicas Especiales   " });
-		table_1 = new JTable(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Camas", "Descripcion", "Precio", "Numero de Habitacion", "  Caracteristicas Especiales   "
-			}
-			
-		));
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
+				"Numero de Habitacion", "  Caracteristicas Especiales   " });
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
+				"Numero de Habitacion", "  Caracteristicas Especiales   " });
+		table_1 = new JTable(modelo);
+
 		table_1.setShowGrid(false);
-	
-		
+
 		scrollPane.setViewportView(table_1);
 		this.cargarHabitaciones();
-		
-		
+
 		scrollPane.setViewportView(table_1);
 
 		textField = new JTextField();
@@ -126,18 +121,18 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JButton btnReservar = new JButton("RESERVAR");
 		btnReservar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConfirmarReserva confirmacion=new ConfirmarReserva();
+				ConfirmarReserva confirmacion = new ConfirmarReserva();
 				confirmacion.setVisible(true);
 			}
 		});
 		btnReservar.setBounds(136, 346, 116, 21);
 		getContentPane().add(btnReservar);
-		
+
 		textFieldHuespedes = new JTextField();
 		textFieldHuespedes.setColumns(10);
 		textFieldHuespedes.setBounds(10, 293, 96, 19);
 		getContentPane().add(textFieldHuespedes);
-		
+
 		btnCancelarsalir = new JButton("CANCELAR/SALIR");
 		btnCancelarsalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,31 +141,32 @@ public class BusquedaDeHabitaciones extends JFrame {
 		});
 		btnCancelarsalir.setBounds(599, 346, 116, 21);
 		getContentPane().add(btnCancelarsalir);
-		
+
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setBounds(10, 204, 96, 20);
 		getContentPane().add(dateChooser);
-		
+
 		JDateChooser dateChooser_1 = new JDateChooser();
 		dateChooser_1.setBounds(10, 249, 96, 20);
 		getContentPane().add(dateChooser_1);
 	}
-	public void cargarHabitaciones() {
-	    List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 
-	    modelo.setRowCount(0);
-	    
-	    for (HabitacionDTO habitacion : habitaciones) {
-	    	
-	    	List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
-	    	String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre).collect(Collectors.joining(", "));
-	        modelo.addRow(new Object[]{
-	            habitacion.getCantidadDeCamas(),
-	            habitacion.getDescripcion(),
-	            habitacion.getPrecio(),
-	            habitacion.getNumHabitacion(),caracteristicas
-	        });
-	    }
+	public void cargarHabitaciones() {
+		List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+
+		modelo.setRowCount(0);
+
+		for (HabitacionDTO habitacion : habitaciones) {
+
+			List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
+			String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
+					.collect(Collectors.joining(", "));
+			modelo.addRow(new Object[] {
+					habitacion.getCantidadDeCamas(),
+					habitacion.getDescripcion(),
+					habitacion.getPrecio(),
+					habitacion.getNumHabitacion(), caracteristicas
+			});
+		}
 	}
 }
-
