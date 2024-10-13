@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -98,12 +99,21 @@ public class CargarHabitacion extends JFrame {
 						} else if (buttonDesabilitado.isSelected()) {
 							habilitado = false;
 						}
-
+						List<String> caracteristicasSeleccionadas = new ArrayList<>();
+			            for (int i = 0; i < table.getRowCount(); i++) {
+			                String nombreCaracteristica = (String) table.getValueAt(i, 0); 
+			                Boolean estado = (Boolean) table.getValueAt(i, 1); 
+			                if (estado != null && estado) {
+			                    caracteristicasSeleccionadas.add(nombreCaracteristica); 
+			                }
+			            }
 						HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 								textFieldDescripccion.getText(),
 								Double.parseDouble(textFieldPrecioRegistrado.getText()),
 								habilitado, Integer.parseInt(textFieldNumeroHabitacion.getText()), null);
-						api.crearHabitacion(habitacionDTO);
+						
+						
+						api.crearHabitacion(habitacionDTO,caracteristicasSeleccionadas.toArray(new String[0]));
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
 					} catch (CampoVacioExeption e1) {
@@ -239,7 +249,7 @@ public class CargarHabitacion extends JFrame {
 					HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
 							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
 							habilitado, Integer.parseInt(textFieldNumeroHabitacion.getText()), null);
-					api.crearHabitacion(habitacionDTO);
+					api.crearHabitacion(habitacionDTO , null);
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
 				} catch (CampoVacioExeption e1) {

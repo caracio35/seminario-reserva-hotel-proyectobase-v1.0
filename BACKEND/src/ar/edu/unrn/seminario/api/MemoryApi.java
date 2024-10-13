@@ -66,7 +66,7 @@ public class MemoryApi implements IApi {
 
 	private void caracteristicasPrueva() {
 		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Pileta", "pileta Grande", 100.00));
-		this.caracteristicaEspecial.add(new CaracteristicaEspecial("jacuzzi", "Grande", 100.00));
+		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Jacuzzi", "Grande", 100.00));
 		this.caracteristicaEspecial.add(new CaracteristicaEspecial("Balcon", " Grande", 100.00));
 	}
 
@@ -325,9 +325,9 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public void crearHabitacion(HabitacionDTO habitacionDTO) {
-		String[] car = { "Pileta", "jacuzzi", "balcon" };
-		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(car);
+	public void crearHabitacion(HabitacionDTO habitacionDTO , String nombreCaracteristicas[]) {
+		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica( nombreCaracteristicas);
+
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
 				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
 				caracteristicas);
