@@ -55,7 +55,13 @@ public class MemoryApi implements IApi {
 		caracteristicas.add(caracteristicaEspecial.get(0));
 		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
 		caracteristicas.add(caracteristicaEspecial.get(1));
-		this.habitaciones.add(new Habitacion(3, "habitacion grande para una familia", 250, true, 2, caracteristicas));
+		this.habitaciones.add(new Habitacion(3, "Habitacion grande para una familia", 250, true, 2, caracteristicas));
+		this.habitaciones.add(new Habitacion(1, "Habitacion Economica", 50.00, true, 3, caracteristicas));
+		this.habitaciones.add(new Habitacion(4, "Suite de Lujo", 300.00, true, 4, caracteristicas));
+		this.habitaciones.add(new Habitacion(1, "Habitacion Sencilla", 80.00, true, 5, caracteristicas));
+		this.habitaciones.add(new Habitacion(2, "Habitacion Doble", 120.00, true, 6, caracteristicas));
+		this.habitaciones.add(new Habitacion(2, "Habitacion Doble Deluxe", 150.00, true, 7, caracteristicas));
+		this.habitaciones.add(new Habitacion(3, "Habitacion Triple", 180.00, true, 8, caracteristicas));
 	}
 
 	private void caracteristicasPrueva() {

@@ -130,7 +130,8 @@ public class ListadoHabitaciones extends JFrame {
 								JOptionPane.showMessageDialog(null,
 										"Habitación desactivada hasta " + fechaFormateada + ".");
 							}
-							api.darDeBajaHabitacion(2);
+							int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+							api.darDeBajaHabitacion(numHabitacionSelected);
 							llenarTabla();
 						} else {
 							JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.");
