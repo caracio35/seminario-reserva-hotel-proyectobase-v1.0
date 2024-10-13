@@ -19,7 +19,8 @@ public class HabitacionDTO {
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitaciones,
-			List<CaracteristicaEspecialDTO> caracteristicasEspeciales) throws CampoVacioExeption, EnterosEnCero, PrecioCero {
+			List<CaracteristicaEspecialDTO> caracteristicasEspeciales, String fechaHastaCuandoEstaDesactivado)
+			throws CampoVacioExeption, EnterosEnCero, PrecioCero {
 		if (descripcion.isEmpty()) {
 			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
 		}
@@ -30,7 +31,7 @@ public class HabitacionDTO {
 			throw new EnterosEnCero("Los campos no pueden ser cero o negativos ");
 		}
 		if (precio <= 0) {
-			throw new PrecioCero ("El precio no puede ser cero o null");
+			throw new PrecioCero("El precio no puede ser cero o null");
 		}
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
@@ -38,7 +39,7 @@ public class HabitacionDTO {
 		this.habilitado = habilitado;
 		this.numHabitaciones = numHabitaciones;
 		this.caracteristicasEspeciales = caracteristicasEspeciales;
-		this.fechaHastaCuandoEstaDesactivado = null;
+		this.fechaHastaCuandoEstaDesactivado = fechaHastaCuandoEstaDesactivado;
 
 	}
 
@@ -97,6 +98,5 @@ public class HabitacionDTO {
 	public void setFechaHastaCuandoEstaDesactivado(String fechaHastaCuandoEstaDesactivado) {
 		this.fechaHastaCuandoEstaDesactivado = fechaHastaCuandoEstaDesactivado;
 	}
-
 
 }

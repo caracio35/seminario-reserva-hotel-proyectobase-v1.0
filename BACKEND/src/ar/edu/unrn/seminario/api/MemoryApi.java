@@ -310,24 +310,21 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	// busca una habitacion y la da de baja
 	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) {
-		// falta agregar excepciones
-		
-		Habitacion habitacionOctenida = this.buscarHabitacion(numeroHabitacion);
-        habitaciones.remove(habitacionOctenida);
-		habitacionOctenida.setHabilitado(false);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate fechacambiar = LocalDate.parse(fecha, formatter);
-        habitacionOctenida.setFechaHastaCuandoEstaDesactivado(fechacambiar);
-		habitaciones.add(habitacionOctenida);
-			
+		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
+		if (habitacionObtenida != null) {
+			habitaciones.remove(habitacionObtenida);
+			habitacionObtenida.setHabilitado(false);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate fechaDesactivacion = LocalDate.parse(fecha, formatter);
+			habitacionObtenida.setFechaHastaCuandoEstaDesactivado(fechaDesactivacion);
+			habitaciones.add(habitacionObtenida);
+		}
 	}
-	
 
 	@Override
-	public void crearHabitacion(HabitacionDTO habitacionDTO , String nombreCaracteristicas[]) {
-		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica( nombreCaracteristicas);
+	public void crearHabitacion(HabitacionDTO habitacionDTO, String nombreCaracteristicas[]) {
+		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(nombreCaracteristicas);
 
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
 				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
@@ -388,8 +385,9 @@ public class MemoryApi implements IApi {
 						h.getPrecio(),
 						h.isHabilitado(),
 						h.getNumHabitaciones(),
-						caracteristicasDTO));
-						h.getFechaHastaCuandoEstaDesactivado();
+						caracteristicasDTO, traerFechaHastaCuando(h)));
+				// obtener fecha de desactivacion y pasarlo a string si no es null
+
 			} catch (PrecioCero e) {
 				System.out.println("El precio no puede ser cero.");
 			} catch (CampoVacioExeption e) {
@@ -400,6 +398,14 @@ public class MemoryApi implements IApi {
 		}
 
 		return habitacionesDTO;
+	}
+
+	private String traerFechaHastaCuando(Habitacion h) {
+		if (h.getFechaHastaCuandoEstaDesactivado() != null) {
+			String fechaDesactivacion = h.getFechaHastaCuandoEstaDesactivado().toString();
+			return fechaDesactivacion;
+		}
+		return null;
 	}
 
 	@Override
