@@ -311,19 +311,23 @@ public class MemoryApi implements IApi {
 
 	@Override
 	// busca una habitacion y la da de baja
-	public void darDeBajaHabitacion(int numeroHabitacion) {
+	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) {
 		// falta agregar excepciones
+		
 		Habitacion habitacionOctenida = this.buscarHabitacion(numeroHabitacion);
-		habitaciones.remove(habitacionOctenida);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fechacambiar = LocalDate.parse(fecha, formatter);
+        habitacionOctenida.setFechaHastaCuandoEstaDesactivado(fechacambiar);
+        habitaciones.remove(x);
 		habitacionOctenida.setHabilitado(false);
 		habitaciones.add(habitacionOctenida);
+			
 	}
 
 	@Override
 	public void crearHabitacion(HabitacionDTO habitacionDTO) {
 		String[] car = { "Pileta", "jacuzzi", "balcon" };
 		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(car);
-
 		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
 				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
 				caracteristicas);

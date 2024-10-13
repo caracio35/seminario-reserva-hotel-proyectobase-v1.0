@@ -123,16 +123,16 @@ public class ListadoHabitaciones extends JFrame {
 
 							if (response == JOptionPane.YES_OPTION) {
 								// Actualizar la tabla
-								table.setValueAt(fechaFormateada, selectedRow, 4);
-								table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
-
+								//table.setValueAt(fechaFormateada, selectedRow, 4);
+								//table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
+								int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+								api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
+								llenarTabla();
 								// Lógica para desactivar la habitación
 								JOptionPane.showMessageDialog(null,
 										"Habitación desactivada hasta " + fechaFormateada + ".");
 							}
-							int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-							api.darDeBajaHabitacion(numHabitacionSelected);
-							llenarTabla();
+
 						} else {
 							JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.");
 						}
@@ -204,8 +204,10 @@ public class ListadoHabitaciones extends JFrame {
 			fila[0] = habitacionDTO.getNumHabitacion();
 			fila[2] = habitacionDTO.getCantidadDeCamas();
 			fila[3] = habitacionDTO.isHabilitado();
+			fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado();
 			model.addRow(fila);
 		}
+		table.setModel(model);
 	}
 
 }

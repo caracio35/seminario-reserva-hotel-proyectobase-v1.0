@@ -36,8 +36,8 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-	void crearHabitacion(HabitacionDTO habitacionDTO); // crea una nueva habitación con las características proporcionadas
-
+	void crearHabitacion(HabitacionDTO habitacionDTO ); // crea una nueva habitación con las características proporcionadas
+	
 	void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO); // crea una nueva caracteristica especial y la agrega a la lista de caracteristicas especiale
 
 	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);// carga una o mas caracteristica especiales
@@ -52,7 +52,7 @@ public interface IApi {
 
 	void modificarReserva(); // modifica una reserva existente
 
-	void darDeBajaHabitacion(int numeroHabitacion);// marca una habitacion como no habilitada segun su numero de
+	void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x);// marca una habitacion como no habilitada segun su numero de
 	
 	List<HabitacionDTO> obtenerTodasLasHabitaciones();
 	

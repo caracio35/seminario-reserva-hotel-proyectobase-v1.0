@@ -21,6 +21,7 @@ public class Habitacion {
 		this.habilitado = habilitado;
 		this.numHabitaciones = numHabitaciones;
 		this.caracteristicasEspeciales = caracteristicasEspeciales;
+		this.fechaHastaCuandoEstaDesactivado = null;
 	}
 
 	public double obtenerPrecioTotal() {
@@ -99,6 +100,14 @@ public class Habitacion {
 				&& Objects.equals(descripcion, other.descripcion) && habilitado == other.habilitado
 				&& numHabitaciones == other.numHabitaciones
 				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio);
+	}
+
+	public LocalDate getFechaHastaCuandoEstaDesactivado() {
+		return fechaHastaCuandoEstaDesactivado;
+	}
+
+	public void setFechaHastaCuandoEstaDesactivado(LocalDate fechaHastaCuandoEstaDesactivado) {
+		this.fechaHastaCuandoEstaDesactivado = fechaHastaCuandoEstaDesactivado;
 	}
 
 }

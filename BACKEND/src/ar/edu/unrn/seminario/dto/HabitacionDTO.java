@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -12,6 +13,7 @@ public class HabitacionDTO {
 	private String descripcion;
 	private double precio;
 	private boolean habilitado;
+	private LocalDate fechaHastaCuandoEstaDesactivado;
 	private int numHabitaciones;
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
@@ -36,6 +38,8 @@ public class HabitacionDTO {
 		this.habilitado = habilitado;
 		this.numHabitaciones = numHabitaciones;
 		this.caracteristicasEspeciales = caracteristicasEspeciales;
+		this.fechaHastaCuandoEstaDesactivado = null;
+
 	}
 
 	public void setCantidadDeCamas(int cantidadDeCamas) {
@@ -84,6 +88,14 @@ public class HabitacionDTO {
 
 	public List<CaracteristicaEspecialDTO> getCaracteristicasEspeciale() {
 		return caracteristicasEspeciales;
+	}
+
+	public LocalDate getFechaHastaCuandoEstaDesactivado() {
+		return fechaHastaCuandoEstaDesactivado;
+	}
+
+	public void setFechaHastaCuandoEstaDesactivado(LocalDate fechaHastaCuandoEstaDesactivado) {
+		this.fechaHastaCuandoEstaDesactivado = fechaHastaCuandoEstaDesactivado;
 	}
 
 }
