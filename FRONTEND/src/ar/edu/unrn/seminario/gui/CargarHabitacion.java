@@ -109,13 +109,16 @@ public class CargarHabitacion extends JFrame {
 					}
 
 					try {
-						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()), textFieldDescripccion.getText(),
+						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
+								textFieldDescripccion.getText(),
 								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 								Integer.parseInt(textFieldNumeroHabitacion.getText()), obtenerListaCaracteristicas());
-					} catch (NumberFormatException | NumeroHabitacionExistenteException e1) {
-						JOptionPane.showMessageDialog(null, "El numero de habitacion ya existe, ingrese otro numero ");
+					} catch (NumeroHabitacionExistenteException e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (NumberFormatException e1) {
+						JOptionPane.showMessageDialog(null,
+								"El campo numHabitacion no puede ser cero o no estar definido y tampoco puede ser una letra ");
 					}
-
 				}
 
 				private List<CaracteristicaEspecialDTO> obtenerListaCaracteristicas() {

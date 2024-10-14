@@ -445,24 +445,24 @@ public class MemoryApi implements IApi {
 	}
 
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas) throws NumeroHabitacionExistenteException  {
-		
+			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
+			throws NumeroHabitacionExistenteException {
+
 		if (existeHabitacionConNumero(numHabitacion)) {
-			throw new NumeroHabitacionExistenteException("La habitación con el número " + numHabitacion + " ya existe.");
-	    }
-		if(!existeHabitacionConNumero(numHabitacion)) {
-		try {
-			Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
-					pasarDesdeCaracteristicasDTO(caracteristicas));
-			habitaciones.add(habitacion);
-		} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
-			System.out.println(e.getMessage());
+			throw new NumeroHabitacionExistenteException(
+					"La habitación con el número " + numHabitacion + " ya existe.");
+		}
+		if (!existeHabitacionConNumero(numHabitacion)) {
+			try {
+				Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
+						pasarDesdeCaracteristicasDTO(caracteristicas));
+				habitaciones.add(habitacion);
+			} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
+				System.out.println(e.getMessage());
 			}
 		}
-		
+
 	}
-
-
 
 	private ArrayList<CaracteristicaEspecial> pasarDesdeCaracteristicasDTO(
 			List<CaracteristicaEspecialDTO> caracteristicas) {
@@ -501,13 +501,13 @@ public class MemoryApi implements IApi {
 					habitacionOptenida.isHabilitado(), habitacionOptenida.getNumHabitaciones(), car, null);
 		} catch (CampoVacioExeption e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} catch (EnterosEnCero e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} catch (PrecioCero e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return habitacionNueva;
 	}
@@ -525,13 +525,13 @@ public class MemoryApi implements IApi {
 				habitaciones.add(nuevaHabitacion);
 			} catch (CampoVacioExeption e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			} catch (EnterosEnCero e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			} catch (PrecioCero e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 
 		}
@@ -543,14 +543,15 @@ public class MemoryApi implements IApi {
 			habitaciones.remove(habitacionObtenida);
 		}
 	}
+
 	private boolean existeHabitacionConNumero(int numeroHabitacion) {
-		for(Habitacion h : habitaciones) {
-			if(h.getNumHabitaciones()==numeroHabitacion) {
-				return true ; 
+		for (Habitacion h : habitaciones) {
+			if (h.getNumHabitaciones() == numeroHabitacion) {
+				return true;
 			}
-			
+
 		}
-		return false ; 
+		return false;
 	}
 }
 
