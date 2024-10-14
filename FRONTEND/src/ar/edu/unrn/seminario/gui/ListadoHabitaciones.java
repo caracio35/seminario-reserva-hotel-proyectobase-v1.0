@@ -179,9 +179,9 @@ public class ListadoHabitaciones extends JFrame {
 
 					if (response == JOptionPane.YES_OPTION) {
 						// Eliminar la fila de la tabla
+						numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 						((DefaultTableModel) table.getModel()).removeRow(selectedRow);
 						// eliminar Habitacion
-						numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 						api.eliminarHabitacion(numHabitacionSelected);
 						// Lógica para eliminar la habitación
 						JOptionPane.showMessageDialog(null, "Habitación eliminada.");

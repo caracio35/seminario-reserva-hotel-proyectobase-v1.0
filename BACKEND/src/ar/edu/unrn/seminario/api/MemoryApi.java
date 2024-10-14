@@ -54,7 +54,7 @@ public class MemoryApi implements IApi {
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 		caracteristicas.add(caracteristicaEspecial.get(0));
 		caracteristicas.add(caracteristicaEspecial.get(1));
-		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
+
 		this.habitaciones.add(new Habitacion(3, "Habitacion grande para una familia", 250, true, 2, caracteristicas));
 		this.habitaciones.add(new Habitacion(1, "Habitacion Economica", 50.00, true, 3, caracteristicas));
 		this.habitaciones.add(new Habitacion(4, "Suite de Lujo", 300.00, true, 4, caracteristicas));
