@@ -37,20 +37,20 @@ public class MemoryApi implements IApi {
 	private ArrayList<Reserva> reservas = new ArrayList<>();
 	private int ultimoIdReserva = 0;
 
-	public MemoryApi() {
+	public MemoryApi() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
 
 		// datos iniciales
 		inicializarPrueva();
 	}
 
-	private void inicializarPrueva() {
+	private void inicializarPrueva() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
 		rolesPrueva();
 		inicializarUsuarios();
 		caracteristicasPrueva();
 		habitacionesPrueba();
 	}
 
-	private void habitacionesPrueba() {
+	private void habitacionesPrueba() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 		caracteristicas.add(caracteristicaEspecial.get(0));
 		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
@@ -326,10 +326,15 @@ public class MemoryApi implements IApi {
 	public void crearHabitacion(HabitacionDTO habitacionDTO, String nombreCaracteristicas[]) {
 		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(nombreCaracteristicas);
 
-		Habitacion habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
-				habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
-				caracteristicas);
-		habitaciones.add(habitacion);
+		Habitacion habitacion;
+		try {
+			habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
+					habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
+					caracteristicas);
+			habitaciones.add(habitacion);
+		} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 
@@ -441,6 +446,41 @@ public class MemoryApi implements IApi {
 		for (CaracteristicaEspecial car : caracteristicaEspecial) {
 			obtenerCaracteristicas
 					.add(new CaracteristicaEspecialDTO(car.getNombre(), car.getDescripcion(), car.getPrecio()));
+		}
+		return obtenerCaracteristicas;
+	}
+
+	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numHabitacion,
+			List<CaracteristicaEspecialDTO> caracteristicas) {
+		try {
+			Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
+					pasarDesdeCaracteristicasDTO(caracteristicas));
+			habitaciones.add(habitacion);
+		} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
+			System.out.println(e.getMessage());
+		}
+		// Example of adding to a collection
+	}
+
+	private ArrayList<CaracteristicaEspecial> pasarDesdeCaracteristicasDTO(
+			List<CaracteristicaEspecialDTO> caracteristicas) {
+		ArrayList<CaracteristicaEspecial> caracteristicasEspeciales = new ArrayList<>();
+		for (CaracteristicaEspecialDTO caracteristica : caracteristicas) {
+			caracteristicasEspeciales.add(new CaracteristicaEspecial(caracteristica.getNombre(),
+					caracteristica.getDescricion(), caracteristica.getPrecio()));
+		}
+		return caracteristicasEspeciales;
+	}
+
+	@Override
+	public List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas) {
+		List<CaracteristicaEspecialDTO> obtenerCaracteristicas = new ArrayList<>();
+		for (String car : caracteristicas) {
+			caracteristicaEspecial.stream().filter(c -> c.getNombre().equals(car)).forEach(c -> {
+				obtenerCaracteristicas
+						.add(new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(), c.getPrecio()));
+			});
 		}
 		return obtenerCaracteristicas;
 	}

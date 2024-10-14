@@ -81,6 +81,8 @@ public class CargarHabitacion extends JFrame {
 			panel.add(buttonDesabilitado);
 
 			JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
+			// setear el boton en true por defecto
+			buttonHabilitado.setSelected(true);
 			buttonHabilitado.setBounds(188, 96, 109, 23);
 			panel.add(buttonHabilitado);
 
@@ -92,36 +94,42 @@ public class CargarHabitacion extends JFrame {
 			btnSubirInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					;
-					try {
-						boolean habilitado = false;
-						if (buttonHabilitado.isSelected()) {
-							habilitado = true;
-						} else if (buttonDesabilitado.isSelected()) {
-							habilitado = false;
-						}
-						List<String> caracteristicasSeleccionadas = new ArrayList<>();
-						for (int i = 0; i < table.getRowCount(); i++) {
-							String nombreCaracteristica = (String) table.getValueAt(i, 0);
-							Boolean estado = (Boolean) table.getValueAt(i, 1);
-							if (estado != null && estado) {
-								caracteristicasSeleccionadas.add(nombreCaracteristica);
-							}
-						}
-						HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
-								textFieldDescripccion.getText(),
-								Double.parseDouble(textFieldPrecioRegistrado.getText()),
-								habilitado, Integer.parseInt(textFieldNumeroHabitacion.getText()), null, null);
-
-						api.crearHabitacion(habitacionDTO, caracteristicasSeleccionadas.toArray(new String[0]));
-					} catch (NumberFormatException e1) {
-						JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
-					} catch (CampoVacioExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (EnterosEnCero e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (PrecioCero e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
+					// try {
+					boolean habilitado = false;
+					if (buttonHabilitado.isSelected()) {
+						habilitado = true;
+					} else if (buttonDesabilitado.isSelected()) {
+						habilitado = false;
 					}
+					List<String> caracteristicasSeleccionadas = new ArrayList<>();
+					for (int i = 0; i < table.getRowCount(); i++) {
+						String nombreCaracteristica = (String) table.getValueAt(i, 0);
+						Boolean estado = (Boolean) table.getValueAt(i, 1);
+						if (estado != null && estado) {
+							caracteristicasSeleccionadas.add(nombreCaracteristica);
+						}
+					}
+
+					api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
+							textFieldDescripccion.getText(),
+							Double.parseDouble(textFieldPrecioRegistrado.getText()),
+							habilitado, Integer.parseInt(textFieldNumeroHabitacion.getText()),
+							obtenerListaCaracteristicas());
+
+				}
+
+				private List<CaracteristicaEspecialDTO> obtenerListaCaracteristicas() {
+					List<CaracteristicaEspecialDTO> caracteristicas = new ArrayList<>();
+					List<String> nombresCaracteristicas = new ArrayList<>();
+					for (int i = 0; i < table.getRowCount(); i++) {
+						String nombreCaracteristica = (String) table.getValueAt(i, 0);
+						Boolean estado = (Boolean) table.getValueAt(i, 1);
+						if (estado != null && estado) {
+							nombresCaracteristicas.add(nombreCaracteristica);
+						}
+					}
+					caracteristicas = api.obtenerCaracteristica(nombresCaracteristicas);
+					return caracteristicas;
 				}
 			}
 
