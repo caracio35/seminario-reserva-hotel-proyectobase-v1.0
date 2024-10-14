@@ -25,9 +25,6 @@ import javax.swing.table.TableCellRenderer;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
-import ar.edu.unrn.seminario.exception.CampoVacioExeption;
-import ar.edu.unrn.seminario.exception.EnterosEnCero;
-import ar.edu.unrn.seminario.exception.PrecioCero;
 
 public class CargarHabitacion extends JFrame {
 
@@ -250,28 +247,33 @@ public class CargarHabitacion extends JFrame {
 		JButton btnSubirInformacion = new JButton("Subir Informacion");
 		btnSubirInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				;
-				try {
-					boolean habilitado = false;
-					if (buttonHabilitado.isSelected()) {
-						habilitado = true;
-					} else if (buttonDesabilitado.isSelected()) {
-						habilitado = false;
-					}
 
-					HabitacionDTO habitacionDTO = new HabitacionDTO(Integer.parseInt(textFieldCamas.getText()),
-							textFieldDescripccion.getText(), Double.parseDouble(textFieldPrecioRegistrado.getText()),
-							habilitado, Integer.parseInt(textFieldNumeroHabitacion.getText()), null, null);
-					api.crearHabitacion(habitacionDTO, null);
-				} catch (NumberFormatException e1) {
-					JOptionPane.showMessageDialog(null, "Los campos no pueden ser cero o negativos");
-				} catch (CampoVacioExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				} catch (EnterosEnCero e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				} catch (PrecioCero e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
+				boolean habilitado = false;
+				if (buttonHabilitado.isSelected()) {
+					habilitado = true;
+				} else if (buttonDesabilitado.isSelected()) {
+					habilitado = false;
 				}
+
+				api.modificarHabitacion(Integer.parseInt(textFieldNumeroHabitacion.getText()),
+						Integer.parseInt(textFieldCamas.getText()), textFieldDescripccion.getText(),
+						Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
+						obtenerListaCaracteristicas());
+
+			}
+
+			private List<CaracteristicaEspecialDTO> obtenerListaCaracteristicas() {
+				List<CaracteristicaEspecialDTO> caracteristicas = new ArrayList<>();
+				List<String> nombresCaracteristicas = new ArrayList<>();
+				for (int i = 0; i < table.getRowCount(); i++) {
+					String nombreCaracteristica = (String) table.getValueAt(i, 0);
+					Boolean estado = (Boolean) table.getValueAt(i, 1);
+					if (estado != null && estado) {
+						nombresCaracteristicas.add(nombreCaracteristica);
+					}
+				}
+				caracteristicas = api.obtenerCaracteristica(nombresCaracteristicas);
+				return caracteristicas;
 			}
 		}
 
@@ -320,9 +322,10 @@ public class CargarHabitacion extends JFrame {
 		};
 		table = new JTable(modelo);
 		scrollPane.setViewportView(table); // Establecer la vista de la tabla correctamente
-		this.cargarCaracteristica(hDTO); 
+		this.cargarCaracteristica(hDTO);
 		table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+
 	}
 
 	private void cargarCaracteristicaEspecial() {
@@ -334,6 +337,7 @@ public class CargarHabitacion extends JFrame {
 			modelo.addRow(fila);
 		}
 	}
+
 	private void cargarCaracteristica(HabitacionDTO h) {
 		List<CaracteristicaEspecialDTO> car = h.getCaracteristicasEspeciale();
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
@@ -345,7 +349,6 @@ public class CargarHabitacion extends JFrame {
 		}
 	}
 
-	
 	private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
@@ -355,4 +358,5 @@ public class CargarHabitacion extends JFrame {
 			return this;
 		}
 	}
+
 }

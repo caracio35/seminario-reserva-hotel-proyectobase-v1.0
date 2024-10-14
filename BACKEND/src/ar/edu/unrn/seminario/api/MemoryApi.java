@@ -53,8 +53,8 @@ public class MemoryApi implements IApi {
 	private void habitacionesPrueba() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 		caracteristicas.add(caracteristicaEspecial.get(0));
-		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
 		caracteristicas.add(caracteristicaEspecial.get(1));
+		this.habitaciones.add(new Habitacion(2, "Habitacion", 100.00, true, 1, caracteristicas));
 		this.habitaciones.add(new Habitacion(3, "Habitacion grande para una familia", 250, true, 2, caracteristicas));
 		this.habitaciones.add(new Habitacion(1, "Habitacion Economica", 50.00, true, 3, caracteristicas));
 		this.habitaciones.add(new Habitacion(4, "Suite de Lujo", 300.00, true, 4, caracteristicas));
@@ -503,6 +503,37 @@ public class MemoryApi implements IApi {
 		return habitacionNueva;
 	}
 
+	public void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio,
+			boolean estado, List<CaracteristicaEspecialDTO> caracteristicas) {
+		Habitacion habitacionOptenida = this.buscarHabitacion(numeroHabitacion);
+		ArrayList<CaracteristicaEspecial> caracteristica = this.pasarDesdeCaracteristicasDTO(caracteristicas);
+		if (habitacionOptenida != null) {
+
+			habitaciones.remove(habitacionOptenida);
+			try {
+				Habitacion nuevaHabitacion = new Habitacion(cantidadCamas, descripcion, precio, estado,
+						numeroHabitacion, caracteristica);
+				habitaciones.add(nuevaHabitacion);
+			} catch (CampoVacioExeption e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (EnterosEnCero e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PrecioCero e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	public void eliminarHabitacion(int numeroHabitacion) {
+		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
+		if (habitacionObtenida != null) {
+			habitaciones.remove(habitacionObtenida);
+		}
+	}
 }
 
 // Dar de baja una habitación

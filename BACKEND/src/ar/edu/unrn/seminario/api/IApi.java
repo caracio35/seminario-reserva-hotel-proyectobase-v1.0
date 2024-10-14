@@ -74,4 +74,9 @@ public interface IApi {
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas);
 
 	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
+
+	void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio, boolean estado,
+			List<CaracteristicaEspecialDTO> caracteristicas);
+
+	void eliminarHabitacion(int numeroHabitacion);
 }
