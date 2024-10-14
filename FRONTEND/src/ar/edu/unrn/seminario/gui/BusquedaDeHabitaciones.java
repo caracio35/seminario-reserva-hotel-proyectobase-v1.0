@@ -1,5 +1,10 @@
 package ar.edu.unrn.seminario.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -10,16 +15,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import com.toedter.calendar.JDateChooser;
+
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
-
-import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import com.toedter.calendar.JDateChooser;
 
 public class BusquedaDeHabitaciones extends JFrame {
 
@@ -58,9 +58,13 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-				"Numero de Habitacion", "  Caracteristicas Especiales   " });
-		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-				"Numero de Habitacion", "  Caracteristicas Especiales   " });
+				"Numero de Habitacion", "  Caracteristicas Especiales   " }) {
+			public boolean isCellEditable(int row, int column) {
+				// Ejemplo: Hacer que la columna 3 (Disponible) no sea editable
+				return false;
+			}
+		};
+
 		table_1 = new JTable(modelo);
 
 		table_1.setShowGrid(false);
@@ -161,12 +165,8 @@ public class BusquedaDeHabitaciones extends JFrame {
 			List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
 			String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
 					.collect(Collectors.joining(", "));
-			modelo.addRow(new Object[] {
-					habitacion.getCantidadDeCamas(),
-					habitacion.getDescripcion(),
-					habitacion.getPrecio(),
-					habitacion.getNumHabitacion(), caracteristicas
-			});
+			modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
+					habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas });
 		}
 	}
 }

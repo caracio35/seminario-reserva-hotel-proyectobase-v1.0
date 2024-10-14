@@ -110,11 +110,9 @@ public class CargarHabitacion extends JFrame {
 						}
 					}
 
-					api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
-							textFieldDescripccion.getText(),
-							Double.parseDouble(textFieldPrecioRegistrado.getText()),
-							habilitado, Integer.parseInt(textFieldNumeroHabitacion.getText()),
-							obtenerListaCaracteristicas());
+					api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()), textFieldDescripccion.getText(),
+							Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
+							Integer.parseInt(textFieldNumeroHabitacion.getText()), obtenerListaCaracteristicas());
 
 				}
 
@@ -170,7 +168,12 @@ public class CargarHabitacion extends JFrame {
 			scrollPane.setBounds(203, 150, 172, 123);
 			panel.add(scrollPane);
 
-			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" });
+			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
+				public boolean isCellEditable(int row, int column) {
+
+					return column != 0;
+				}
+			};
 			table = new JTable(modelo);
 			scrollPane.setViewportView(table); // Establecer la vista de la tabla correctamente
 			this.cargarCaracteristicaEspecial();
@@ -185,8 +188,9 @@ public class CargarHabitacion extends JFrame {
 	 * @param modelo
 	 * @wbp.parser.constructor
 	 */
-	public CargarHabitacion(IApi api, HabitacionDTO habitacionDTO) {
+	public CargarHabitacion(IApi api, int numeroHabitacion) {
 		this.api = api;
+		HabitacionDTO hDTO = api.buscarHabitacionDTOPorNumero(numeroHabitacion);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 420);
 		contentPane = new JPanel();
@@ -203,22 +207,23 @@ public class CargarHabitacion extends JFrame {
 		TextField textFieldNumeroHabitacion = new TextField();
 		textFieldNumeroHabitacion.setBounds(10, 39, 150, 21);
 		panel.add(textFieldNumeroHabitacion);
-		textFieldNumeroHabitacion.setText(String.valueOf(habitacionDTO.getNumHabitacion()));
+		textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));
+		textFieldNumeroHabitacion.setEditable(false);
 
 		TextField textFieldCamas = new TextField();
 		textFieldCamas.setBounds(203, 39, 150, 21);
 		panel.add(textFieldCamas);
-		textFieldCamas.setText(String.valueOf(habitacionDTO.getCantidadDeCamas()));
+		textFieldCamas.setText(String.valueOf(hDTO.getCantidadDeCamas()));
 
 		TextField textFieldDescripccion = new TextField();
 		textFieldDescripccion.setBounds(10, 96, 150, 21);
 		panel.add(textFieldDescripccion);
-		textFieldDescripccion.setText(habitacionDTO.getDescripcion());
+		textFieldDescripccion.setText(hDTO.getDescripcion());
 
 		TextField textFieldPrecioRegistrado = new TextField();
 		textFieldPrecioRegistrado.setBounds(10, 150, 150, 21);
 		panel.add(textFieldPrecioRegistrado);
-		textFieldPrecioRegistrado.setText(String.valueOf(habitacionDTO.getPrecio()));
+		textFieldPrecioRegistrado.setText(String.valueOf(hDTO.getPrecio()));
 
 		JLabel lblNewLabel = new JLabel("Estado De Habitacion");
 		lblNewLabel.setBounds(202, 76, 151, 14);
@@ -236,7 +241,7 @@ public class CargarHabitacion extends JFrame {
 		group.add(buttonDesabilitado);
 		group.add(buttonHabilitado);
 
-		if (habitacionDTO.isHabilitado())
+		if (hDTO.isHabilitado())
 			buttonHabilitado.setSelected(true);
 		else
 			buttonDesabilitado.setSelected(false);
@@ -306,13 +311,17 @@ public class CargarHabitacion extends JFrame {
 		scrollPane.setBounds(203, 150, 172, 123);
 		panel.add(scrollPane);
 
-		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" });
-		table = new JTable();
-		scrollPane.setColumnHeaderView(table);
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
+			public boolean isCellEditable(int row, int column) {
+
+				return column != 0;
+			}
+		};
+		table = new JTable(modelo);
+		scrollPane.setViewportView(table); // Establecer la vista de la tabla correctamente
 		this.cargarCaracteristicaEspecial();
 		table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
-
 	}
 
 	private void cargarCaracteristicaEspecial() {

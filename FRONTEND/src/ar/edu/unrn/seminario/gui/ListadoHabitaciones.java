@@ -46,9 +46,8 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		// Crear el modelo de la tabla
-		model = new DefaultTableModel(new Object[][] {},
-				new String[] { "Numero de Habitacion", "Cama Matrim", "Cant Camas", "Disponible",
-						"No disponible Hasta" }) {
+		model = new DefaultTableModel(new Object[][] {}, new String[] { "Numero de Habitacion", "Cama Matrim",
+				"Cant Camas", "Disponible", "No disponible Hasta" }) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -56,16 +55,21 @@ public class ListadoHabitaciones extends JFrame {
 					Object.class };
 
 			public boolean isCellEditable(int row, int column) {
-				// Ejemplo: Hacer que la columna 3 (Disponible) no sea editable
-				return column != 3;
+				// no te deja modificar las celdas
+				return false;
+
 			}
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		};
+
 		// Crear la tabla utilizando el modelo corregido
+		// Añadir un MouseListener para detectar los clics en la tabla
+
 		table = new JTable(model);
+
 		this.llenarTabla();
 		scrollPane.setViewportView(table);
 
@@ -152,6 +156,13 @@ public class ListadoHabitaciones extends JFrame {
 		btnEditarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Lógica para editar la habitación
+				int selectedRow = table.getSelectedRow();
+				int columnaSeleccionada = 0;
+				// Obtener el valor de la celda en la fila y columna seleccionada
+				Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
+				int numero = ((Number) valor).intValue();
+
+				CargarHabitacion modificarHabitacion = new CargarHabitacion(api, numero);
 				JOptionPane.showMessageDialog(null, "Funcionalidad de edición aún no implementada.");
 			}
 		});

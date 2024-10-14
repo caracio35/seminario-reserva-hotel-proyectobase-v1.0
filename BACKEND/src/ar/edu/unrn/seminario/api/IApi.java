@@ -8,7 +8,6 @@ import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
-import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 
 public interface IApi {
 
@@ -71,8 +70,8 @@ public interface IApi {
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas);
 
-	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio,
-			boolean habilitado,
-			int numHabitacion,
-			List<CaracteristicaEspecialDTO> caracteristicas);
+	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas);
+
+	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
 }

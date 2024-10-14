@@ -276,7 +276,9 @@ public class MemoryApi implements IApi {
 	// busca y devuelve una habitacion especifica basada en su numero de habitacin
 	// si no se encuentra ninguna habitacion con ese numero devuelve null
 	private Habitacion buscarHabitacion(int numeroHabitacion) {
+		System.out.println(numeroHabitacion);
 		for (Habitacion h : habitaciones) {
+			System.out.println("dentro h" + h);
 			if (h.getNumHabitaciones() == numeroHabitacion) {
 				return h;
 			}
@@ -377,20 +379,13 @@ public class MemoryApi implements IApi {
 				// Crear la lista de características especiales para la habitación
 				List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
 				for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
-					caracteristicasDTO.add(new CaracteristicaEspecialDTO(
-							carac.getNombre(),
-							carac.getDescripcion(),
+					caracteristicasDTO.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
 							carac.getPrecio()));
 				}
 
 				// Crear el objeto HabitacionDTO y agregarlo a la lista
-				habitacionesDTO.add(new HabitacionDTO(
-						h.getCantidadDeCamas(),
-						h.getDescripcion(),
-						h.getPrecio(),
-						h.isHabilitado(),
-						h.getNumHabitaciones(),
-						caracteristicasDTO, traerFechaHastaCuando(h)));
+				habitacionesDTO.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
+						h.isHabilitado(), h.getNumHabitaciones(), caracteristicasDTO, traerFechaHastaCuando(h)));
 				// obtener fecha de desactivacion y pasarlo a string si no es null
 
 			} catch (PrecioCero e) {
@@ -451,8 +446,7 @@ public class MemoryApi implements IApi {
 	}
 
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion,
-			List<CaracteristicaEspecialDTO> caracteristicas) {
+			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas) {
 		try {
 			Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
 					pasarDesdeCaracteristicasDTO(caracteristicas));
@@ -485,7 +479,34 @@ public class MemoryApi implements IApi {
 		return obtenerCaracteristicas;
 	}
 
+	public HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion) {
+		Habitacion habitacionOptenida = this.buscarHabitacion(numeroHabitacion);
+		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
+		ArrayList<CaracteristicaEspecial> prueba = habitacionOptenida.getCaracteristicasEspeciale();
+		for (CaracteristicaEspecial carac : prueba) {
+			car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(), carac.getPrecio()));
+		}
+
+		HabitacionDTO habitacionNueva = null;
+		try {
+			habitacionNueva = new HabitacionDTO(habitacionOptenida.getCantidadDeCamas(),
+					habitacionOptenida.getDescripcion(), habitacionOptenida.getPrecio(),
+					habitacionOptenida.isHabilitado(), habitacionOptenida.getNumHabitaciones(), car, null);
+		} catch (CampoVacioExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EnterosEnCero e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PrecioCero e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return habitacionNueva;
+	}
+
 }
+
 // Dar de baja una habitación
 // Modificar habitación
 // Calificar Habitación
