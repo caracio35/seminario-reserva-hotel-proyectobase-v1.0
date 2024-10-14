@@ -188,6 +188,7 @@ public class CargarHabitacion extends JFrame {
 	@SuppressWarnings("serial")
 	public CargarHabitacion(IApi api, int numeroHabitacion) {
 		this.api = api;
+		this.caracteristicasEspeciales = api.obtenerCaracteristica();
 		HabitacionDTO hDTO = api.buscarHabitacionDTOPorNumero(numeroHabitacion);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 420);
@@ -322,6 +323,7 @@ public class CargarHabitacion extends JFrame {
 		};
 		table = new JTable(modelo);
 		scrollPane.setViewportView(table); // Establecer la vista de la tabla correctamente
+		// this.cargarCaracteristicaEspecial();
 		this.cargarCaracteristica(hDTO);
 		table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
@@ -342,9 +344,20 @@ public class CargarHabitacion extends JFrame {
 		List<CaracteristicaEspecialDTO> car = h.getCaracteristicasEspeciale();
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
 		modelo.setRowCount(0);
-		for (CaracteristicaEspecialDTO caracteristicaEspecialDTO : car) {
+
+		for (CaracteristicaEspecialDTO caracteristicaEspecialDTO : this.caracteristicasEspeciales) {
 			Object[] fila = new Object[2];
 			fila[0] = caracteristicaEspecialDTO.getNombre();
+
+			boolean activada = false;
+
+			for (CaracteristicaEspecialDTO carHab : car) {
+				if (carHab.getNombre().equals(caracteristicaEspecialDTO.getNombre())) {
+					activada = true;
+				}
+			}
+
+			fila[1] = activada;
 			modelo.addRow(fila);
 		}
 	}
