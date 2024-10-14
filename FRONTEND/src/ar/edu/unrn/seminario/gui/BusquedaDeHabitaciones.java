@@ -41,6 +41,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("serial")
 	public BusquedaDeHabitaciones(IApi api) {
 		this.api = api;
 		// Configurar el JFrame
@@ -57,10 +58,8 @@ public class BusquedaDeHabitaciones extends JFrame {
 		scrollPane.setBounds(136, 53, 815, 277);
 		getContentPane().add(scrollPane);
 
-		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-				"Numero de Habitacion", "  Caracteristicas Especiales   " }) {
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio", "Numero de Habitacion", "  Caracteristicas Especiales   " }) {
 			public boolean isCellEditable(int row, int column) {
-				// Ejemplo: Hacer que la columna 3 (Disponible) no sea editable
 				return false;
 			}
 		};

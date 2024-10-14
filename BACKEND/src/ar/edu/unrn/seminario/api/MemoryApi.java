@@ -276,9 +276,7 @@ public class MemoryApi implements IApi {
 	// busca y devuelve una habitacion especifica basada en su numero de habitacin
 	// si no se encuentra ninguna habitacion con ese numero devuelve null
 	private Habitacion buscarHabitacion(int numeroHabitacion) {
-		System.out.println(numeroHabitacion);
 		for (Habitacion h : habitaciones) {
-			System.out.println("dentro h" + h);
 			if (h.getNumHabitaciones() == numeroHabitacion) {
 				return h;
 			}

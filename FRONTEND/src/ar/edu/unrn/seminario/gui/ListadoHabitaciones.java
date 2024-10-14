@@ -161,9 +161,8 @@ public class ListadoHabitaciones extends JFrame {
 				// Obtener el valor de la celda en la fila y columna seleccionada
 				Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
 				int numero = ((Number) valor).intValue();
-
 				CargarHabitacion modificarHabitacion = new CargarHabitacion(api, numero);
-				JOptionPane.showMessageDialog(null, "Funcionalidad de edición aún no implementada.");
+				modificarHabitacion.setVisible(true);
 			}
 		});
 		btnEditarHabitacion.setBounds(276, 206, 109, 21);
