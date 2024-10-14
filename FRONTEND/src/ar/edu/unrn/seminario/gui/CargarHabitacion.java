@@ -117,7 +117,7 @@ public class CargarHabitacion extends JFrame {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
-								"El campo numHabitacion no puede ser cero o no estar definido y tampoco puede ser una letra ");
+								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser cero o no estar definido y tampoco puede ser una letra ");
 					}
 				}
 

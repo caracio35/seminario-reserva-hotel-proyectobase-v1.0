@@ -5,4 +5,8 @@ public class EnterosEnCero extends Exception {
         super(mensaje);
     }
 
+    public EnterosEnCero() {
+        super();
+    }
+
 }
