@@ -17,6 +17,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCero;
+import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCero;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
@@ -444,16 +445,24 @@ public class MemoryApi implements IApi {
 	}
 
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas) {
+			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas) throws NumeroHabitacionExistenteException  {
+		
+		if (existeHabitacionConNumero(numHabitacion)) {
+			throw new NumeroHabitacionExistenteException("La habitación con el número " + numHabitacion + " ya existe.");
+	    }
+		if(!existeHabitacionConNumero(numHabitacion)) {
 		try {
 			Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
 					pasarDesdeCaracteristicasDTO(caracteristicas));
 			habitaciones.add(habitacion);
 		} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
 			System.out.println(e.getMessage());
+			}
 		}
-		// Example of adding to a collection
+		
 	}
+
+
 
 	private ArrayList<CaracteristicaEspecial> pasarDesdeCaracteristicasDTO(
 			List<CaracteristicaEspecialDTO> caracteristicas) {
@@ -533,6 +542,15 @@ public class MemoryApi implements IApi {
 		if (habitacionObtenida != null) {
 			habitaciones.remove(habitacionObtenida);
 		}
+	}
+	private boolean existeHabitacionConNumero(int numeroHabitacion) {
+		for(Habitacion h : habitaciones) {
+			if(h.getNumHabitaciones()==numeroHabitacion) {
+				return true ; 
+			}
+			
+		}
+		return false ; 
 	}
 }
 

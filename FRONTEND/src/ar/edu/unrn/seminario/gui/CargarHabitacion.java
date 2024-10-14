@@ -25,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 
 public class CargarHabitacion extends JFrame {
 
@@ -107,9 +108,13 @@ public class CargarHabitacion extends JFrame {
 						}
 					}
 
-					api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()), textFieldDescripccion.getText(),
-							Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
-							Integer.parseInt(textFieldNumeroHabitacion.getText()), obtenerListaCaracteristicas());
+					try {
+						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()), textFieldDescripccion.getText(),
+								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
+								Integer.parseInt(textFieldNumeroHabitacion.getText()), obtenerListaCaracteristicas());
+					} catch (NumberFormatException | NumeroHabitacionExistenteException e1) {
+						JOptionPane.showMessageDialog(null, "El numero de habitacion ya existe, ingrese otro numero ");
+					}
 
 				}
 
