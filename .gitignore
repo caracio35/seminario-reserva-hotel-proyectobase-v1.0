@@ -12,8 +12,13 @@ tmp/**/*
 .loadpath
 /bin/
 BACKEND/.DS_Store
-/BACKEND/src
+
 
 .vscode/settings.json
 .gitignore
 /.vscode
+BACKEND/src/ar/edu/unrn/seminario/.DS_Store
+BACKEND/src/ar/edu/unrn/.DS_Store
+BACKEND/src/ar/edu/.DS_Store
+BACKEND/src/ar/.DS_Store
+BACKEND/src/.DS_Store
