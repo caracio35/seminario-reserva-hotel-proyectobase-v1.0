@@ -190,10 +190,9 @@ public class MemoryApi implements IApi {
 
 	@Override
 	// Crea una nueva caracteristica
-	public void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO) {
+	public void crearCaracteristicaEspecial(String nombre, String descripcion, double precio) {
 		// falta agregar excepciones
-		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(caracteristicaEspecialDTO.getNombre(),
-				caracteristicaEspecialDTO.getDescricion(), caracteristicaEspecialDTO.getPrecio());
+		CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
 		caracteristicaEspecial.add(caracteristica);
 	}
 
@@ -355,7 +354,8 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public void generarReserva(int habitacion [] , String usuario , String fechaInicio , String fechaFinal , String fechaReserva , int cantidadPersonas , String servicio[] , boolean pagoMinimo) {
+	public void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFinal,
+			String fechaReserva, int cantidadPersonas, String servicio[], boolean pagoMinimo) {
 
 		ArrayList<Habitacion> habitacinesObtenidos = this.obtenerHabitacionesPorNumero(habitacion);
 		Usuario usuarioObtenido = this.buscarUsuario(usuario);
@@ -365,8 +365,9 @@ public class MemoryApi implements IApi {
 		LocalDate fechaReserva1 = this.convertirAfecha(fechaReserva);
 		int id = this.generadorID();
 
-		Reserva reserva = new Reserva(id ,habitacinesObtenidos ,usuarioObtenido , fechaIni , fechaFin , 0 , serviciosObtenidos , false , false , null , fechaReserva1 , null , pagoMinimo );
-		
+		Reserva reserva = new Reserva(id, habitacinesObtenidos, usuarioObtenido, fechaIni, fechaFin, 0,
+				serviciosObtenidos, false, false, null, fechaReserva1, null, pagoMinimo);
+
 		reservas.add(reserva);
 	}
 

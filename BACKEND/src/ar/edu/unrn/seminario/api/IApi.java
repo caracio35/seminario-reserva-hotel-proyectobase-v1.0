@@ -40,10 +40,10 @@ public interface IApi {
 																						// las características
 																						// proporcionadas
 
-	void crearCaracteristicaEspecial(CaracteristicaEspecialDTO caracteristicaEspecialDTO); // crea una nueva
-																							// caracteristica especial y
-																							// la agrega a la lista de
-																							// caracteristicas especiale
+	void crearCaracteristicaEspecial(String nombre, String descripcion, double precio); // crea una nueva
+																						// caracteristica especial y
+																						// la agrega a la lista de
+																						// caracteristicas especiale
 
 	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);// carga una o mas caracteristica especiales
 																			// a una habitación especifica
@@ -55,8 +55,10 @@ public interface IApi {
 	boolean autenticarContraseña(String username, String password);// autentica un usuario verificando su nombre de
 																	// usuario y contrasena
 
-	void generarReserva(int habitacion [] , String usuario , String fechaInicio , String fechaFin , String fechaReserva , int cantidadPersonas , String servicio [] , boolean pagoMinimo );// Genera una reserva para una o mas habitaciones durante un periodo
-												// especifico de tiempo
+	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
+			int cantidadPersonas, String servicio[], boolean pagoMinimo);// Genera una reserva para una o mas
+																			// habitaciones durante un periodo
+	// especifico de tiempo
 
 	void modificarReserva(); // modifica una reserva existente
 
@@ -72,7 +74,8 @@ public interface IApi {
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas);
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas) throws NumeroHabitacionExistenteException;
+			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
+			throws NumeroHabitacionExistenteException;
 
 	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
 

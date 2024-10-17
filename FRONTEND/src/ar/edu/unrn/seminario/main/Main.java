@@ -2,6 +2,7 @@ package ar.edu.unrn.seminario.main;
 
 import java.awt.EventQueue;
 
+import ar.edu.unrn.seminario.api.BDApi;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.gui.ListadoHabitaciones;
@@ -17,8 +18,11 @@ public class Main {
 				try {
 
 					IApi api = new MemoryApi();
+					BDApi apiBdApi = new BDApi();
+					apiBdApi.crearCaracteristicaEspecial("Pileta chica", "pileta chica", 100.00);
+
 					VentanaPrincipal frame = new VentanaPrincipal(api);
-					frame.setVisible(true);
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
