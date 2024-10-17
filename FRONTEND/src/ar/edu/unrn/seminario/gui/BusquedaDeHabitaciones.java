@@ -163,7 +163,7 @@ public class BusquedaDeHabitaciones extends JFrame {
                 Date selectedDate = JcalenderFechaIngreso.getDate();
                 if (selectedDate != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    fechaReservaFin = sdf.format(selectedDate);
+                    fechaReservaInicio = sdf.format(selectedDate);
                     
                     System.out.println("Fecha seleccionada: " + fechaReservaFin);
                 } 

@@ -25,12 +25,14 @@ public class ConfirmarReserva extends JFrame {
 	private JTable table;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textFieldUsuario;
+	private JTextField textFieldFechaIngreso;
+	private JTextField texFilFechaSalida;
 
-	public ConfirmarReserva(String fechaInicio , String fechaFin , String unusrio ) {
+	public ConfirmarReserva(String fechaInicio , String fechaFin , String usuario ) {
 		
-		System.out.println(fechaFin + fechaFin + unusrio);
+		System.out.println(fechaFin + fechaFin + usuario );
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 475, 455);
+		setBounds(100, 100, 528, 455);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -38,37 +40,37 @@ public class ConfirmarReserva extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 10, 439, 398);
+		panel.setBounds(10, 10, 492, 398);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
 		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(10, 57, 137, 19);
+		textFieldNombre.setBounds(10, 75, 137, 19);
 		panel.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 
 		textFieldApellido = new JTextField();
-		textFieldApellido.setBounds(10, 101, 137, 19);
+		textFieldApellido.setBounds(10, 122, 137, 19);
 		panel.add(textFieldApellido);
 		textFieldApellido.setColumns(10);
 
 		textFieldDNIPasaporte = new JTextField();
-		textFieldDNIPasaporte.setBounds(10, 146, 137, 19);
+		textFieldDNIPasaporte.setBounds(10, 167, 137, 19);
 		panel.add(textFieldDNIPasaporte);
 		textFieldDNIPasaporte.setColumns(10);
 
 		JComboBox comboBoxMetodoPago = new JComboBox();
-		comboBoxMetodoPago.setBounds(10, 200, 137, 21);
+		comboBoxMetodoPago.setBounds(10, 217, 137, 21);
 		panel.add(comboBoxMetodoPago);
 
 		JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
 		buttonGroup.add(rdbtnPrecioMinimo);
-		rdbtnPrecioMinimo.setBounds(0, 331, 103, 21);
+		rdbtnPrecioMinimo.setBounds(3, 355, 103, 21);
 		panel.add(rdbtnPrecioMinimo);
 
 		JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
 		buttonGroup.add(rdbtnPagoTotal);
-		rdbtnPagoTotal.setBounds(140, 331, 103, 21);
+		rdbtnPagoTotal.setBounds(108, 355, 103, 21);
 		panel.add(rdbtnPagoTotal);
 
 		JButton btnRealizarPago = new JButton("Realizar Pago");
@@ -78,7 +80,7 @@ public class ConfirmarReserva extends JFrame {
 				pagar.setVisible(true);
 			}
 		});
-		btnRealizarPago.setBounds(289, 367, 117, 21);
+		btnRealizarPago.setBounds(312, 367, 117, 21);
 		panel.add(btnRealizarPago);
 
 		JButton btnCancelar = new JButton("Cancelar");
@@ -87,58 +89,64 @@ public class ConfirmarReserva extends JFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setBounds(194, 367, 85, 21);
+		btnCancelar.setBounds(217, 367, 85, 21);
 		panel.add(btnCancelar);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(163, 103, 266, 221);
+		JScrollPane scrollPane = new JScrollPane(); 
+		scrollPane.setBounds(216, 72, 266, 252);
 		panel.add(scrollPane);
 
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(10, 40, 45, 13);
+		lblNombre.setBounds(10, 60, 45, 13);
 		panel.add(lblNombre);
 
 		JLabel lblApellido = new JLabel("Apellido");
-		lblApellido.setBounds(10, 86, 45, 13);
+		lblApellido.setBounds(10, 105, 58, 13);
 		panel.add(lblApellido);
 
-		JLabel lblDNIPasaporte = new JLabel("DNI/Pasaporte");
-		lblDNIPasaporte.setBounds(10, 130, 45, 13);
+		JLabel lblDNIPasaporte = new JLabel("DNI o Pasaporte");
+		lblDNIPasaporte.setBounds(10, 152, 96, 13);
 		panel.add(lblDNIPasaporte);
 
 		JLabel lblMetodoDePago = new JLabel("Metodo de Pago");
-		lblMetodoDePago.setBounds(10, 177, 96, 13);
+		lblMetodoDePago.setBounds(10, 197, 96, 13);
 		panel.add(lblMetodoDePago);
 
 		JLabel lblFechaIngreso = new JLabel("Fecha Ingreso");
-		lblFechaIngreso.setBounds(10, 231, 96, 13);
+		lblFechaIngreso.setBounds(10, 249, 96, 13);
 		panel.add(lblFechaIngreso);
 
 		JLabel lblFechaSalida = new JLabel("Fecha Salida");
-		lblFechaSalida.setBounds(10, 284, 96, 13);
+		lblFechaSalida.setBounds(10, 299, 96, 13);
 		panel.add(lblFechaSalida);
 		
 		textFieldUsuario = new JTextField();
-		textFieldUsuario.setBounds(10, 11, 210, 20);
+		textFieldUsuario.setBounds(10, 36, 173, 20);
 		panel.add(textFieldUsuario);
 		textFieldUsuario.setColumns(10);
 		textFieldUsuario.setText("brunohuaiquilican@hotmail.com");
 		textFieldUsuario.setEditable(false);
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(10, 253, 137, 20);
-		panel.add(dateChooser);
+		JLabel lblNewLabel = new JLabel("Usuario");
+		lblNewLabel.setBounds(9, 22, 46, 14);
+		panel.add(lblNewLabel);
 		
-		JDateChooser dateChooser_1 = new JDateChooser();
-		dateChooser_1.getCalendarButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		dateChooser_1.setBounds(10, 304, 137, 20);
-		panel.add(dateChooser_1);
+		textFieldFechaIngreso = new JTextField();
+		textFieldFechaIngreso.setBounds(10, 262, 137, 20);
+		panel.add(textFieldFechaIngreso);
+		textFieldFechaIngreso.setColumns(10);
+		textFieldFechaIngreso.setText(fechaInicio);
+		textFieldFechaIngreso.setEditable(false);
+		
+		texFilFechaSalida = new JTextField();
+		texFilFechaSalida.setBounds(10, 315, 137, 20);
+		panel.add(texFilFechaSalida);
+		texFilFechaSalida.setColumns(10);
+		texFilFechaSalida.setText(fechaFin);
+		texFilFechaSalida.setEditable(false);
 		
 		
 	}
