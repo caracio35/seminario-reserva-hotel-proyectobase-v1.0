@@ -19,6 +19,9 @@ import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class ListadoHabitaciones extends JFrame {
 
@@ -29,20 +32,26 @@ public class ListadoHabitaciones extends JFrame {
 	private IApi api;
 	private String fechaFormateada;
 	private int numHabitacionSelected;
+	private JTextField textField;
 
 	public ListadoHabitaciones(IApi api) {
+		
+		setBackground(SystemColor.textHighlight);
+		getContentPane().setBackground(new Color(240, 240, 240));
+		getContentPane().setForeground(new Color(255, 255, 255));
+		setForeground(new Color(0, 0, 102));
 		// Configurar el JFrame
 		// this.habitacionDTOs = habitacionDTOs;
 		this.api = api;
 		setTitle("Lista de Habitaciones");
-		setSize(555, 400); // Establece el tamaño del JFrame
+		setSize(996, 298); // Establece el tamaño del JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
 		setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 		getContentPane().setLayout(null); // Establecer el layout como nulo para usar coordenadas absolutas
 
 		// Crear el JScrollPane y JTable
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 39, 516, 133);
+		scrollPane.setBounds(110, 53, 763, 152);
 		getContentPane().add(scrollPane);
 
 		// Crear el modelo de la tabla
@@ -72,8 +81,11 @@ public class ListadoHabitaciones extends JFrame {
 
 		this.llenarTabla();
 		scrollPane.setViewportView(table);
-
-		JButton btnActivarHabitacion = new JButton("Activar");
+		table.getTableHeader().setBackground(new Color(52, 73, 94));  // #34495E
+		table.getTableHeader().setForeground(Color.WHITE);
+		JButton btnActivarHabitacion = new JButton("Activar ");
+		btnActivarHabitacion.setForeground(new Color(255, 255, 255));
+		btnActivarHabitacion.setBackground(new Color(90, 155, 213));
 		btnActivarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
@@ -95,10 +107,12 @@ public class ListadoHabitaciones extends JFrame {
 				}
 			}
 		});
-		btnActivarHabitacion.setBounds(10, 206, 85, 21);
+		btnActivarHabitacion.setBounds(7, 66, 99, 21);
 		getContentPane().add(btnActivarHabitacion);
 
-		JButton btnDesactivar = new JButton("Desactivar");
+		JButton btnDesactivar = new JButton("Desactivar ");
+		btnDesactivar.setForeground(new Color(255, 255, 255));
+		btnDesactivar.setBackground(new Color(90, 155, 213));
 		btnDesactivar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
@@ -149,10 +163,12 @@ public class ListadoHabitaciones extends JFrame {
 				}
 			}
 		});
-		btnDesactivar.setBounds(123, 206, 85, 21);
+		btnDesactivar.setBounds(7, 143, 99, 21);
 		getContentPane().add(btnDesactivar);
 
-		JButton btnEditarHabitacion = new JButton("Editar Habitacion");
+		JButton btnEditarHabitacion = new JButton("Editar");
+		btnEditarHabitacion.setForeground(new Color(255, 255, 255));
+		btnEditarHabitacion.setBackground(new Color(90, 155, 213));
 		btnEditarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Lógica para editar la habitación
@@ -165,10 +181,12 @@ public class ListadoHabitaciones extends JFrame {
 				modificarHabitacion.setVisible(true);
 			}
 		});
-		btnEditarHabitacion.setBounds(276, 206, 109, 21);
+		btnEditarHabitacion.setBounds(874, 66, 99, 21);
 		getContentPane().add(btnEditarHabitacion);
 
-		JButton btnEliminarHabitacion = new JButton("Eliminar Habitacion");
+		JButton btnEliminarHabitacion = new JButton("Eliminar ");
+		btnEliminarHabitacion.setForeground(new Color(255, 255, 255));
+		btnEliminarHabitacion.setBackground(new Color(90, 155, 213));
 		btnEliminarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
@@ -191,10 +209,12 @@ public class ListadoHabitaciones extends JFrame {
 				}
 			}
 		});
-		btnEliminarHabitacion.setBounds(395, 206, 131, 21);
+		btnEliminarHabitacion.setBounds(874, 143, 99, 21);
 		getContentPane().add(btnEliminarHabitacion);
 
-		JButton btnSalir = new JButton("SALIR");
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.setForeground(new Color(255, 255, 255));
+		btnSalir.setBackground(new Color(231, 76, 60));
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea salir?", "Confirmación",
@@ -205,8 +225,17 @@ public class ListadoHabitaciones extends JFrame {
 				}
 			}
 		});
-		btnSalir.setBounds(441, 332, 85, 21);
+		btnSalir.setBounds(883, 232, 85, 21);
 		getContentPane().add(btnSalir);
+		
+		textField = new JTextField();
+		textField.setBounds(110, 25, 139, 20);
+		getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Buscar Habitacion");
+		lblNewLabel.setBounds(110, 11, 122, 14);
+		getContentPane().add(lblNewLabel);
 	}
 
 	public void llenarTabla() {
@@ -231,5 +260,4 @@ public class ListadoHabitaciones extends JFrame {
 		}
 		table.setModel(model);
 	}
-
 }

@@ -55,7 +55,7 @@ public interface IApi {
 	boolean autenticarContraseña(String username, String password);// autentica un usuario verificando su nombre de
 																	// usuario y contrasena
 
-	void generarReserva(ReservaDTO reservaDTO);// Genera una reserva para una o mas habitaciones durante un periodo
+	void generarReserva(int habitacion [] , String usuario , String fechaInicio , String fechaFin , String fechaReserva , int cantidadPersonas , String servicio [] , boolean pagoMinimo );// Genera una reserva para una o mas habitaciones durante un periodo
 												// especifico de tiempo
 
 	void modificarReserva(); // modifica una reserva existente
@@ -80,4 +80,5 @@ public interface IApi {
 			List<CaracteristicaEspecialDTO> caracteristicas);
 
 	void eliminarHabitacion(int numeroHabitacion);
+
 }

@@ -355,18 +355,18 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public void generarReserva(ReservaDTO reservaDTO) {
+	public void generarReserva(int habitacion [] , String usuario , String fechaInicio , String fechaFinal , String fechaReserva , int cantidadPersonas , String servicio[] , boolean pagoMinimo) {
 
-		ArrayList<Habitacion> habitacinesObtenidos = this.obtenerHabitacionesPorNumero(reservaDTO.getHabitacion());
-		Usuario usuario = this.buscarUsuario(reservaDTO.getUsuario());
-		LocalDate fechaIni = this.convertirAfecha(reservaDTO.getFechaDeInicio());
-		LocalDate fechaFin = this.convertirAfecha(reservaDTO.getFechaDeSalida());
+		ArrayList<Habitacion> habitacinesObtenidos = this.obtenerHabitacionesPorNumero(habitacion);
+		Usuario usuarioObtenido = this.buscarUsuario(usuario);
+		LocalDate fechaIni = this.convertirAfecha(fechaInicio);
+		LocalDate fechaFin = this.convertirAfecha(fechaFinal);
 		ArrayList<Servicio> serviciosObtenidos = this.buscarServicio(null);// pregunta como hacer esto
-		LocalDate fechaReserva = this.convertirAfecha(reservaDTO.getFechaDeReserva());
+		LocalDate fechaReserva1 = this.convertirAfecha(fechaReserva);
+		int id = this.generadorID();
 
-		Reserva reserva = new Reserva(generadorID(), habitacinesObtenidos, usuario, fechaIni, fechaFin,
-				reservaDTO.getCantidadDePersonas(), serviciosObtenidos, false, false, null, fechaReserva, null,
-				reservaDTO.getPagoMinimo());
+		Reserva reserva = new Reserva(id ,habitacinesObtenidos ,usuarioObtenido , fechaIni , fechaFin , 0 , serviciosObtenidos , false , false , null , fechaReserva1 , null , pagoMinimo );
+		
 		reservas.add(reserva);
 	}
 
@@ -553,6 +553,7 @@ public class MemoryApi implements IApi {
 		}
 		return false;
 	}
+
 }
 
 // Dar de baja una habitación

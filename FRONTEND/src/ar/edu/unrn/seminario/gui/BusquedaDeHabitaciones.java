@@ -2,6 +2,7 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,13 +79,13 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(textField);
 		textField.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Fecha Inicio");
+		JLabel lblNewLabel = new JLabel("Fecha Ingreso");
 		lblNewLabel.setBounds(10, 192, 85, 13);
 		getContentPane().add(lblNewLabel);
 
-		JLabel lblNewLabel_1 = new JLabel("Fecha Fin");
-		lblNewLabel_1.setBounds(10, 236, 96, 13);
-		getContentPane().add(lblNewLabel_1);
+		JLabel JcalederFechaSalida = new JLabel("Fecha Salida");
+		JcalederFechaSalida.setBounds(10, 236, 96, 13);
+		getContentPane().add(JcalederFechaSalida);
 
 		lblNewLabel_2 = new JLabel("Total Huéspedes");
 		lblNewLabel_2.setBounds(10, 280, 96, 13);
@@ -145,11 +146,25 @@ public class BusquedaDeHabitaciones extends JFrame {
 		btnCancelarsalir.setBounds(599, 346, 116, 21);
 		getContentPane().add(btnCancelarsalir);
 
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(10, 204, 96, 20);
-		getContentPane().add(dateChooser);
+		JDateChooser JcalenderFechaIngreso = new JDateChooser();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, 0);
+        JcalenderFechaIngreso.setMinSelectableDate(cal.getTime());
+		JcalenderFechaIngreso.getCalendarButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		JcalenderFechaIngreso.setBounds(10, 204, 96, 20);
+		getContentPane().add(JcalenderFechaIngreso);
 
 		JDateChooser dateChooser_1 = new JDateChooser();
+		Calendar caleder = Calendar.getInstance();
+        caleder.add(Calendar.DAY_OF_MONTH, 0);
+        JcalenderFechaIngreso.setMinSelectableDate(caleder.getTime());
+		dateChooser_1.getCalendarButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		dateChooser_1.setBounds(10, 249, 96, 20);
 		getContentPane().add(dateChooser_1);
 	}
