@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class ConfirmarReserva extends JFrame {
 
@@ -21,14 +22,15 @@ public class ConfirmarReserva extends JFrame {
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellido;
 	private JTextField textFieldDNIPasaporte;
-	private JTextField textFieldFechaIngreso;
-	private JTextField textFieldFechaSalida;
 	private JTable table;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JTextField textFieldUsuario;
 
-	public ConfirmarReserva() {
+	public ConfirmarReserva(String fechaInicio , String fechaFin , String unusrio ) {
+		
+		System.out.println(fechaFin + fechaFin + unusrio);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 455);
+		setBounds(100, 100, 475, 455);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -36,27 +38,27 @@ public class ConfirmarReserva extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 10, 416, 398);
+		panel.setBounds(10, 10, 439, 398);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
 		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(10, 57, 96, 19);
+		textFieldNombre.setBounds(10, 57, 137, 19);
 		panel.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 
 		textFieldApellido = new JTextField();
-		textFieldApellido.setBounds(10, 101, 96, 19);
+		textFieldApellido.setBounds(10, 101, 137, 19);
 		panel.add(textFieldApellido);
 		textFieldApellido.setColumns(10);
 
 		textFieldDNIPasaporte = new JTextField();
-		textFieldDNIPasaporte.setBounds(10, 146, 96, 19);
+		textFieldDNIPasaporte.setBounds(10, 146, 137, 19);
 		panel.add(textFieldDNIPasaporte);
 		textFieldDNIPasaporte.setColumns(10);
 
 		JComboBox comboBoxMetodoPago = new JComboBox();
-		comboBoxMetodoPago.setBounds(10, 200, 96, 21);
+		comboBoxMetodoPago.setBounds(10, 200, 137, 21);
 		panel.add(comboBoxMetodoPago);
 
 		JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
@@ -68,16 +70,6 @@ public class ConfirmarReserva extends JFrame {
 		buttonGroup.add(rdbtnPagoTotal);
 		rdbtnPagoTotal.setBounds(140, 331, 103, 21);
 		panel.add(rdbtnPagoTotal);
-
-		textFieldFechaIngreso = new JTextField();
-		textFieldFechaIngreso.setBounds(10, 255, 96, 19);
-		panel.add(textFieldFechaIngreso);
-		textFieldFechaIngreso.setColumns(10);
-
-		textFieldFechaSalida = new JTextField();
-		textFieldFechaSalida.setBounds(10, 306, 96, 19);
-		panel.add(textFieldFechaSalida);
-		textFieldFechaSalida.setColumns(10);
 
 		JButton btnRealizarPago = new JButton("Realizar Pago");
 		btnRealizarPago.addActionListener(new ActionListener() {
@@ -99,14 +91,14 @@ public class ConfirmarReserva extends JFrame {
 		panel.add(btnCancelar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(140, 160, 266, 154);
+		scrollPane.setBounds(163, 103, 266, 221);
 		panel.add(scrollPane);
 
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(10, 34, 45, 13);
+		lblNombre.setBounds(10, 40, 45, 13);
 		panel.add(lblNombre);
 
 		JLabel lblApellido = new JLabel("Apellido");
@@ -128,5 +120,26 @@ public class ConfirmarReserva extends JFrame {
 		JLabel lblFechaSalida = new JLabel("Fecha Salida");
 		lblFechaSalida.setBounds(10, 284, 96, 13);
 		panel.add(lblFechaSalida);
+		
+		textFieldUsuario = new JTextField();
+		textFieldUsuario.setBounds(10, 11, 210, 20);
+		panel.add(textFieldUsuario);
+		textFieldUsuario.setColumns(10);
+		textFieldUsuario.setText("brunohuaiquilican@hotmail.com");
+		textFieldUsuario.setEditable(false);
+		
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBounds(10, 253, 137, 20);
+		panel.add(dateChooser);
+		
+		JDateChooser dateChooser_1 = new JDateChooser();
+		dateChooser_1.getCalendarButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		dateChooser_1.setBounds(10, 304, 137, 20);
+		panel.add(dateChooser_1);
+		
+		
 	}
 }

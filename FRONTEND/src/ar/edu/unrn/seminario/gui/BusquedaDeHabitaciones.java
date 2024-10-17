@@ -2,7 +2,11 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +42,8 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private JButton btnCancelarsalir;
 	private DefaultTableModel modelo;
 	private IApi api;
+	private String fechaReservaFin;
+	private String fechaReservaInicio ; 
 
 	/**
 	 * Create the frame.
@@ -125,7 +131,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JButton btnReservar = new JButton("RESERVAR");
 		btnReservar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConfirmarReserva confirmacion = new ConfirmarReserva();
+				ConfirmarReserva confirmacion = new ConfirmarReserva( fechaReservaInicio,fechaReservaFin , null );
 				confirmacion.setVisible(true);
 			}
 		});
@@ -150,10 +156,19 @@ public class BusquedaDeHabitaciones extends JFrame {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, 0);
         JcalenderFechaIngreso.setMinSelectableDate(cal.getTime());
-		JcalenderFechaIngreso.getCalendarButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		JcalenderFechaIngreso.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+            	
+                Date selectedDate = JcalenderFechaIngreso.getDate();
+                if (selectedDate != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    fechaReservaFin = sdf.format(selectedDate);
+                    
+                    System.out.println("Fecha seleccionada: " + fechaReservaFin);
+                } 
+            }
+        });
 		JcalenderFechaIngreso.setBounds(10, 204, 96, 20);
 		getContentPane().add(JcalenderFechaIngreso);
 
@@ -161,10 +176,20 @@ public class BusquedaDeHabitaciones extends JFrame {
 		Calendar caleder = Calendar.getInstance();
         caleder.add(Calendar.DAY_OF_MONTH, 0);
         JcalenderFechaIngreso.setMinSelectableDate(caleder.getTime());
-		dateChooser_1.getCalendarButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+        dateChooser_1.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                
+                Date selectedDate = dateChooser_1.getDate();
+                if (selectedDate != null) {
+   
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    fechaReservaFin = sdf.format(selectedDate);
+                    
+                    System.out.println("Fecha seleccionada: " + fechaReservaFin);
+                }
+            }
+        });
 		dateChooser_1.setBounds(10, 249, 96, 20);
 		getContentPane().add(dateChooser_1);
 	}
