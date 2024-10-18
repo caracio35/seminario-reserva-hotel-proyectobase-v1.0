@@ -190,8 +190,28 @@ public class BDApi implements IApi {
 
 	@Override
 	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'darDeBajaHabitacion'");
+		Connection conn = null;
+		com.mysql.jdbc.PreparedStatement pstmt = null;
+		try {
+			conn = conectar();
+			String sql = "DELETE FROM Habitacion WHERE numHabitaciones = ?";
+			pstmt = (com.mysql.jdbc.PreparedStatement) conn.prepareStatement(sql);
+			pstmt.setInt(1, numeroHabitacion);
+			pstmt.executeUpdate();
+			pstmt.close();
+			System.out.println("Caracteristica elimanda con exito");
+		} catch (SQLException e) {
+			System.out.println("Error al insertar en la tabla caracteristica especial" + e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					System.out.println("Error al cerrar la conexion");
+				}
+
+			}
+		}
 	}
 
 	@Override
