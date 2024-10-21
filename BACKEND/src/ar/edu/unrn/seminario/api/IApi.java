@@ -83,5 +83,6 @@ public interface IApi {
 			List<CaracteristicaEspecialDTO> caracteristicas);
 
 	void eliminarHabitacion(int numeroHabitacion);
-
+	
+	void eliminarCaracteristica(String nombreCaracteristica);
 }

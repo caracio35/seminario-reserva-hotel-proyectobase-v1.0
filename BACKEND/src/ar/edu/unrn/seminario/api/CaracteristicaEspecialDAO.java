@@ -8,7 +8,7 @@ import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 public interface CaracteristicaEspecialDAO {
 	void create(CaracteristicaEspecial caracteristicas);
 	void update(CaracteristicaEspecial caracteristicas);
-	Calificacion find (int id_caracteristicas);
-	void remove(int id_caracteristicas);
+	CaracteristicaEspecial find (int id_caracteristicas);
+	void remove(String id_caracteristicas);
 	Set<CaracteristicaEspecial> findAll();
 }

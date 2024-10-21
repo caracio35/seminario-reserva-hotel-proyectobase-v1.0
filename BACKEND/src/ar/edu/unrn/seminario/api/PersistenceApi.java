@@ -187,4 +187,11 @@ public class PersistenceApi implements IApi {
 
 	}
 
+	@Override
+	public void eliminarCaracteristica(String nombreCaracteristica) {
+		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
+		i.remove(nombreCaracteristica);
+		
+	}
+
 }

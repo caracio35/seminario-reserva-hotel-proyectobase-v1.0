@@ -555,6 +555,12 @@ public class MemoryApi implements IApi {
 		return false;
 	}
 
+	@Override
+	public void eliminarCaracteristica(String nombreCaracteristica) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 // Dar de baja una habitación

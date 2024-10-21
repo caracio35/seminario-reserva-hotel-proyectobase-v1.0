@@ -2,6 +2,7 @@ package acceso;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Set;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -16,7 +17,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	private final static String usuario = "root";
 	private final static String clave = "";
 	private final static String nuevaCaracteristica = "INSERT INTO caracteristicaespecial (nombre,descripcion,precio) VALUES (?,?,?) ";
-
+	private final static String removeCaracteristica = "DELETE FROM caracteristicaespecial WHERE nombre = ?";
 	public ImplementacionCaracteristicasEspecialDAO() {
 
 	}
@@ -49,14 +50,33 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	@Override
-	public Calificacion find(int id_caracteristicas) {
+	public CaracteristicaEspecial find(int id_caracteristicas) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void remove(int id_caracteristicas) {
-		// TODO Auto-generated method stub
+	public void remove(String id_caracteristicas) {
+		Connection miConeccion = null;
+		PreparedStatement pStament = null;
+		try {
+			miConeccion = conectar();
+			pStament = (PreparedStatement) miConeccion.prepareStatement(removeCaracteristica);
+			pStament.setString(1, id_caracteristicas);
+			pStament.executeUpdate();
+			pStament.close();
+			System.out.println("eliminado con exito " + id_caracteristicas);
+		} catch(SQLException e){
+			System.out.println("hola");
+		} finally {
+			if (miConeccion != null) {
+				try {
+					miConeccion.close();
+				} catch (SQLException e) {
+					System.out.println("error de conexion");
+				}
+			}
+		}
 
 	}
 

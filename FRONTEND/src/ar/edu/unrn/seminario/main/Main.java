@@ -16,7 +16,8 @@ public class Main {
 					// VentanaPrincipal frame = new VentanaPrincipal(api);
 					// frame.setVisible(true);
 					PersistenceApi p = new PersistenceApi();
-					p.crearCaracteristicaEspecial("pileta chica", "pileta chica", 100);
+					//p.crearCaracteristicaEspecial("pileta chica", "pileta chica", 100);
+					p.eliminarCaracteristica("pileta chica");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
