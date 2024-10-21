@@ -15,10 +15,6 @@ public class Main {
 				try {
 
 					IApi api = new MemoryApi();
-//					BDApi apiBdApi = new BDApi();
-//					apiBdApi.crearCaracteristicaEspecial("Pileta chica", "pileta chica", 100.00);
-//					apiBdApi.darDeAltaHabitacion(2, "tata", 1000.0, false, 13, null);
-//					apiBdApi.darDeBajaHabitacion(2, null, 0);
 					VentanaPrincipal frame = new VentanaPrincipal(api);
 					frame.setVisible(true);
 				} catch (Exception e) {
