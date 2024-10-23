@@ -9,15 +9,15 @@ import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.CaracteristicaEspecialDAO;
 import ar.edu.unrn.seminario.exception.ConnecionFallidaExeption;
-import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 
 public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaEspecialDAO {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
+	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca_Hoteles?useSSL=false";
 	private final static String usuario = "root";
 	private final static String clave = "";
 	private final static String nuevaCaracteristica = "INSERT INTO caracteristicaespecial (nombre,descripcion,precio) VALUES (?,?,?) ";
 	private final static String removeCaracteristica = "DELETE FROM caracteristicaespecial WHERE nombre = ?";
+
 	public ImplementacionCaracteristicasEspecialDAO() {
 
 	}
@@ -66,7 +66,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.executeUpdate();
 			pStament.close();
 			System.out.println("eliminado con exito " + id_caracteristicas);
-		} catch(SQLException e){
+		} catch (SQLException e) {
 			System.out.println("hola");
 		} finally {
 			if (miConeccion != null) {

@@ -2,7 +2,6 @@ package ar.edu.unrn.seminario.api;
 
 import java.util.Set;
 
-import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 
 public interface HabitacionDAO {
@@ -10,7 +9,7 @@ public interface HabitacionDAO {
 
 	void update(Habitacion habitacion);
 
-	Calificacion find(int numHabitaciones);
+	Habitacion find(int numHabitaciones);
 
 	void remove(int numHabitaciones);
 
