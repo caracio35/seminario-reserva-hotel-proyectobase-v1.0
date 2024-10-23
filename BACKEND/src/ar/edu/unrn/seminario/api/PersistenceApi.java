@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.api;
 
 import java.util.List;
+import java.util.Set;
 
 import acceso.ImplementacionCaracteristicasEspecialDAO;
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
@@ -150,6 +151,16 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<CaracteristicaEspecialDTO> obtenerCaracteristica() {
+		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
+		Set<CaracteristicaEspecial> caracteristicas = i.findAll();
+
+		// Mostrar las características
+		for (CaracteristicaEspecial c : caracteristicas) {
+			System.out.println("Nombre: " + c.getNombre());
+			System.out.println("Descripción: " + c.getDescripcion());
+			System.out.println("Precio: " + c.getPrecio());
+			System.out.println("------------------------");
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -191,7 +202,7 @@ public class PersistenceApi implements IApi {
 	public void eliminarCaracteristica(String nombreCaracteristica) {
 		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
 		i.remove(nombreCaracteristica);
-		
+
 	}
 
 }

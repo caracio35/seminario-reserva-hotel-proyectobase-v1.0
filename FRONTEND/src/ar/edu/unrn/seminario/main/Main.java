@@ -16,8 +16,10 @@ public class Main {
 					// VentanaPrincipal frame = new VentanaPrincipal(api);
 					// frame.setVisible(true);
 					PersistenceApi p = new PersistenceApi();
-					p.crearCaracteristicaEspecial("enano mimoso", "Expeciencia uncia", 1000);
-					p.eliminarCaracteristica("enano mimoso");
+					p.crearCaracteristicaEspecial("enano mimoso", "Expeciencia unica", 1000);
+					// p.eliminarCaracteristica("enano mimoso");
+					p.obtenerCaracteristica();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
