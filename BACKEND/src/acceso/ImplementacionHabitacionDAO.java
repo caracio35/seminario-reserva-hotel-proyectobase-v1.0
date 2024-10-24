@@ -1,14 +1,21 @@
 package acceso;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.HabitacionDAO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConnecionFallidaExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCero;
+import ar.edu.unrn.seminario.exception.PrecioCero;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 
@@ -19,7 +26,11 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	private final static String clave = "";
 	private final static String nuevaHabitacion = "INSERT INTO habitacion (cantidadDeCamas, descripcion, precio, "
 			+ "habilitado, fechaHastaCuandoEstaDesactivado, numHabitaciones) VALUES (?,?,?,?,?,?)";
-	
+	private final static String buscarHabitacion = "SELECT * FROM habitacion WHERE numHabitaciones = ?";
+	private final static String buscarCaracteristicasDeHabitacion = "SELECT c.nombreCaracteristicaEspecial, c.descripcion, c.precio "
+	        + "FROM habitacion_caracteristicaespecial ch "
+	        + "JOIN caracteristicaespecial c ON ch.nombre = c.nombreCaracteristicaEspecial "
+	        + "WHERE ch.numHabitacion = ?";
 	public ImplementacionHabitacionDAO(){
 		
 	}
@@ -46,7 +57,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	        pStamentHabitacion.close();
 	        pStamentCaracteristica.close();
-
+	        System.out.println("Habitacion creada ee");
 	    } catch (SQLException e) {
 	        e.printStackTrace(); 
 	    } finally {
@@ -85,14 +96,44 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public Habitacion find(int numHabitaciones) {
-		// TODO Auto-generated method stub
+		int numeroHabitacionBuscada = numHabitaciones ; 
+		Connection miConeccion = null;
+		PreparedStatement pStamentBuscarHabitacion = null;
+		try {
+			miConeccion = conectar();
+			pStamentBuscarHabitacion = (PreparedStatement) miConeccion.prepareStatement(buscarHabitacion);
+			pStamentBuscarHabitacion.setInt(1, numeroHabitacionBuscada);
+			ResultSet habitacionObtenida = pStamentBuscarHabitacion.executeQuery();
+			if (habitacionObtenida.next()) {
+				int cantidadCamas = habitacionObtenida.getInt("cantidadDeCamas");
+				String descripcion = habitacionObtenida.getString("descripcion");
+				double precio = habitacionObtenida.getDouble("precio");
+				boolean habilitado = (habitacionObtenida.getInt("Habilitado") == 1);
+				int numeroHabitacion = habitacionObtenida.getInt("numHabitaciones");
+				Habitacion habitacion = new Habitacion(cantidadCamas, descripcion, precio, habilitado, numeroHabitacion ,null);
+				return habitacion;
+			}
+			pStamentBuscarHabitacion.execute();
+			pStamentBuscarHabitacion.close();
+			System.out.println("Caracteristica Encontrada con exito");
+		} catch (SQLException | CampoVacioExeption | EnterosEnCero | PrecioCero e) {
+			System.out.println("excepcion propia ");
+		} finally {
+			if (miConeccion != null) {
+				try {
+					miConeccion.close();
+				} catch (SQLException e) {
+					System.out.println("error de conexion");
+				}
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public void remove(int numHabitaciones) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

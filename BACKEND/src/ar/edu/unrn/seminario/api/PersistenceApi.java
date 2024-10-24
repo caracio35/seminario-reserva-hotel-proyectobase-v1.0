@@ -247,5 +247,23 @@ public class PersistenceApi implements IApi {
 		// TODO Auto-generated method stub
 		//Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar 
 	}
-
+	
+	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion) {
+	    ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
+	    ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new ImplementacionCaracteristicasEspecialDAO();
+	    
+	    Set<CaracteristicaEspecial> caracteristicasSet = caracteristicasDAO.obtenerCaracteristicasPorHabitacion(idNumHabitacion);
+	
+	    ArrayList<CaracteristicaEspecial> caracteristicasList = new ArrayList<>(caracteristicasSet);
+	    
+	    
+	    Habitacion habitacion = habitacionDAO.find(idNumHabitacion);
+	    
+	    
+	    habitacion.setCaracteristicasEspeciale(caracteristicasList);
+	    
+	    habitacion.toString();
+	    return habitacion;
+	}
+	
 }
