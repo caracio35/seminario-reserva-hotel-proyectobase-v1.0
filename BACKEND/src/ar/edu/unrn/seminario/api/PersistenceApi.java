@@ -1,16 +1,25 @@
 package ar.edu.unrn.seminario.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import acceso.ImplementacionCaracteristicasEspecialDAO;
+import acceso.ImplementacionHabitacionDAO;
+import acceso.implementacionUsuarioDAO;
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCero;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
+import ar.edu.unrn.seminario.exception.PrecioCero;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
+import ar.edu.unrn.seminario.modelo.Habitacion;
 
 public class PersistenceApi implements IApi {
 
@@ -173,10 +182,36 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
+			int numHabitacion, String [] caracteristicas)
 			throws NumeroHabitacionExistenteException {
-		// TODO Auto-generated method stub
+		
+		ImplementacionHabitacionDAO habitacion= new ImplementacionHabitacionDAO() ;
+		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO= new ImplementacionCaracteristicasEspecialDAO();
+		ArrayList<CaracteristicaEspecial> obtenidaCar = buscarCaracteristica(caracteristicas,caracteristicaDAO);
+		try {
+			Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion, obtenidaCar );
+			habitacion.create(habitacion1);
+		} catch (CampoVacioExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EnterosEnCero e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PrecioCero e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 
+	private ArrayList<CaracteristicaEspecial> buscarCaracteristica(String[] caracteristicas,
+			ImplementacionCaracteristicasEspecialDAO caracteristicaDAO) {
+		ArrayList<CaracteristicaEspecial> caracteristicasLista = new ArrayList<>();
+		for (String caracteristica : caracteristicas) {
+	        CaracteristicaEspecial especial = caracteristicaDAO.find(caracteristica);
+
+	            caracteristicasLista.add(especial);
+	    }
+		return caracteristicasLista;
 	}
 
 	@Override
@@ -203,6 +238,14 @@ public class PersistenceApi implements IApi {
 		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
 		i.remove(nombreCaracteristica);
 
+	}
+
+	@Override
+	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
+			throws NumeroHabitacionExistenteException {
+		// TODO Auto-generated method stub
+		//Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar 
 	}
 
 }

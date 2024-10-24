@@ -85,4 +85,7 @@ public interface IApi {
 	void eliminarHabitacion(int numeroHabitacion);
 	
 	void eliminarCaracteristica(String nombreCaracteristica);
+
+	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException;
 }

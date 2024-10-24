@@ -561,6 +561,13 @@ public class MemoryApi implements IApi {
 		
 	}
 
+	@Override
+	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 // Dar de baja una habitación
