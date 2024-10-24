@@ -229,7 +229,8 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void eliminarHabitacion(int numeroHabitacion) {
-		// TODO Auto-generated method stub
+		ImplementacionHabitacionDAO i = new ImplementacionHabitacionDAO();
+		i.remove(numeroHabitacion);
 
 	}
 

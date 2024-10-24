@@ -31,6 +31,9 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	        + "FROM habitacion_caracteristicaespecial ch "
 	        + "JOIN caracteristicaespecial c ON ch.nombre = c.nombreCaracteristicaEspecial "
 	        + "WHERE ch.numHabitacion = ?";
+	private final static String modificarHabitacion = "UPDATE habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ? WHERE numHabitaciones = ?";
+	private final static String eliminarHabitacion = "DELETE FROM habitacion WHERE numHabitaciones = ?";
+	
 	public ImplementacionHabitacionDAO(){
 		
 	}
@@ -90,8 +93,33 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public void update(Habitacion habitacion) {
-		// TODO Auto-generated method stub
-
+		Habitacion habitacionNueva = habitacion;
+		Connection miConeccion = null;
+		PreparedStatement pStament = null;
+		try {
+			miConeccion = conectar();
+			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
+			
+			pStament.setInt(1, habitacionNueva.getCantidadDeCamas());
+			pStament.setString(2, habitacionNueva.getDescripcion());
+			pStament.setDouble(3, habitacionNueva.getPrecio());
+			pStament.setInt(4, habitacionNueva.getNumHabitaciones());
+			pStament.execute();
+			pStament.close();
+			System.out.println("Habitacion Modificada con exito");
+		}
+		catch (Exception e) {
+			System.out.println("no se subio" + e.getMessage());
+		}
+		finally {
+			if (miConeccion != null) {
+				try {
+					miConeccion.close();
+				} catch (SQLException e) {
+					System.out.println("error de conexion");
+				}
+			}
+		}
 	}
 
 	@Override
@@ -132,8 +160,28 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public void remove(int numHabitaciones) {
-		// TODO Auto-generated method stub
-		
+		Connection miConeccion = null;
+		PreparedStatement pStament = null;
+		try {
+			miConeccion = conectar();
+			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarHabitacion);
+			pStament.setInt(1, numHabitaciones);
+			pStament.executeUpdate();
+			pStament.close();
+			System.out.println("eliminado con exito " + numHabitaciones);
+		}
+		catch(SQLException e){
+			System.out.println("excepcion propia ");
+		}
+		finally {
+			if (miConeccion != null) {
+				try {
+					miConeccion.close();
+				} catch (SQLException e) {
+					System.out.println("error de conexion");
+				}
+			}
+		}
 	}
 
 	@Override
