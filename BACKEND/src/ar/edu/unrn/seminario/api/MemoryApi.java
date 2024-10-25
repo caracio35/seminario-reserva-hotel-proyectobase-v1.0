@@ -324,21 +324,25 @@ public class MemoryApi implements IApi {
 		}
 	}
 
-	@Override
-	public void crearHabitacion(HabitacionDTO habitacionDTO, String nombreCaracteristicas[]) {
-		ArrayList<CaracteristicaEspecial> caracteristicas = this.buscarCaracteristica(nombreCaracteristicas);
+	// @Override
+	// public void crearHabitacion(HabitacionDTO habitacionDTO, String
+	// nombreCaracteristicas[]) {
+	// ArrayList<CaracteristicaEspecial> caracteristicas =
+	// this.buscarCaracteristica(nombreCaracteristicas);
 
-		Habitacion habitacion;
-		try {
-			habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(), habitacionDTO.getDescripcion(),
-					habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
-					caracteristicas);
-			habitaciones.add(habitacion);
-		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
-			System.out.println(e.getMessage());
-		}
+	// Habitacion habitacion;
+	// try {
+	// habitacion = new Habitacion(habitacionDTO.getCantidadDeCamas(),
+	// habitacionDTO.getDescripcion(),
+	// habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(),
+	// habitacionDTO.getNumHabitacion(),
+	// caracteristicas);
+	// habitaciones.add(habitacion);
+	// } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
+	// System.out.println(e.getMessage());
+	// }
 
-	}
+	// }
 
 	@Override
 	public void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO) {

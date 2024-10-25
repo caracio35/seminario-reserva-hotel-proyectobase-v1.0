@@ -98,12 +98,6 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void crearHabitacion(HabitacionDTO habitacionDTO, String[] nombreCaracteristicas) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void crearCaracteristicaEspecial(String nombre, String descripcion, double precio) {
 		CaracteristicaEspecial c = new CaracteristicaEspecial(nombre, descripcion, precio);
 		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
