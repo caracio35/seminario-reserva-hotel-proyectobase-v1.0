@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
-import ar.edu.unrn.seminario.exception.EnterosEnCero;
-import ar.edu.unrn.seminario.exception.PrecioCero;
 
 public class HabitacionDTO {
 
@@ -19,20 +17,8 @@ public class HabitacionDTO {
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitaciones,
-			List<CaracteristicaEspecialDTO> caracteristicasEspeciales, String fechaHastaCuandoEstaDesactivado)
-			throws CampoVacioExeption, EnterosEnCero, PrecioCero {
-		if (descripcion.isEmpty()) {
-			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
-		}
-		if (descripcion.trim().isEmpty()) {
-			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
-		}
-		if (cantidadDeCamas < 1 || numHabitaciones < 1) {
-			throw new EnterosEnCero("Los campos no pueden ser cero o negativos ");
-		}
-		if (precio <= 0) {
-			throw new PrecioCero("El precio no puede ser cero o null");
-		}
+			List<CaracteristicaEspecialDTO> caracteristicasEspeciales, String fechaHastaCuandoEstaDesactivado) {
+
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
 		this.precio = precio;

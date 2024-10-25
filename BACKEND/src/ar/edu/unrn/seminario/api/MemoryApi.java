@@ -16,9 +16,11 @@ import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
-import ar.edu.unrn.seminario.exception.EnterosEnCero;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
-import ar.edu.unrn.seminario.exception.PrecioCero;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -38,20 +40,20 @@ public class MemoryApi implements IApi {
 	private ArrayList<Reserva> reservas = new ArrayList<>();
 	private int ultimoIdReserva = 0;
 
-	public MemoryApi() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
+	public MemoryApi() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 
 		// datos iniciales
 		inicializarPrueva();
 	}
 
-	private void inicializarPrueva() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
+	private void inicializarPrueva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		rolesPrueva();
 		inicializarUsuarios();
 		caracteristicasPrueva();
 		habitacionesPrueba();
 	}
 
-	private void habitacionesPrueba() throws CampoVacioExeption, EnterosEnCero, PrecioCero {
+	private void habitacionesPrueba() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ArrayList<CaracteristicaEspecial> caracteristicas = new ArrayList<>();
 		caracteristicas.add(caracteristicaEspecial.get(0));
 		caracteristicas.add(caracteristicaEspecial.get(1));
@@ -332,7 +334,7 @@ public class MemoryApi implements IApi {
 					habitacionDTO.getPrecio(), habitacionDTO.isHabilitado(), habitacionDTO.getNumHabitacion(),
 					caracteristicas);
 			habitaciones.add(habitacion);
-		} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
+		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
 			System.out.println(e.getMessage());
 		}
 
@@ -375,28 +377,20 @@ public class MemoryApi implements IApi {
 		List<HabitacionDTO> habitacionesDTO = new ArrayList<>();
 
 		for (Habitacion h : habitaciones) {
-			try {
-				// Crear la lista de características especiales para la habitación
-				List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
-				for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
-					caracteristicasDTO.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
-							carac.getPrecio()));
-				}
 
-				// Crear el objeto HabitacionDTO y agregarlo a la lista
-				habitacionesDTO.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
-						h.isHabilitado(), h.getNumHabitaciones(), caracteristicasDTO, traerFechaHastaCuando(h)));
-				// obtener fecha de desactivacion y pasarlo a string si no es null
-
-			} catch (PrecioCero e) {
-				System.out.println("El precio no puede ser cero.");
-			} catch (CampoVacioExeption e) {
-				System.out.println("Un campo requerido está vacío.");
-			} catch (EnterosEnCero e) {
-				System.out.println("Un campo que requiere un número mayor a cero tiene un valor inválido.");
+			// Crear la lista de características especiales para la habitación
+			List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
+			for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
+				caracteristicasDTO.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
+						carac.getPrecio()));
 			}
-		}
 
+			// Create the HabitacionDTO object and add it to the list
+			habitacionesDTO.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
+					h.isHabilitado(), h.getNumHabitaciones(), caracteristicasDTO, traerFechaHastaCuando(h)));
+			// Get the deactivation date and convert it to a string if it's not null
+
+		}
 		return habitacionesDTO;
 	}
 
@@ -413,25 +407,18 @@ public class MemoryApi implements IApi {
 		List<HabitacionDTO> obtenerHabitacon = new ArrayList<>();
 		for (Habitacion h : habitaciones) {
 			if (h.isHabilitado() == true) {
-				try {
-					try {
-						List<CaracteristicaEspecialDTO> car = new ArrayList<>();
-						for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
-							car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
-									carac.getPrecio()));
-						}
-						obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(),
-								h.getPrecio(), h.isHabilitado(), h.getNumHabitaciones(), car, null));
-					} catch (PrecioCero e) {
-						System.out.println("Este campo no pueden estar en cero ");
-					}
-				} catch (CampoVacioExeption e) {
-					System.out.println("Este campo no puede estar vacio");
-				} catch (EnterosEnCero e) {
-					System.out.println("Este campo no puede estar en cero ");
+				List<CaracteristicaEspecialDTO> car = new ArrayList<>();
+				for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
+					car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
+							carac.getPrecio()));
 				}
+				obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(),
+						h.getPrecio(), h.isHabilitado(), h.getNumHabitaciones(), car, null));
+				System.out.println("Este campo no pueden estar en cero ");
 			}
+
 		}
+
 		return obtenerHabitacon;
 	}
 
@@ -447,20 +434,20 @@ public class MemoryApi implements IApi {
 
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
-			throws NumeroHabitacionExistenteException {
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 
 		if (existeHabitacionConNumero(numHabitacion)) {
 			throw new NumeroHabitacionExistenteException(
 					"La habitación con el número " + numHabitacion + " ya existe.");
 		}
 		if (!existeHabitacionConNumero(numHabitacion)) {
-			try {
-				Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
-						pasarDesdeCaracteristicasDTO(caracteristicas));
-				habitaciones.add(habitacion);
-			} catch (CampoVacioExeption | EnterosEnCero | PrecioCero e) {
-				System.out.println(e.getMessage());
-			}
+			// try {
+			Habitacion habitacion = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
+					pasarDesdeCaracteristicasDTO(caracteristicas));
+			habitaciones.add(habitacion);
+			// } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
+			// throw new Exception(e.getMessage());
+			// }
 		}
 
 	}
@@ -496,20 +483,11 @@ public class MemoryApi implements IApi {
 		}
 
 		HabitacionDTO habitacionNueva = null;
-		try {
-			habitacionNueva = new HabitacionDTO(habitacionOptenida.getCantidadDeCamas(),
-					habitacionOptenida.getDescripcion(), habitacionOptenida.getPrecio(),
-					habitacionOptenida.isHabilitado(), habitacionOptenida.getNumHabitaciones(), car, null);
-		} catch (CampoVacioExeption e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-		} catch (EnterosEnCero e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-		} catch (PrecioCero e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-		}
+
+		habitacionNueva = new HabitacionDTO(habitacionOptenida.getCantidadDeCamas(),
+				habitacionOptenida.getDescripcion(), habitacionOptenida.getPrecio(),
+				habitacionOptenida.isHabilitado(), habitacionOptenida.getNumHabitaciones(), car, null);
+
 		return habitacionNueva;
 	}
 
@@ -527,10 +505,10 @@ public class MemoryApi implements IApi {
 			} catch (CampoVacioExeption e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
-			} catch (EnterosEnCero e) {
+			} catch (EnterosEnCeroExeption e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
-			} catch (PrecioCero e) {
+			} catch (PrecioCeroExeption e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
 			}
@@ -558,14 +536,14 @@ public class MemoryApi implements IApi {
 	@Override
 	public void eliminarCaracteristica(String nombreCaracteristica) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

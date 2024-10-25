@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
-import ar.edu.unrn.seminario.exception.EnterosEnCero;
-import ar.edu.unrn.seminario.exception.PrecioCero;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 public class Habitacion {
 	private int cantidadDeCamas;
@@ -19,7 +21,7 @@ public class Habitacion {
 
 	public Habitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado, int numHabitaciones,
 			ArrayList<CaracteristicaEspecial> caracteristicasEspeciales)
-			throws CampoVacioExeption, EnterosEnCero, PrecioCero {
+			throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		if (descripcion.isEmpty()) {
 			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
 		}
@@ -27,10 +29,10 @@ public class Habitacion {
 			throw new CampoVacioExeption("El campo descripcion no puede ser vacio");
 		}
 		if (cantidadDeCamas < 1 || numHabitaciones < 1) {
-			throw new EnterosEnCero("Los campos no pueden ser cero o negativos ");
+			throw new EnterosEnCeroExeption("Los campos no pueden ser cero o negativos ");
 		}
 		if (precio <= 0) {
-			throw new PrecioCero("El precio no puede ser cero o null");
+			throw new PrecioCeroExeption("El precio no puede ser cero o null");
 		}
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;

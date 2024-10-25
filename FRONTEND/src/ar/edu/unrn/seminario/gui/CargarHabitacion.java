@@ -25,7 +25,10 @@ import javax.swing.table.TableCellRenderer;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 public class CargarHabitacion extends JFrame {
 
@@ -115,9 +118,19 @@ public class CargarHabitacion extends JFrame {
 								Integer.parseInt(textFieldNumeroHabitacion.getText()), obtenerListaCaracteristicas());
 					} catch (NumeroHabitacionExistenteException e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
+
+					} catch (CampoVacioExeption e1) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (EnterosEnCeroExeption e1) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (PrecioCeroExeption e1) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e1.getMessage());
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
-								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser cero o no estar definido y tampoco puede ser una letra ");
+								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
 					}
 				}
 

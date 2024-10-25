@@ -8,7 +8,10 @@ import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 public interface IApi {
 
@@ -35,10 +38,6 @@ public interface IApi {
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
-
-	void crearHabitacion(HabitacionDTO habitacionDTO, String nombreCaracteristicas[]); // crea una nueva habitación con
-																						// las características
-																						// proporcionadas
 
 	void crearCaracteristicaEspecial(String nombre, String descripcion, double precio); // crea una nueva
 																						// caracteristica especial y
@@ -73,9 +72,9 @@ public interface IApi {
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas);
 
-	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
-			throws NumeroHabitacionExistenteException;
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
 
@@ -83,7 +82,7 @@ public interface IApi {
 			List<CaracteristicaEspecialDTO> caracteristicas);
 
 	void eliminarHabitacion(int numeroHabitacion);
-	
+
 	void eliminarCaracteristica(String nombreCaracteristica);
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
