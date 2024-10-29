@@ -16,8 +16,8 @@ public class HabitacionDTO {
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitaciones,
-			List<CaracteristicaEspecialDTO> caracteristicasEspeciales, String fechaHastaCuandoEstaDesactivado) {
+			int numHabitaciones,List<CaracteristicaEspecialDTO> caracteristicasEspeciales, 
+			String fechaHastaCuandoEstaDesactivado) {
 
 		this.cantidadDeCamas = cantidadDeCamas;
 		this.descripcion = descripcion;
