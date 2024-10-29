@@ -43,6 +43,10 @@ public class Habitacion {
 		this.fechaHastaCuandoEstaDesactivado = null;
 	}
 
+	public Habitacion() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public double obtenerPrecioTotal() {
 		double precioFinal = precio;
 		for (CaracteristicaEspecial caracteristicaEspecial : caracteristicasEspeciales) {
@@ -128,5 +132,4 @@ public class Habitacion {
 	public void setFechaHastaCuandoEstaDesactivado(LocalDate fechaHastaCuandoEstaDesactivado) {
 		this.fechaHastaCuandoEstaDesactivado = fechaHastaCuandoEstaDesactivado;
 	}
-
 }

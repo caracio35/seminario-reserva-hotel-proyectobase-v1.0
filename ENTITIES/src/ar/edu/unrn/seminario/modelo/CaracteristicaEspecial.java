@@ -7,12 +7,14 @@ public class CaracteristicaEspecial {
 	private String descripcion;
 	private double precio;
 
-	public CaracteristicaEspecial(String nombre, String descripcion, double precio) {
+	public CaracteristicaEspecial(String nombre , String descripcion , double preci) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.precio = precio;
+		this.precio = preci;
 	}
-
+	public CaracteristicaEspecial() {
+		
+	}
 	public double getPrecio() {
 		return precio;
 	}
@@ -28,7 +30,12 @@ public class CaracteristicaEspecial {
 	public String getDescripcion() {
 		return descripcion;
 	}
-
+	public void setnNombre(String nombre) {
+		this.nombre = nombre ; 
+	}
+	public void setDecripcion(String descripcion) {
+		this.descripcion = descripcion ;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(descripcion, nombre, precio);

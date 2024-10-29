@@ -144,7 +144,11 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<HabitacionDTO> obtenerTodasLasHabitaciones() {
-		// TODO Auto-generated method stub
+		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
+		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
+		for (Habitacion h: ListaHabitaciones) {
+			System.out.println(h.getNumHabitaciones());
+		}
 		return null;
 	}
 
