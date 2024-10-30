@@ -5,8 +5,12 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -200,6 +204,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JButton btnFiltrar = new JButton("filtrar");
 		btnFiltrar.setBounds(10, 322, 85, 21);
 		getContentPane().add(btnFiltrar);
+		btnFiltrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int precioMinimo = Integer.parseInt(textFieldPrecio.getText());
+				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+				// aplicando filtro de precio minimo con stream
+				List<HabitacionDTO> filtrado = habitaciones.stream()
+						.filter(h -> h.getPrecio() >= precioMinimo)
+						.collect(Collectors.toList());
+				cargarHabitacionesFiltradas(filtrado);
+			}
+
+		});
+
 	}
 
 	public void cargarHabitaciones() {
@@ -208,6 +225,20 @@ public class BusquedaDeHabitaciones extends JFrame {
 		modelo.setRowCount(0);
 
 		for (HabitacionDTO habitacion : habitaciones) {
+
+			List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
+			String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
+					.collect(Collectors.joining(", "));
+			modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
+					habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas });
+		}
+	}
+
+	public void cargarHabitacionesFiltradas(List<HabitacionDTO> habitaciones1) {
+
+		modelo.setRowCount(0);
+
+		for (HabitacionDTO habitacion : habitaciones1) {
 
 			List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
 			String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
