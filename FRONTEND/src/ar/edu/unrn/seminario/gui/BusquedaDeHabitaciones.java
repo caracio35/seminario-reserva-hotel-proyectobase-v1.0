@@ -5,12 +5,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +96,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JcalederFechaSalida.setBounds(10, 236, 96, 13);
 		getContentPane().add(JcalederFechaSalida);
 
-		lblNewLabel_2 = new JLabel("Total Huéspedes");
+		lblNewLabel_2 = new JLabel("Camas");
 		lblNewLabel_2.setBounds(10, 280, 96, 13);
 		getContentPane().add(lblNewLabel_2);
 
@@ -205,13 +201,24 @@ public class BusquedaDeHabitaciones extends JFrame {
 		btnFiltrar.setBounds(10, 322, 85, 21);
 		getContentPane().add(btnFiltrar);
 		btnFiltrar.addActionListener(new ActionListener() {
+			private int precioMinimo;
+			private int camas;
+
 			public void actionPerformed(ActionEvent e) {
-				int precioMinimo = Integer.parseInt(textFieldPrecio.getText());
+				precioMinimo = 0;
+				camas = 0;
+
+				if (!textFieldPrecio.getText().isEmpty()) {
+					precioMinimo = Integer.parseInt(textFieldPrecio.getText());
+				}
+				if (!textFieldHuespedes.getText().isEmpty()) {
+					camas = Integer.parseInt(textFieldHuespedes.getText());
+				}
 				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 				// aplicando filtro de precio minimo con stream
-				List<HabitacionDTO> filtrado = habitaciones.stream()
-						.filter(h -> h.getPrecio() >= precioMinimo)
-						.collect(Collectors.toList());
+				List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
+						.filter(h -> h.getCantidadDeCamas() >= camas).collect(Collectors.toList());
+
 				cargarHabitacionesFiltradas(filtrado);
 			}
 
