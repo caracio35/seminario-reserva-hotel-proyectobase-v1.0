@@ -12,15 +12,15 @@ import java.util.Set;
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
-import ar.edu.unrn.seminario.dto.ReservaDTO;
+
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
-import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
-import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -90,12 +90,11 @@ public class MemoryApi implements IApi {
 	 * void registrarUsuario(String username, String password, String email, String
 	 * nombre, Integer rol);
 	 */
-	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
+	public void registrarUsuario(String usuario, String contrasena, String nombre, String apellido , String email, int dni , String telefono) {
 
-		Rol role = this.buscarRol(rol);
-		Usuario usuario = new Usuario(username, password, nombre, email);
-		this.usuarios.add(usuario);
-		this.usuarios1.put(username, password);
+		Usuario usuario1 = new Usuario(usuario , contrasena , nombre , apellido , email , dni , telefono);
+		this.usuarios.add(usuario1);
+		this.usuarios1.put(usuario, contrasena);
 
 	}
 
@@ -103,8 +102,7 @@ public class MemoryApi implements IApi {
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
 		for (Usuario u : this.usuarios) {
-			dtos.add(new UsuarioDTO(u.getUsuario(), u.getContrasena(), u.getNombre(), u.getEmail(),
-					u.getRol().getNombre(), u.isActivo(), u.obtenerEstado()));
+			dtos.add(new UsuarioDTO(u.getUsuario(), u.getContrasena(), u.getNombre(), u.getEmail(), null, false, null));
 		}
 		return dtos;
 	}
@@ -386,7 +384,7 @@ public class MemoryApi implements IApi {
 		 * 
 		 */
 		Reserva reserva = new Reserva(id, habitacinesObtenidos, usuarioObtenido, fechaIni, fechaFin, 0,
-				serviciosObtenidos, false, false, fechaReserva1, pagoMinimo);
+				serviciosObtenidos, fechaReserva1, pagoMinimo);
 
 		reservas.add(reserva);
 	}
@@ -562,6 +560,12 @@ public class MemoryApi implements IApi {
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
