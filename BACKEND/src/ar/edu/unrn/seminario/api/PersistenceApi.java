@@ -1,14 +1,15 @@
 package ar.edu.unrn.seminario.api;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import com.mysql.fabric.xmlrpc.base.Array;
-
 import acceso.ImplementacionCaracteristicasEspecialDAO;
 import acceso.ImplementacionHabitacionDAO;
-import acceso.implementacionUsuarioDAO;
+import acceso.ImplementacionReservaDAO;
+import acceso.ImplementacionUsuarioDAO;
+import acceso.ImplementaionServicioDAO;
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
@@ -16,12 +17,13 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
-import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
-import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
+import ar.edu.unrn.seminario.modelo.Reserva;
+import ar.edu.unrn.seminario.modelo.Servicio;
+import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class PersistenceApi implements IApi {
 
@@ -126,8 +128,22 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void generarReserva(int[] habitacion, String usuario, String fechaInicio, String fechaFin,
 			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo) {
-		// TODO Auto-generated method stub
-
+		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();  
+		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
+		Usuario usuario1 = usuarioDAO.find(usuario);
+		ArrayList<Habitacion> habitacionObtenida = new ArrayList<>();
+		ArrayList<Servicio> servicioObten = new ArrayList<>();
+		for ( int n : habitacion) {
+			Habitacion habitacin = buscarHabitacionPorNumero(n);
+			habitacionObtenida.add(habitacin);
+		}
+		for (String s : servicio) {
+			Servicio servicioJ = buscarServicio(s); 
+			servicioObten.add(servicioJ);
+		}
+		
+		Reserva reserva2 = new Reserva(0, habitacionObtenida, usuario1, convertiFecha(fechaInicio), convertiFecha(fechaFin),cantidadPersonas ,servicioObten, convertiFecha(fechaReserva), pagoMinimo);
+		reservaDAO.create(reserva2);
 	}
 
 	@Override
@@ -282,8 +298,15 @@ public class PersistenceApi implements IApi {
 
 		habitacion.setCaracteristicasEspeciale(caracteristicasList);
 
-		habitacion.toString();
 		return habitacion;
 	}
-
+	private Servicio buscarServicio(String nombre) {
+		ImplementaionServicioDAO servicioDAO = new ImplementaionServicioDAO();
+		Servicio servicio = servicioDAO.find(nombre);
+		return servicio;
+	}
+	private LocalDate convertiFecha(String fecha) {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(fecha, formato);
+	}
 }

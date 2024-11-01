@@ -19,7 +19,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	private final static String clave = "";
 	private final static String nuevoServicio = "INSERT INTO servicio (id,nombre,precio,descripcion) VALUES (?,?,?,?) ";
 	private final static String eliminarServicio = "DELETE FROM sevicio WHERE id = ?";
-	private final static String encontrarServicio = "SELECT * FROM servicio WHERE id = ?";
+	private final static String encontrarServicio = "SELECT * FROM servicio WHERE nombre = ?";
 	private final static String encontrarTodasLosServicios = "SELECT * FROM servicios";
 	private final static String modificarServicio = "UPDATE servicio SET nombre = ? ,precio = ?, descripcion = ? WHERE id = ?";
 
@@ -118,7 +118,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	}
 
 	@Override
-	public void remove(int id) {
+	public void remove(int id) { 
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {

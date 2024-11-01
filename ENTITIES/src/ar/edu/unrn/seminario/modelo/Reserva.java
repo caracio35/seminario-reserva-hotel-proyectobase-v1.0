@@ -22,8 +22,7 @@ public class Reserva {
 	private boolean pagoMinimo;
 
 	public Reserva(int id , ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate fechaDeInicio,
-			LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio> servicios, boolean checkIn,
-			boolean checkOut, Factura factura, LocalDate fechaDeReserva, Calificacion calificacion,
+			LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio> servicios, LocalDate fechaDeReserva,
 			boolean pagoMinimo){
 		this.id = id;
 		this.habitaciones = habitaciones;
@@ -32,11 +31,11 @@ public class Reserva {
 		this.fechaDESalida = fechaDESalida;
 		this.cantidadDePersonas = cantidadDePersonas;
 		this.servicios = servicios;
-		this.checkIn = checkIn;
-		this.checkOut = checkOut;
-		this.factura = factura;
+		this.checkIn = false;
+		this.checkOut = false;
+		this.factura = null;
 		this.fechaDeReserva = fechaDeReserva;
-		this.calificacion = calificacion;
+		this.calificacion = null;
 		this.saldoFavor = 0;
 		this.pagoMinimo = pagoMinimo;
 	}
@@ -153,7 +152,12 @@ public class Reserva {
 	public void setCalificacion(Calificacion calificacion) {
 		this.calificacion = calificacion;
 	}
-
+	public double getSaldofavor() {
+		return saldoFavor;
+	}
+	public boolean getPagoMinimo() {
+		return pagoMinimo;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(calificacion, cantidadDePersonas, checkIn, checkOut, factura, fechaDESalida, fechaDeInicio,

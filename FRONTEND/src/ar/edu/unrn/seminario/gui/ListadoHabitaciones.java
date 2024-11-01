@@ -238,7 +238,7 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(lblNewLabel);
 	}
 
-	public void llenarTabla() {
+	private void llenarTabla() {
 
 		List<HabitacionDTO> habitaciones = api.obtenerTodasLasHabitaciones();
 		model.setRowCount(0);
