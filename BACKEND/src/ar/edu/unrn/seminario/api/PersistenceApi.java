@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import acceso.ImplementacionCalificacionDAO;
 import acceso.ImplementacionCaracteristicasEspecialDAO;
 import acceso.ImplementacionHabitacionDAO;
 import acceso.ImplementacionReservaDAO;
@@ -19,6 +21,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Reserva;
@@ -114,8 +117,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void generarCalificacionHabitacion(CalificacionDTO calificacionDTO, int idReserva) {
-		// TODO Auto-generated method stub
+	public void generarCalificacionHabitacion(int idReserva , int calificacion , String cometario) {
+		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
+		Calificacion calificion = new Calificacion(calificacion, cometario);
+		calificacionDAO.create(calificion, idReserva);
 
 	}
 
@@ -309,4 +314,5 @@ public class PersistenceApi implements IApi {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             return LocalDate.parse(fecha, formato);
 	}
+
 }

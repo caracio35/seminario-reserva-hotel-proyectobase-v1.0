@@ -11,19 +11,19 @@ public class Calificacion {
 		this.comentario = comentario;
 	}
 
-	int getValor() {
+	public int getValor() {
 		return valor;
 	}
 
-	void setValor(int valor) {
+	public void setValor(int valor) {
 		this.valor = valor;
 	}
 
-	String getComentario() {
+	public String getComentario() {
 		return comentario;
 	}
 
-	void setComentario(String comentario) {
+	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
 

@@ -5,7 +5,7 @@ import java.util.Set;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public interface CalificacionDAO {
-	void create(Calificacion calificacion);
+	void create(Calificacion calificacion , int idReserva);
 
 	void update(Calificacion calificacion);
 

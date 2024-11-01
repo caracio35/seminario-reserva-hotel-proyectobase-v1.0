@@ -47,9 +47,6 @@ public interface IApi {
 	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);// carga una o mas caracteristica especiales
 																			// a una habitación especifica
 
-	void generarCalificacionHabitacion(CalificacionDTO calificacionDTO, int idReserva);// genera una calificacion
-																						// paranbuna habitacion basada
-																						// en una reserva
 
 	boolean autenticarContraseña(String username, String password);// autentica un usuario verificando su nombre de
 																	// usuario y contrasena
@@ -87,4 +84,6 @@ public interface IApi {
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException;
+
+	void generarCalificacionHabitacion(int idReserva , int calificacion , String comentario);
 }

@@ -29,16 +29,17 @@ public class Main {
 					//List<HabitacionDTO> ha = p.obtenerTodasLasHabitaciones();
 					//for (HabitacionDTO h : ha) {
 					//	System.out.println(h.getNumHabitacion());
-					int[] habitaciones = {2};
-			        String usuario = "carlosl";
-			        String fechaInicio = "2042-11-01";
-			        String fechaFin = "2020-11-05";
-			        String fechaReserva = "2024-10-31";
-			        int cantidadPersonas = 8;
-			        String[] servicios = {"Desayuno", "Merienda"};
-			        boolean pagoMinimo = true;
-			        p.generarReserva(habitaciones, usuario, fechaInicio, fechaFin, fechaReserva, cantidadPersonas, servicios, pagoMinimo);
+					//int[] habitaciones = {2};
+			        //String usuario = "carlosl";
+			       // String fechaInicio = "2042-11-01";
+			       /// String fechaFin = "2020-11-05";
+			       // String fechaReserva = "2024-10-31";
+			       // int cantidadPersonas = 8;
+			       // String[] servicios = {"Desayuno", "Merienda"};
+			       // boolean pagoMinimo = true;
+			        //p.generarReserva(habitaciones, usuario, fechaInicio, fechaFin, fechaReserva, cantidadPersonas, servicios, pagoMinimo);
 					//}
+					p.generarCalificacionHabitacion(35, 1, "Una mierda su habitacion");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
