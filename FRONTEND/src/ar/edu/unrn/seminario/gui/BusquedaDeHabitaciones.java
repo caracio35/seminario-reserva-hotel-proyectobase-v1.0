@@ -153,45 +153,41 @@ public class BusquedaDeHabitaciones extends JFrame {
 		btnCancelarsalir.setBounds(599, 346, 116, 21);
 		getContentPane().add(btnCancelarsalir);
 
-		
 		JDateChooser JcalenderFechaIngreso = new JDateChooser();
 		Calendar cal = Calendar.getInstance();
 		JcalenderFechaIngreso.setMinSelectableDate(cal.getTime());
 		JcalenderFechaIngreso.setBounds(10, 204, 96, 20);
 		getContentPane().add(JcalenderFechaIngreso);
 
-		
 		JDateChooser JcalemderFechaSalida = new JDateChooser();
 		JcalemderFechaSalida.getCalendarButton();
-		JcalemderFechaSalida.setMinSelectableDate(cal.getTime()); 
+		JcalemderFechaSalida.setMinSelectableDate(cal.getTime());
 		JcalemderFechaSalida.setBounds(10, 249, 96, 20);
 		getContentPane().add(JcalemderFechaSalida);
 
-		
 		JcalenderFechaIngreso.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
-		    @Override
-		    public void propertyChange(PropertyChangeEvent evt) {
-		        Date selectedDate = JcalenderFechaIngreso.getDate();
-		        if (selectedDate != null) {
-		            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		            fechaReservaInicio = sdf.format(selectedDate);
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				Date selectedDate = JcalenderFechaIngreso.getDate();
+				if (selectedDate != null) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					fechaReservaInicio = sdf.format(selectedDate);
 
-
-		            JcalemderFechaSalida.setMinSelectableDate(selectedDate);
-		        }
-		    }
+					JcalemderFechaSalida.setMinSelectableDate(selectedDate);
+				}
+			}
 		});
 
 		JcalemderFechaSalida.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
-		    @Override
-		    public void propertyChange(PropertyChangeEvent evt) {
-		        Date selectedDate = JcalemderFechaSalida.getDate();
-		        if (selectedDate != null) {
-		            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		            fechaReservaFin = sdf.format(selectedDate);
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				Date selectedDate = JcalemderFechaSalida.getDate();
+				if (selectedDate != null) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					fechaReservaFin = sdf.format(selectedDate);
 
-		        }
-		    }
+				}
+			}
 		});
 
 		textFieldPrecio = new JTextField();
@@ -219,8 +215,9 @@ public class BusquedaDeHabitaciones extends JFrame {
 				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 				// aplicando filtro de precio minimo con stream
 				List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
-						.filter(h -> h.getCantidadDeCamas() >= camas).sorted(Comparator.comparingDouble(h -> h.getPrecio()))
-				        .collect(Collectors.toList());
+						.filter(h -> h.getCantidadDeCamas() >= camas)
+						.sorted(Comparator.comparingDouble(h -> h.getPrecio()))
+						.collect(Collectors.toList());
 
 				cargarHabitacionesFiltradas(filtrado);
 			}

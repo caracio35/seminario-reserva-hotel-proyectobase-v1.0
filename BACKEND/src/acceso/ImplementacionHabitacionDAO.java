@@ -25,10 +25,11 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	private final static String nuevaHabitacion = "INSERT INTO habitacion (cantidadDeCamas, descripcion, precio, "
 			+ "habilitado, fechaHastaCuandoEstaDesactivado, numHabitaciones) VALUES (?,?,?,?,?,?)";
 	private final static String buscarHabitacion = "SELECT * FROM habitacion WHERE numHabitaciones = ?";
-	
+
 	private final static String modificarHabitacion = "UPDATE habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ? WHERE numHabitaciones = ?";
 	private final static String eliminarHabitacion = "DELETE FROM habitacion WHERE numHabitaciones = ?";
-	private final static String buscarTodaLasHabitaciones = "SELECT * FROM habitacion"; 
+	private final static String buscarTodaLasHabitaciones = "SELECT * FROM habitacion";
+
 	public ImplementacionHabitacionDAO() {
 
 	}
@@ -37,63 +38,65 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	public void create(Habitacion habitacion) {
 		Connection miConeccion = null;
-	    PreparedStatement pStamentConsutaCreaHabitacion = null;
+		PreparedStatement pStamentConsutaCreaHabitacion = null;
 
-	    try {
-	        miConeccion = conectar();
-	        miConeccion.setAutoCommit(false); 
+		try {
+			miConeccion = conectar();
+			miConeccion.setAutoCommit(false);
 
-	        pStamentConsutaCreaHabitacion = (PreparedStatement) miConeccion.prepareStatement(nuevaHabitacion);
-	        pStamentConsutaCreaHabitacion.setInt(1, habitacion.getCantidadDeCamas());
-	        pStamentConsutaCreaHabitacion.setString(2, habitacion.getDescripcion());
-	        pStamentConsutaCreaHabitacion.setDouble(3, habitacion.getPrecio());
-	        pStamentConsutaCreaHabitacion.setBoolean(4, habitacion.isHabilitado());
-	        pStamentConsutaCreaHabitacion.setNull(5, java.sql.Types.DATE);
-	        pStamentConsutaCreaHabitacion.setInt(6, habitacion.getNumHabitaciones());
-	        pStamentConsutaCreaHabitacion.executeUpdate();
+			pStamentConsutaCreaHabitacion = (PreparedStatement) miConeccion.prepareStatement(nuevaHabitacion);
+			pStamentConsutaCreaHabitacion.setInt(1, habitacion.getCantidadDeCamas());
+			pStamentConsutaCreaHabitacion.setString(2, habitacion.getDescripcion());
+			pStamentConsutaCreaHabitacion.setDouble(3, habitacion.getPrecio());
+			pStamentConsutaCreaHabitacion.setBoolean(4, habitacion.isHabilitado());
+			pStamentConsutaCreaHabitacion.setNull(5, java.sql.Types.DATE);
+			pStamentConsutaCreaHabitacion.setInt(6, habitacion.getNumHabitaciones());
+			pStamentConsutaCreaHabitacion.executeUpdate();
 
-	        insertarCaracteristica(habitacion, miConeccion);
+			insertarCaracteristica(habitacion, miConeccion);
 
-	        miConeccion.commit(); 
-	        System.out.println("Habitacion creada correctamente.");
+			miConeccion.commit();
+			System.out.println("Habitacion creada correctamente.");
 
-	    } catch (SQLException e) {
-	        try {
-	            if (miConeccion != null) {
-	                miConeccion.rollback(); 
-	            }
-	        } catch (SQLException ex) {
-	            System.out.println("Error al hacer rollback");
-	            ex.printStackTrace();
-	        }
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (pStamentConsutaCreaHabitacion != null) pStamentConsutaCreaHabitacion.close();
-	            if (miConeccion != null) miConeccion.close();
-	        } catch (SQLException e) {
-	            System.out.println("Error al cerrar la conexión");
-	        }
-	    }
+		} catch (SQLException e) {
+			try {
+				if (miConeccion != null) {
+					miConeccion.rollback();
+				}
+			} catch (SQLException ex) {
+				System.out.println("Error al hacer rollback");
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStamentConsutaCreaHabitacion != null)
+					pStamentConsutaCreaHabitacion.close();
+				if (miConeccion != null)
+					miConeccion.close();
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión");
+			}
+		}
 	}
 
 	private void insertarCaracteristica(Habitacion habitacion, Connection miConeccion) throws SQLException {
-	    String insertarHabitacionCaracteristica = 
-	        "INSERT INTO habitacion_caracteristicaespecial (numHabitacion , nombreCaracteristicaEspecial) VALUES (?, ?)";
-	    
-	    	PreparedStatement pStamentCaracteristica = (PreparedStatement) miConeccion.prepareStatement(insertarHabitacionCaracteristica);
-	        if (habitacion.getCaracteristicasEspeciale() != null) {
-	            for (CaracteristicaEspecial car : habitacion.getCaracteristicasEspeciale()) {
-	                if (car != null) { 
-	                    pStamentCaracteristica.setInt(1, habitacion.getNumHabitaciones());
-	                    pStamentCaracteristica.setString(2, car.getNombre());
-	                    pStamentCaracteristica.addBatch();
-	                }
-	            }
-	            pStamentCaracteristica.executeBatch();
-	        } else {
-	            System.out.println("No hay características especiales para insertar.");
-	        }
+		String insertarHabitacionCaracteristica = "INSERT INTO habitacion_caracteristicaespecial (numHabitacion , nombreCaracteristicaEspecial) VALUES (?, ?)";
+
+		PreparedStatement pStamentCaracteristica = (PreparedStatement) miConeccion
+				.prepareStatement(insertarHabitacionCaracteristica);
+		if (habitacion.getCaracteristicasEspeciale() != null) {
+			for (CaracteristicaEspecial car : habitacion.getCaracteristicasEspeciale()) {
+				if (car != null) {
+					pStamentCaracteristica.setInt(1, habitacion.getNumHabitaciones());
+					pStamentCaracteristica.setString(2, car.getNombre());
+					pStamentCaracteristica.addBatch();
+				}
+			}
+			pStamentCaracteristica.executeBatch();
+		} else {
+			System.out.println("No hay características especiales para insertar.");
+		}
 	}
 
 	@Override
@@ -188,64 +191,69 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public Set<Habitacion> findAll() {
-	    Set<Habitacion> listaHabitaciones = new HashSet<>();
-	    Set<CaracteristicaEspecial> caracteristicasLista = new HashSet<>();
-	    Connection miConeccion = null;
-	    PreparedStatement pStamentConsulta = null;
-	    ResultSet resultadoBusquedaHab = null;
+		Set<Habitacion> listaHabitaciones = new HashSet<>();
+		Set<CaracteristicaEspecial> caracteristicasLista = new HashSet<>();
+		Connection miConeccion = null;
+		PreparedStatement pStamentConsulta = null;
+		ResultSet resultadoBusquedaHab = null;
 
-	    try {
-	        miConeccion = conectar();
-	        pStamentConsulta = (PreparedStatement) miConeccion.prepareStatement(buscarTodaLasHabitaciones);
-	        resultadoBusquedaHab = pStamentConsulta.executeQuery();
+		try {
+			miConeccion = conectar();
+			pStamentConsulta = (PreparedStatement) miConeccion.prepareStatement(buscarTodaLasHabitaciones);
+			resultadoBusquedaHab = pStamentConsulta.executeQuery();
 
-	        while (resultadoBusquedaHab.next()) {
-	            Habitacion habitacion = new Habitacion();
-	            habitacion.setCantidadDeCamas(resultadoBusquedaHab.getInt("cantidadDeCamas"));
-	            habitacion.setDescripcion(resultadoBusquedaHab.getString("descripcion"));
-	            habitacion.setPrecio(resultadoBusquedaHab.getDouble("precio"));
-	            habitacion.setHabilitado(resultadoBusquedaHab.getBoolean("habilitado"));
-	            habitacion.setNumHabitaciones(resultadoBusquedaHab.getInt("numHabitaciones"));
-	            
-	            caracteristicasLista = obtenerCaracteristicas(habitacion.getNumHabitaciones(), miConeccion);
-	            ArrayList<CaracteristicaEspecial>arrayCar = new ArrayList<>(caracteristicasLista);
-	            habitacion.setCaracteristicasEspeciale(arrayCar);
-	            listaHabitaciones.add(habitacion);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error al recuperar habitaciones: " + e.getMessage());
-	    } finally {
-	        try {
-	            if (resultadoBusquedaHab != null) resultadoBusquedaHab.close();
-	            if (pStamentConsulta != null) pStamentConsulta.close();
-	            if (miConeccion != null) miConeccion.close();
-	        } catch (SQLException e) {
-	            System.out.println("Error al cerrar los recursos: " + e.getMessage());
-	        }
-	    }
-	    return listaHabitaciones;
+			while (resultadoBusquedaHab.next()) {
+				Habitacion habitacion = new Habitacion();
+				habitacion.setCantidadDeCamas(resultadoBusquedaHab.getInt("cantidadDeCamas"));
+				habitacion.setDescripcion(resultadoBusquedaHab.getString("descripcion"));
+				habitacion.setPrecio(resultadoBusquedaHab.getDouble("precio"));
+				habitacion.setHabilitado(resultadoBusquedaHab.getBoolean("habilitado"));
+				habitacion.setNumHabitaciones(resultadoBusquedaHab.getInt("numHabitaciones"));
+
+				caracteristicasLista = obtenerCaracteristicas(habitacion.getNumHabitaciones(), miConeccion);
+				ArrayList<CaracteristicaEspecial> arrayCar = new ArrayList<>(caracteristicasLista);
+				habitacion.setCaracteristicasEspeciale(arrayCar);
+				listaHabitaciones.add(habitacion);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al recuperar habitaciones: " + e.getMessage());
+		} finally {
+			try {
+				if (resultadoBusquedaHab != null)
+					resultadoBusquedaHab.close();
+				if (pStamentConsulta != null)
+					pStamentConsulta.close();
+				if (miConeccion != null)
+					miConeccion.close();
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar los recursos: " + e.getMessage());
+			}
+		}
+		return listaHabitaciones;
 	}
 
-	private Set<CaracteristicaEspecial> obtenerCaracteristicas(int numHabitacion, Connection miConeccion) throws SQLException {
-	    Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
-	    String consultaCaracteristicas =  "SELECT ce.nombre, ce.descripcion, ce.precio " +
-                "FROM habitacion_caracteristicaespecial hce " +
-                "JOIN caracteristicaespecial ce ON hce.nombreCaracteristicaEspecial = ce.nombre " +
-                "WHERE hce.numHabitacion = ?";
-	    
-	    	PreparedStatement pStamentConsuta = (PreparedStatement) miConeccion.prepareStatement(consultaCaracteristicas);
-	        pStamentConsuta.setInt(1, numHabitacion);
-	        ResultSet resutadoBusquedaCar = pStamentConsuta.executeQuery();
-	            while (resutadoBusquedaCar.next()) {
-	                CaracteristicaEspecial caracteristica = new CaracteristicaEspecial();
-	                caracteristica.setnNombre(resutadoBusquedaCar.getString("nombre"));
-	                caracteristica.setDecripcion(resutadoBusquedaCar.getString("descripcion"));
-	                caracteristica.setPrecio(resutadoBusquedaCar.getDouble("precio"));
-	                caracteristicas.add(caracteristica);
-	            }
-	    
-	    return caracteristicas;
+	private Set<CaracteristicaEspecial> obtenerCaracteristicas(int numHabitacion, Connection miConeccion)
+			throws SQLException {
+		Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
+		String consultaCaracteristicas = "SELECT ce.nombre, ce.descripcion, ce.precio " +
+				"FROM habitacion_caracteristicaespecial hce " +
+				"JOIN caracteristicaespecial ce ON hce.nombreCaracteristicaEspecial = ce.nombre " +
+				"WHERE hce.numHabitacion = ?";
+
+		PreparedStatement pStamentConsuta = (PreparedStatement) miConeccion.prepareStatement(consultaCaracteristicas);
+		pStamentConsuta.setInt(1, numHabitacion);
+		ResultSet resutadoBusquedaCar = pStamentConsuta.executeQuery();
+		while (resutadoBusquedaCar.next()) {
+			CaracteristicaEspecial caracteristica = new CaracteristicaEspecial();
+			caracteristica.setnNombre(resutadoBusquedaCar.getString("nombre"));
+			caracteristica.setDecripcion(resutadoBusquedaCar.getString("descripcion"));
+			caracteristica.setPrecio(resutadoBusquedaCar.getDouble("precio"));
+			caracteristicas.add(caracteristica);
+		}
+
+		return caracteristicas;
 	}
+
 	private Connection conectar() throws ConnecionFallidaExeption {
 		Connection miConnecion = null;
 		try {

@@ -86,11 +86,14 @@ public class MemoryApi implements IApi {
 
 	}
 
-	@Override
+	/*
+	 * void registrarUsuario(String username, String password, String email, String
+	 * nombre, Integer rol);
+	 */
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
 
 		Rol role = this.buscarRol(rol);
-		Usuario usuario = new Usuario(username, password, nombre, email, role);
+		Usuario usuario = new Usuario(username, password, nombre, email);
 		this.usuarios.add(usuario);
 		this.usuarios1.put(username, password);
 
@@ -165,13 +168,13 @@ public class MemoryApi implements IApi {
 	@Override
 	public void activarUsuario(String usuario) {
 		Usuario user = this.buscarUsuario(usuario);
-		user.activar();
+
 	}
 
 	@Override
 	public void desactivarUsuario(String usuario) {
 		Usuario user = this.buscarUsuario(usuario);
-		user.desactivar();
+
 	}
 
 	private Rol buscarRol(Integer codigo) {
@@ -352,10 +355,14 @@ public class MemoryApi implements IApi {
 		caracteristicaEspecial.add(caracteristica);
 	}
 
-	@Override
-	public void generarCalificacionHabitacion(CalificacionDTO calificacioDTO, int idReserva) {
+	/*
+	 * vvoid generarCalificacionHabitacion(int idReserva , int calificacion , String
+	 * comentario);
+	 */
+
+	public void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario) {
 		Reserva reservaObtenida = this.buscarReserva(idReserva);
-		reservaObtenida.setCalificacion(new Calificacion(calificacioDTO.getValor(), calificacioDTO.getComentario()));
+		reservaObtenida.setCalificacion(new Calificacion(calificacion, comentario));
 
 	}
 
@@ -370,9 +377,16 @@ public class MemoryApi implements IApi {
 		ArrayList<Servicio> serviciosObtenidos = this.buscarServicio(null);// pregunta como hacer esto
 		LocalDate fechaReserva1 = this.convertirAfecha(fechaReserva);
 		int id = this.generadorID();
-
+		/*
+		 * public Reserva(int id , ArrayList<Habitacion> habitaciones, Usuario usuario,
+		 * LocalDate fechaDeInicio,
+		 * LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio>
+		 * servicios, LocalDate fechaDeReserva,
+		 * boolean pagoMinimo){
+		 * 
+		 */
 		Reserva reserva = new Reserva(id, habitacinesObtenidos, usuarioObtenido, fechaIni, fechaFin, 0,
-				serviciosObtenidos, false, false, null, fechaReserva1, null, pagoMinimo);
+				serviciosObtenidos, false, false, fechaReserva1, pagoMinimo);
 
 		reservas.add(reserva);
 	}

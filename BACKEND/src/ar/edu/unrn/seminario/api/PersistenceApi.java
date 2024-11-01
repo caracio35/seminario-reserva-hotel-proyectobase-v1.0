@@ -117,7 +117,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void generarCalificacionHabitacion(int idReserva , int calificacion , String cometario) {
+	public void generarCalificacionHabitacion(int idReserva, int calificacion, String cometario) {
 		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
 		Calificacion calificion = new Calificacion(calificacion, cometario);
 		calificacionDAO.create(calificion, idReserva);
@@ -133,21 +133,22 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void generarReserva(int[] habitacion, String usuario, String fechaInicio, String fechaFin,
 			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo) {
-		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();  
+		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
 		Usuario usuario1 = usuarioDAO.find(usuario);
 		ArrayList<Habitacion> habitacionObtenida = new ArrayList<>();
 		ArrayList<Servicio> servicioObten = new ArrayList<>();
-		for ( int n : habitacion) {
+		for (int n : habitacion) {
 			Habitacion habitacin = buscarHabitacionPorNumero(n);
 			habitacionObtenida.add(habitacin);
 		}
 		for (String s : servicio) {
-			Servicio servicioJ = buscarServicio(s); 
+			Servicio servicioJ = buscarServicio(s);
 			servicioObten.add(servicioJ);
 		}
-		
-		Reserva reserva2 = new Reserva(0, habitacionObtenida, usuario1, convertiFecha(fechaInicio), convertiFecha(fechaFin),cantidadPersonas ,servicioObten, convertiFecha(fechaReserva), pagoMinimo);
+
+		Reserva reserva2 = new Reserva(0, habitacionObtenida, usuario1, convertiFecha(fechaInicio),
+				convertiFecha(fechaFin), cantidadPersonas, servicioObten, convertiFecha(fechaReserva), pagoMinimo);
 		reservaDAO.create(reserva2);
 	}
 
@@ -167,28 +168,30 @@ public class PersistenceApi implements IApi {
 	public List<HabitacionDTO> obtenerTodasLasHabitaciones() {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
-		List<HabitacionDTO>listaHabitacionesDTO = new ArrayList<>();
-		for (Habitacion h: ListaHabitaciones) {
-			HabitacionDTO habitacionDTO = new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(), 
-					h.isHabilitado(), h.getNumHabitaciones(), mapearCaracteriticasDTO(h),tranformaFechaString(h));
+		List<HabitacionDTO> listaHabitacionesDTO = new ArrayList<>();
+		for (Habitacion h : ListaHabitaciones) {
+			HabitacionDTO habitacionDTO = new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
+					h.isHabilitado(), h.getNumHabitaciones(), mapearCaracteriticasDTO(h), tranformaFechaString(h));
 			listaHabitacionesDTO.add(habitacionDTO);
 		}
 		return listaHabitacionesDTO;
 	}
-	private List<CaracteristicaEspecialDTO> mapearCaracteriticasDTO (Habitacion h){
+
+	private List<CaracteristicaEspecialDTO> mapearCaracteriticasDTO(Habitacion h) {
 		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
-		for (CaracteristicaEspecial c : h.getCaracteristicasEspeciale() ) {
-			CaracteristicaEspecialDTO caracteristica = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(), c.getPrecio());
+		for (CaracteristicaEspecial c : h.getCaracteristicasEspeciale()) {
+			CaracteristicaEspecialDTO caracteristica = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(),
+					c.getPrecio());
 			car.add(caracteristica);
 		}
-		return car ; 
+		return car;
 	}
-	
+
 	private String tranformaFechaString(Habitacion h) {
 		if (h.getFechaHastaCuandoEstaDesactivado() != null) {
 			String fechaDesactivacion = h.getFechaHastaCuandoEstaDesactivado().toString();
 			return fechaDesactivacion;
-			}
+		}
 		return null;
 	}
 
@@ -305,14 +308,16 @@ public class PersistenceApi implements IApi {
 
 		return habitacion;
 	}
+
 	private Servicio buscarServicio(String nombre) {
 		ImplementaionServicioDAO servicioDAO = new ImplementaionServicioDAO();
 		Servicio servicio = servicioDAO.find(nombre);
 		return servicio;
 	}
+
 	private LocalDate convertiFecha(String fecha) {
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(fecha, formato);
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(fecha, formato);
 	}
 
 }
