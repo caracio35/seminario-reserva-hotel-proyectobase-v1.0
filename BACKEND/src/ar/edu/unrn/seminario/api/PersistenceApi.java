@@ -207,15 +207,16 @@ public class PersistenceApi implements IApi {
 	public List<CaracteristicaEspecialDTO> obtenerCaracteristica() {
 		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
 		Set<CaracteristicaEspecial> caracteristicas = i.findAll();
-		
+
 		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
 		// Mostrar las características
 		for (CaracteristicaEspecial c : caracteristicas) {
-			CaracteristicaEspecialDTO carDTO = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(), c.getPrecio());
+			CaracteristicaEspecialDTO carDTO = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(),
+					c.getPrecio());
 			car.add(carDTO);
 		}
-		
-		return car ;
+
+		return car;
 	}
 
 	@Override
@@ -227,7 +228,8 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas)
-			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption{
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
@@ -289,7 +291,9 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
-			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption {
+
 		// TODO Auto-generated method stub
 		// Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar
 	}

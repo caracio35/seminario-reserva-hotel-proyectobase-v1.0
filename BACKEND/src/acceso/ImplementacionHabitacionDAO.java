@@ -36,12 +36,12 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 
-	public void create(Habitacion habitacion) {
+	public void create(Habitacion habitacion) throws ConexionFallidaExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutaCreaHabitacion = null;
-
+		miConeccion = conectar();
 		try {
-			miConeccion = conectar();
+
 			miConeccion.setAutoCommit(false);
 
 			pStamentConsutaCreaHabitacion = (PreparedStatement) miConeccion.prepareStatement(nuevaHabitacion);
@@ -65,7 +65,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				}
 			} catch (SQLException ex) {
 				System.out.println("Error al hacer rollback");
-				ex.printStackTrace();
+				throw new ConexionFallidaExeption();
 			}
 			e.printStackTrace();
 		} finally {
@@ -75,7 +75,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				if (miConeccion != null)
 					miConeccion.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar la conexión");
+				throw new ConexionFallidaExeption();
 			}
 		}
 	}

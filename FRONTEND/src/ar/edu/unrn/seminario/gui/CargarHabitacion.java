@@ -113,12 +113,17 @@ public class CargarHabitacion extends JFrame {
 							caracteristicasSeleccionadas.add(nombreCaracteristica);
 						}
 					}
-
+					String[] caracteristicas = caracteristicasSeleccionadas.toArray(new String[0]);
 					try {
+						/*
+						 * darDeAltaHabitacion(int cantidadDeCamas, String descripcion,
+						 * double precio, boolean habilitado,
+						 * int numHabitacion, String[] caracteristicas)
+						 */
 						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 								textFieldDescripccion.getText(),
 								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
-								Integer.parseInt(textFieldNumeroHabitacion.getText()), obtenerListaCaracteristicas());
+								Integer.parseInt(textFieldNumeroHabitacion.getText()), new String[6]);
 					} catch (NumeroHabitacionExistenteException e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 
@@ -127,7 +132,7 @@ public class CargarHabitacion extends JFrame {
 								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
 					} catch (ConexionFallidaExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch(CampoVacioExeption e1) {
+					} catch (CampoVacioExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					} catch (EnterosEnCeroExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -202,7 +207,7 @@ public class CargarHabitacion extends JFrame {
 			table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error al inicializar: " + e.getMessage());
+			System.out.println("esto falla");
 		}
 	}
 
