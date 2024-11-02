@@ -2,11 +2,11 @@ package ar.edu.unrn.seminario.exception;
 
 import java.sql.SQLException;
 
-public class ConnecionFallidaExeption extends SQLException {
-	public ConnecionFallidaExeption(String mensaje) {
+public class ConexionFallidaExeption extends SQLException {
+	public ConexionFallidaExeption(String mensaje) {
 		super(mensaje);
 	}
-	public ConnecionFallidaExeption() {
+	public ConexionFallidaExeption() {
 		super("Coneccion fallida con la base de datos");
 }
 }
