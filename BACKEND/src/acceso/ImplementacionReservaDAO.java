@@ -11,7 +11,7 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 import ar.edu.unrn.seminario.api.ReservaDAO;
-import ar.edu.unrn.seminario.exception.ConnecionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Reserva;
 import ar.edu.unrn.seminario.modelo.Servicio;
@@ -174,13 +174,13 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	        }
 	    }
 	}
-	private Connection conectar() throws ConnecionFallidaExeption {
+	private Connection conectar() throws ConexionFallidaExeption {
 		Connection miConnecion = null;
 		try {
 			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
 			return miConnecion;
 		} catch (Exception e) {
-			throw new ConnecionFallidaExeption("no se conecto");
+			throw new ConexionFallidaExeption("no se conecto");
 
 		}
 	}

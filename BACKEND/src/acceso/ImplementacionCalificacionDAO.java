@@ -8,7 +8,7 @@ import java.util.Set;
 import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.CalificacionDAO;
-import ar.edu.unrn.seminario.exception.ConnecionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public class ImplementacionCalificacionDAO implements CalificacionDAO{
@@ -75,13 +75,13 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	private Connection conectar() throws ConnecionFallidaExeption {
+	private Connection conectar() throws ConexionFallidaExeption {
 		Connection miConexion = null;
 		try {
 			miConexion = DriverManager.getConnection(conexion, usuario, clave);
 			return miConexion;
 		} catch (Exception e) {
-			throw new ConnecionFallidaExeption("no se conecto");
+			throw new ConexionFallidaExeption("no se conecto");
 
 		}
 	}

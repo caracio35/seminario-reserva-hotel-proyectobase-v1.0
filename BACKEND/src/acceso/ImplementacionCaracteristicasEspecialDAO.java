@@ -11,7 +11,7 @@ import java.util.Set;
 import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.CaracteristicaEspecialDAO;
-import ar.edu.unrn.seminario.exception.ConnecionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 
 public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaEspecialDAO {
@@ -225,13 +225,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	    
 	    return caracteristicaSet;
 	}
-	private Connection conectar() throws ConnecionFallidaExeption {
+	private Connection conectar() throws ConexionFallidaExeption {
 		Connection miConnecion = null;
 		try {
 			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
 			return miConnecion;
 		} catch (Exception e) {
-			throw new ConnecionFallidaExeption("no se conecto");
+			throw new ConexionFallidaExeption("no se conecto");
 
 		}
 	}

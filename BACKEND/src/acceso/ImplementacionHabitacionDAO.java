@@ -10,7 +10,7 @@ import java.util.Set;
 import com.mysql.jdbc.PreparedStatement;
 import ar.edu.unrn.seminario.api.HabitacionDAO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
-import ar.edu.unrn.seminario.exception.ConnecionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
@@ -254,13 +254,13 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		return caracteristicas;
 	}
 
-	private Connection conectar() throws ConnecionFallidaExeption {
+	private Connection conectar() throws ConexionFallidaExeption {
 		Connection miConnecion = null;
 		try {
 			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
 			return miConnecion;
 		} catch (Exception e) {
-			throw new ConnecionFallidaExeption("no se conecto");
+			throw new ConexionFallidaExeption("no se conecto");
 
 		}
 	}
