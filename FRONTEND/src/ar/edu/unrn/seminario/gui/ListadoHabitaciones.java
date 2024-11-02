@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -34,7 +35,7 @@ public class ListadoHabitaciones extends JFrame {
 	private int numHabitacionSelected;
 	private JTextField textField;
 
-	public ListadoHabitaciones(IApi api) {
+	public ListadoHabitaciones(PersistenceApi api) {
 		
 		setBackground(SystemColor.textHighlight);
 		getContentPane().setBackground(new Color(240, 240, 240));

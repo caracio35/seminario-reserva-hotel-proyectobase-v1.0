@@ -14,13 +14,14 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 
 public class VentanaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 
 	// andres gei
-	public VentanaPrincipal(IApi api) {
+	public VentanaPrincipal(PersistenceApi api) {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

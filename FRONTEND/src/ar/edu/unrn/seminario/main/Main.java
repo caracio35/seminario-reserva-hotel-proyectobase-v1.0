@@ -17,10 +17,11 @@ public class Main {
 			public void run() {
 				try {
 
-					// IApi api = new MemoryApi();
-					// VentanaPrincipal frame = new VentanaPrincipal(api);
-					// frame.setVisible(true);
-					PersistenceApi p = new PersistenceApi();
+					//IApi api = new MemoryApi();
+					
+					PersistenceApi api = new PersistenceApi();
+					VentanaPrincipal frame = new VentanaPrincipal(api);
+					frame.setVisible(true);
 					// p.crearCaracteristicaEspecial("enano mimoso", "Expeciencia unica", 1000);
 					// p.eliminarCaracteristica("enano mimoso");
 					// p.obtenerCaracteristica();
@@ -40,7 +41,7 @@ public class Main {
 					// p.generarReserva(habitaciones, usuario, fechaInicio, fechaFin, fechaReserva,
 					// cantidadPersonas, servicios, pagoMinimo);
 					// }
-					p.generarCalificacionHabitacion(35, 1, "Una mierda su habitacion");
+					//p.generarCalificacionHabitacion(35, 1, "Una mierda su habitacion");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

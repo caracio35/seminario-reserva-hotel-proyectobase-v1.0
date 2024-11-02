@@ -25,6 +25,7 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 
@@ -43,7 +44,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private JTextField textFieldHuespedes;
 	private JButton btnCancelarsalir;
 	private DefaultTableModel modelo;
-	private IApi api;
+	private PersistenceApi api;
 	private String fechaReservaFin;
 	private String fechaReservaInicio;
 	private JTextField textFieldPrecio;
@@ -52,7 +53,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings("serial")
-	public BusquedaDeHabitaciones(IApi api) {
+	public BusquedaDeHabitaciones(PersistenceApi api) {
 		this.api = api;
 
 		// Configurar el JFrame

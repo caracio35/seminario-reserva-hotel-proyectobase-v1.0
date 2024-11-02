@@ -205,16 +205,15 @@ public class PersistenceApi implements IApi {
 	public List<CaracteristicaEspecialDTO> obtenerCaracteristica() {
 		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
 		Set<CaracteristicaEspecial> caracteristicas = i.findAll();
-
+		
+		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
 		// Mostrar las características
 		for (CaracteristicaEspecial c : caracteristicas) {
-			System.out.println("Nombre: " + c.getNombre());
-			System.out.println("Descripción: " + c.getDescripcion());
-			System.out.println("Precio: " + c.getPrecio());
-			System.out.println("------------------------");
+			CaracteristicaEspecialDTO carDTO = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(), c.getPrecio());
+			car.add(carDTO);
 		}
-		// TODO Auto-generated method stub
-		return null;
+		
+		return car ;
 	}
 
 	@Override

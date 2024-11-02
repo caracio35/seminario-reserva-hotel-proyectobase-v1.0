@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -34,12 +35,12 @@ public class CargarHabitacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private IApi api;
+	private PersistenceApi api;
 	private JTable table;
 	private DefaultTableModel modelo;
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
-	public CargarHabitacion(IApi api) {
+	public CargarHabitacion(PersistenceApi api) {
 		try {
 
 			this.api = api;
@@ -119,15 +120,6 @@ public class CargarHabitacion extends JFrame {
 					} catch (NumeroHabitacionExistenteException e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 
-					} catch (CampoVacioExeption e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (EnterosEnCeroExeption e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (PrecioCeroExeption e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e1.getMessage());
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
 								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
@@ -207,7 +199,7 @@ public class CargarHabitacion extends JFrame {
 	 * @wbp.parser.constructor
 	 */
 	@SuppressWarnings("serial")
-	public CargarHabitacion(IApi api, int numeroHabitacion) {
+	public CargarHabitacion(PersistenceApi api, int numeroHabitacion) {
 		this.api = api;
 		this.caracteristicasEspeciales = api.obtenerCaracteristica();
 		HabitacionDTO hDTO = api.buscarHabitacionDTOPorNumero(numeroHabitacion);
