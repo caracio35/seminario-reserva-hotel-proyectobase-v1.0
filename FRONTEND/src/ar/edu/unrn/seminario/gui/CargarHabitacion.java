@@ -27,6 +27,8 @@ import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
@@ -123,6 +125,16 @@ public class CargarHabitacion extends JFrame {
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
 								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
+					} catch (ConexionFallidaExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch(CampoVacioExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (EnterosEnCeroExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (PrecioCeroExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (DuplicadaExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
 				}
 

@@ -259,8 +259,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		try {
 			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
 			return miConnecion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
+		} catch (SQLException e) {
+			throw new ConexionFallidaExeption();
 
 		}
 	}

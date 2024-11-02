@@ -289,7 +289,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
-			throws NumeroHabitacionExistenteException {
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
 		// TODO Auto-generated method stub
 		// Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar
 	}
