@@ -48,15 +48,24 @@ public class PersistenceApi implements IApi {
 
 	public HabitacionDTO dameLaHabitacion() {
 
-		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
-		for (CaracteristicaEspecial c : habitacion.getCaracteristicasEspeciale()) {
-			CaracteristicaEspecialDTO carDTO = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(),
-					c.getPrecio());
-			car.add(carDTO);
+		List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
+
+		// Verificar si la lista de características especiales es nula
+		if (habitacion.getCaracteristicasEspeciale() != null) {
+			for (CaracteristicaEspecial caracteristica : habitacion.getCaracteristicasEspeciale()) {
+				CaracteristicaEspecialDTO caracteristicaDTO = new CaracteristicaEspecialDTO(caracteristica.getNombre(),
+						caracteristica.getDescripcion(), caracteristica.getPrecio());
+				caracteristicasDTO.add(caracteristicaDTO);
+			}
 		}
+
+		// Convertir fecha de desactivación a String, si existe
+		String fechaDesactivacion = habitacion.getFechaHastaCuandoEstaDesactivado() != null
+				? habitacion.getFechaHastaCuandoEstaDesactivado().toString()
+				: null;
+
 		return new HabitacionDTO(habitacion.getCantidadDeCamas(), habitacion.getDescripcion(), habitacion.getPrecio(),
-				habitacion.isHabilitado(), habitacion.getNumHabitaciones(), car,
-				habitacion.getFechaHastaCuandoEstaDesactivado().toString());
+				habitacion.isHabilitado(), habitacion.getNumHabitaciones(), caracteristicasDTO, fechaDesactivacion);
 	}
 
 	@Override

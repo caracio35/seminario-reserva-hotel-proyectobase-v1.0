@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
 import com.mysql.jdbc.PreparedStatement;
+
 import ar.edu.unrn.seminario.api.HabitacionDAO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
-import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -100,13 +101,12 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	}
 
 	@Override
-	public void update(Habitacion habitacion) throws ConexionFallidaExeption {
+	public void update(Habitacion habitacion) {
 		Habitacion habitacionNueva = habitacion;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
-		miConeccion = conectar();
 		try {
-		
+			miConeccion = conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
 
 			pStament.setInt(1, habitacionNueva.getCantidadDeCamas());
@@ -123,19 +123,19 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					throw new ConexionFallidaExeption();
+					System.out.println("error de conexion");
 				}
 			}
 		}
 	}
 
 	@Override
-	public Habitacion find(int numHabitaciones) throws ConexionFallidaExeption {
+	public Habitacion find(int numHabitaciones) {
 		int numeroHabitacionBuscada = numHabitaciones;
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutataBuscarHabitacion = null;
-		miConeccion = conectar();
 		try {
+			miConeccion = conectar();
 			pStamentConsutataBuscarHabitacion = (PreparedStatement) miConeccion.prepareStatement(buscarHabitacion);
 			pStamentConsutataBuscarHabitacion.setInt(1, numeroHabitacionBuscada);
 			ResultSet habitacionObtenida = pStamentConsutataBuscarHabitacion.executeQuery();
@@ -159,7 +159,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					throw new ConexionFallidaExeption();
+					System.out.println("error de conexion");
 				}
 			}
 		}
@@ -167,39 +167,39 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	}
 
 	@Override
-	public void remove(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public void remove(int numHabitaciones) {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
-		miConeccion = conectar();
 		try {
-
+			miConeccion = conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarHabitacion);
 			pStament.setInt(1, numHabitaciones);
 			pStament.executeUpdate();
 			pStament.close();
 			System.out.println("eliminado con exito " + numHabitaciones);
 		} catch (SQLException e) {
-			throw new ErrorDatosNoEncontradosExeption();
+			System.out.println("excepcion propia ");
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					throw new ConexionFallidaExeption();
+					System.out.println("error de conexion");
 				}
 			}
 		}
 	}
 
 	@Override
-	public Set<Habitacion> findAll() throws ConexionFallidaExeption {
+	public Set<Habitacion> findAll() {
 		Set<Habitacion> listaHabitaciones = new HashSet<>();
 		Set<CaracteristicaEspecial> caracteristicasLista = new HashSet<>();
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsulta = null;
 		ResultSet resultadoBusquedaHab = null;
-		miConeccion = conectar();
+
 		try {
+			miConeccion = conectar();
 			pStamentConsulta = (PreparedStatement) miConeccion.prepareStatement(buscarTodaLasHabitaciones);
 			resultadoBusquedaHab = pStamentConsulta.executeQuery();
 
@@ -227,7 +227,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				if (miConeccion != null)
 					miConeccion.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar los recursos: " + e.getMessage()); //throw new ConexionFallidaExeption();
+				System.out.println("Error al cerrar los recursos: " + e.getMessage());
 			}
 		}
 		return listaHabitaciones;
@@ -236,10 +236,10 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	private Set<CaracteristicaEspecial> obtenerCaracteristicas(int numHabitacion, Connection miConeccion)
 			throws SQLException {
 		Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
-		String consultaCaracteristicas = "SELECT ce.nombre, ce.descripcion, ce.precio " +
-				"FROM habitacion_caracteristicaespecial hce " +
-				"JOIN caracteristicaespecial ce ON hce.nombreCaracteristicaEspecial = ce.nombre " +
-				"WHERE hce.numHabitacion = ?";
+		String consultaCaracteristicas = "SELECT ce.nombre, ce.descripcion, ce.precio "
+				+ "FROM habitacion_caracteristicaespecial hce "
+				+ "JOIN caracteristicaespecial ce ON hce.nombreCaracteristicaEspecial = ce.nombre "
+				+ "WHERE hce.numHabitacion = ?";
 
 		PreparedStatement pStamentConsuta = (PreparedStatement) miConeccion.prepareStatement(consultaCaracteristicas);
 		pStamentConsuta.setInt(1, numHabitacion);

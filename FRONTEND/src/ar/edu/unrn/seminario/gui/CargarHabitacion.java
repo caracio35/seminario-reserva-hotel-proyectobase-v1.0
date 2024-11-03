@@ -205,14 +205,16 @@ public class CargarHabitacion extends JFrame {
 			this.cargarCaracteristicaEspecial();
 			table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
-
 			cargarHabitacionParaModificar();
 		} catch (Exception e) {
+
 			System.out.println("aca " + e.getStackTrace() + e.getMessage());
 		}
 	}
 
 	private void cargarHabitacionParaModificar() {
+		System.out.println(api.modificamosHabitacion());
+		System.out.println(api.dameLaHabitacion());
 		if (api.modificamosHabitacion()) {
 			HabitacionDTO hDTO = api.dameLaHabitacion();
 			textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));

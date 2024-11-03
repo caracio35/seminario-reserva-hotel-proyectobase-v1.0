@@ -1,11 +1,10 @@
- package acceso;
+package acceso;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -23,11 +22,11 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	private final static String encontrarCaracteristica = "SELECT * FROM `caracteristicaespecial` WHERE nombre = ?";
 	private final static String encontrarTodasLasCaracteristicas = "SELECT * FROM CaracteristicaEspecial";
 	private final static String modificarCaracteristica = "UPDATE caracteristicaespecial SET descripcion = ?, precio = ? WHERE nombre = ?";
-	private final static String buscarCaracteristicasPorHabitacion = 
-		    "SELECT ce.nombre, ce.descripcion, ce.precio " +
-		    "FROM caracteristicaespecial ce " +
-		    "JOIN habitacion_caracteristicaespecial hce ON ce.nombre = hce.nombreCaracteristicaEspecial " + 
-		    "WHERE hce.numHabitacion = ?;"; // Filtro por el número de habitación
+	private final static String buscarCaracteristicasPorHabitacion = "SELECT ce.nombre, ce.descripcion, ce.precio "
+			+ "FROM caracteristicaespecial ce "
+			+ "JOIN habitacion_caracteristicaespecial hce ON ce.nombre = hce.nombreCaracteristicaEspecial "
+			+ "WHERE hce.numHabitacion = ?;"; // Filtro por el número de habitación
+
 	public ImplementacionCaracteristicasEspecialDAO() {
 
 	}
@@ -187,44 +186,44 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	public Set<CaracteristicaEspecial> obtenerCaracteristicasPorHabitacion(int idNumeroHabitacion) {
-	    Set<CaracteristicaEspecial> caracteristicaSet = new HashSet<>();
-	    Connection miConexion = null;
-	    PreparedStatement pStamentBuscarCar = null;
-	    
-	    try {
-	        miConexion = conectar(); // Tu método para obtener la conexión
-	        pStamentBuscarCar = (PreparedStatement) miConexion.prepareStatement(buscarCaracteristicasPorHabitacion);
-	        pStamentBuscarCar.setInt(1, idNumeroHabitacion);  
-	        
-	        ResultSet rsCaracteristica = pStamentBuscarCar.executeQuery();
-	        
-	       
-	        while (rsCaracteristica.next()) {
-	            String nombre = rsCaracteristica.getString("nombre");
-	            String descripcion = rsCaracteristica.getString("descripcion");
-	            double precio = rsCaracteristica.getDouble("precio");
-	            
-	            CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
-	            caracteristicaSet.add(caracteristica); 
-	        }
-	        pStamentBuscarCar.close();
-	        System.out.println("Lista de características retornada con éxito");
+		Set<CaracteristicaEspecial> caracteristicaSet = new HashSet<>();
+		Connection miConexion = null;
+		PreparedStatement pStamentBuscarCar = null;
 
-	    } catch (SQLException e) {
-	        System.out.println("Ocurrió un error al obtener las características de la habitación: " + e.getMessage());
-	        e.printStackTrace();  
-	    } finally {
-	        if (miConexion != null) {
-	            try {
-	                miConexion.close();
-	            } catch (SQLException e) {
-	                System.out.println("Error al cerrar la conexión: " + e.getMessage());
-	            }
-	        }
-	    }
-	    
-	    return caracteristicaSet;
+		try {
+			miConexion = conectar(); // Tu método para obtener la conexión
+			pStamentBuscarCar = (PreparedStatement) miConexion.prepareStatement(buscarCaracteristicasPorHabitacion);
+			pStamentBuscarCar.setInt(1, idNumeroHabitacion);
+
+			ResultSet rsCaracteristica = pStamentBuscarCar.executeQuery();
+
+			while (rsCaracteristica.next()) {
+				String nombre = rsCaracteristica.getString("nombre");
+				String descripcion = rsCaracteristica.getString("descripcion");
+				double precio = rsCaracteristica.getDouble("precio");
+
+				CaracteristicaEspecial caracteristica = new CaracteristicaEspecial(nombre, descripcion, precio);
+				caracteristicaSet.add(caracteristica);
+			}
+			pStamentBuscarCar.close();
+			System.out.println("Lista de características retornada con éxito");
+
+		} catch (SQLException e) {
+			System.out.println("Ocurrió un error al obtener las características de la habitación: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if (miConexion != null) {
+				try {
+					miConexion.close();
+				} catch (SQLException e) {
+					System.out.println("Error al cerrar la conexión: " + e.getMessage());
+				}
+			}
+		}
+
+		return caracteristicaSet;
 	}
+
 	private Connection conectar() throws ConexionFallidaExeption {
 		Connection miConnecion = null;
 		try {
