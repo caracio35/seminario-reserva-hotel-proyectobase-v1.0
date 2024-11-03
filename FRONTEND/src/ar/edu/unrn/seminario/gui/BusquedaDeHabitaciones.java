@@ -22,11 +22,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
@@ -46,7 +44,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private JTextField textFieldHuespedes;
 	private JButton btnCancelarsalir;
 	private DefaultTableModel modelo;
-	private PersistenceApi api;
+	private IApi api;
 	private String fechaReservaFin;
 	private String fechaReservaInicio;
 	private JTextField textFieldPrecio;
@@ -55,7 +53,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings("serial")
-	public BusquedaDeHabitaciones(PersistenceApi api) {
+	public BusquedaDeHabitaciones(IApi api) {
 		this.api = api;
 
 		// Configurar el JFrame
@@ -220,8 +218,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 					// aplicando filtro de precio minimo con stream
 					List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
 							.filter(h -> h.getCantidadDeCamas() >= camas)
-							.sorted(Comparator.comparingDouble(h -> h.getPrecio()))
-							.collect(Collectors.toList());
+							.sorted(Comparator.comparingDouble(h -> h.getPrecio())).collect(Collectors.toList());
 
 					cargarHabitacionesFiltradas(filtrado);
 				} catch (ConexionFallidaExeption e1) {

@@ -37,12 +37,12 @@ public class CargarHabitacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private PersistenceApi api;
+	private IApi api;
 	private JTable table;
 	private DefaultTableModel modelo;
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
-	public CargarHabitacion(PersistenceApi api) {
+	public CargarHabitacion(IApi api) {
 		try {
 
 			this.api = api;
@@ -116,9 +116,8 @@ public class CargarHabitacion extends JFrame {
 					String[] caracteristicas = caracteristicasSeleccionadas.toArray(new String[0]);
 					try {
 						/*
-						 * darDeAltaHabitacion(int cantidadDeCamas, String descripcion,
-						 * double precio, boolean habilitado,
-						 * int numHabitacion, String[] caracteristicas)
+						 * darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio,
+						 * boolean habilitado, int numHabitacion, String[] caracteristicas)
 						 */
 						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 								textFieldDescripccion.getText(),
@@ -206,9 +205,20 @@ public class CargarHabitacion extends JFrame {
 			this.cargarCaracteristicaEspecial();
 			table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+
+			cargarHabitacionParaModificar();
 		} catch (Exception e) {
 			System.out.println("esto falla");
 		}
+	}
+
+	private void cargarHabitacionParaModificar() {
+		if (api.modificamosHabitacion()) {
+			HabitacioDTO hDTO = api.dameLaHabitacion;
+			textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));
+
+		}
+
 	}
 
 	/**
@@ -236,7 +246,7 @@ public class CargarHabitacion extends JFrame {
 		TextField textFieldNumeroHabitacion = new TextField();
 		textFieldNumeroHabitacion.setBounds(10, 39, 150, 21);
 		panel.add(textFieldNumeroHabitacion);
-		textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));
+
 		textFieldNumeroHabitacion.setEditable(false);
 
 		TextField textFieldCamas = new TextField();

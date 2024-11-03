@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 
 public class VentanaPrincipal extends JFrame {
@@ -23,7 +20,7 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel contentPane;
 
 	// andres gei
-	public VentanaPrincipal(PersistenceApi api) {
+	public VentanaPrincipal(IApi api) {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

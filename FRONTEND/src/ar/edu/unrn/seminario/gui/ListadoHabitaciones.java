@@ -1,5 +1,7 @@
 package ar.edu.unrn.seminario.gui;
 
+import java.awt.Color;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -13,19 +15,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
-
-import javax.swing.JTextField;
-import java.awt.Color;
-import java.awt.SystemColor;
 
 public class ListadoHabitaciones extends JFrame {
 
@@ -38,8 +36,8 @@ public class ListadoHabitaciones extends JFrame {
 	private int numHabitacionSelected;
 	private JTextField textField;
 
-	public ListadoHabitaciones(PersistenceApi api) throws ConexionFallidaExeption {
-		
+	public ListadoHabitaciones(IApi api) throws ConexionFallidaExeption {
+
 		setBackground(SystemColor.textHighlight);
 		getContentPane().setBackground(new Color(240, 240, 240));
 		getContentPane().setForeground(new Color(255, 255, 255));
@@ -85,7 +83,7 @@ public class ListadoHabitaciones extends JFrame {
 
 		this.llenarTabla();
 		scrollPane.setViewportView(table);
-		table.getTableHeader().setBackground(new Color(52, 73, 94));  // #34495E
+		table.getTableHeader().setBackground(new Color(52, 73, 94)); // #34495E
 		table.getTableHeader().setForeground(Color.WHITE);
 		JButton btnActivarHabitacion = new JButton("Activar ");
 		btnActivarHabitacion.setForeground(new Color(255, 255, 255));
@@ -150,15 +148,15 @@ public class ListadoHabitaciones extends JFrame {
 								// table.setValueAt(fechaFormateada, selectedRow, 4);
 								// table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
 								numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-								try{
+								try {
 									api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
 									llenarTabla();
-								// Lógica para desactivar la habitación
+									// Lógica para desactivar la habitación
 									JOptionPane.showMessageDialog(null,
-										"Habitación desactivada hasta " + fechaFormateada + ".");
-								} catch(ConexionFallidaExeption e1){
+											"Habitación desactivada hasta " + fechaFormateada + ".");
+								} catch (ConexionFallidaExeption e1) {
 									JOptionPane.showMessageDialog(null, e1.getMessage());
-								} 
+								}
 							}
 
 						} else {
@@ -204,17 +202,17 @@ public class ListadoHabitaciones extends JFrame {
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 					if (response == JOptionPane.YES_OPTION) {
-						try{
-						// Eliminar la fila de la tabla
-						numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-						((DefaultTableModel) table.getModel()).removeRow(selectedRow);
-						// eliminar Habitacion
-						api.eliminarHabitacion(numHabitacionSelected);
-						// Lógica para eliminar la habitación
-						JOptionPane.showMessageDialog(null, "Habitación eliminada.");
-						} catch(ConexionFallidaExeption e1) {
+						try {
+							// Eliminar la fila de la tabla
+							numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+							((DefaultTableModel) table.getModel()).removeRow(selectedRow);
+							// eliminar Habitacion
+							api.eliminarHabitacion(numHabitacionSelected);
+							// Lógica para eliminar la habitación
+							JOptionPane.showMessageDialog(null, "Habitación eliminada.");
+						} catch (ConexionFallidaExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
-						} catch(ErrorDatosNoEncontradosExeption e1) {
+						} catch (ErrorDatosNoEncontradosExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
 					}
@@ -241,12 +239,12 @@ public class ListadoHabitaciones extends JFrame {
 		});
 		btnSalir.setBounds(883, 232, 85, 21);
 		getContentPane().add(btnSalir);
-		
+
 		textField = new JTextField();
 		textField.setBounds(110, 25, 139, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Buscar Habitacion");
 		lblNewLabel.setBounds(110, 11, 122, 14);
 		getContentPane().add(lblNewLabel);

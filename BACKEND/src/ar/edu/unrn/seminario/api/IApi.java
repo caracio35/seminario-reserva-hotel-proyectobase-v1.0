@@ -2,10 +2,8 @@ package ar.edu.unrn.seminario.api;
 
 import java.util.List;
 
-import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
-import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -17,6 +15,12 @@ import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 public interface IApi {
+
+	HabitacionDTO dameLaHabitacion();
+
+	boolean modificamosHabitacion();
+
+	void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption;
 
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 

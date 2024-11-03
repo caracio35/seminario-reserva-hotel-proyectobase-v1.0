@@ -14,7 +14,6 @@ import acceso.ImplementacionHabitacionDAO;
 import acceso.ImplementacionReservaDAO;
 import acceso.ImplementacionUsuarioDAO;
 import acceso.ImplementaionServicioDAO;
-import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
@@ -34,6 +33,23 @@ import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class PersistenceApi implements IApi {
+	private int habitacionAModificar = 0;
+	private Habitacion habitacion;
+
+	public boolean modificamosHabitacion() {
+		return habitacionAModificar != 0;
+	}
+
+	public void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption {
+		ImplementacionHabitacionDAO habitacion1 = new ImplementacionHabitacionDAO();
+		this.habitacionAModificar = numeroHabitacion;
+		this.habitacion = habitacion1.find(numeroHabitacion);
+	}
+
+	public HabitacionDTO dameLaHabitacion() {
+
+		return null;
+	}
 
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
@@ -233,9 +249,8 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, String[] caracteristicas)
-			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
-			ConexionFallidaExeption, DuplicadaExeption {
+			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
