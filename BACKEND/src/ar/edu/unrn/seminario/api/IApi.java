@@ -86,8 +86,9 @@ public interface IApi {
 
 	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
 
-	void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio, boolean estado,
-			List<CaracteristicaEspecialDTO> caracteristicas);
+	void modificarHabitacion(int numeroHabitacion, String string, double d, boolean habilitado, int i, String[] strings)
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption;
 
 	void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 

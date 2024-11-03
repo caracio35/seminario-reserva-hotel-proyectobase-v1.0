@@ -306,10 +306,27 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio,
-			boolean estado, List<CaracteristicaEspecialDTO> caracteristicas) {
-		// TODO Auto-generated method stub
+	public void modificarHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
 
+		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
+		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
+		ArrayList<CaracteristicaEspecial> obtenidaCar = buscarCaracteristica(caracteristicas, caracteristicaDAO);
+		try {
+			Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
+					obtenidaCar);
+			habitacion.update(habitacion1);
+		} catch (CampoVacioExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EnterosEnCeroExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PrecioCeroExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

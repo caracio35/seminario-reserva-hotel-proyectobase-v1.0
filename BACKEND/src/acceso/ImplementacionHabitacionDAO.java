@@ -27,7 +27,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			+ "habilitado, fechaHastaCuandoEstaDesactivado, numHabitaciones) VALUES (?,?,?,?,?,?)";
 	private final static String buscarHabitacion = "SELECT * FROM habitacion WHERE numHabitaciones = ?";
 
-	private final static String modificarHabitacion = "UPDATE habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ? WHERE numHabitaciones = ?";
+	private final static String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas, descripcion , precio , habilitado, WHERE numHabitaciones VALUES (?,?,?,?,?)";
 	private final static String eliminarHabitacion = "DELETE FROM habitacion WHERE numHabitaciones = ?";
 	private final static String buscarTodaLasHabitaciones = "SELECT * FROM habitacion";
 
@@ -102,30 +102,30 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public void update(Habitacion habitacion) {
-		Habitacion habitacionNueva = habitacion;
-		Connection miConeccion = null;
-		PreparedStatement pStament = null;
-		try {
-			miConeccion = conectar();
-			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
+		String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ?, fechaHastaCuandoEstaDesactivado = ? WHERE numHabitaciones = ?";
+		try (Connection miConeccion = conectar();
+				PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);) {
 
-			pStament.setInt(1, habitacionNueva.getCantidadDeCamas());
-			pStament.setString(2, habitacionNueva.getDescripcion());
-			pStament.setDouble(3, habitacionNueva.getPrecio());
-			pStament.setInt(4, habitacionNueva.getNumHabitaciones());
-			pStament.execute();
-			pStament.close();
-			System.out.println("Habitacion Modificada con exito");
-		} catch (Exception e) {
-			System.out.println("no se subio" + e.getMessage());
-		} finally {
-			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					System.out.println("error de conexion");
-				}
+			// Asigna los valores a cada parámetro en la consulta
+			pStament.setInt(1, habitacion.getCantidadDeCamas());
+			pStament.setString(2, habitacion.getDescripcion());
+			pStament.setDouble(3, habitacion.getPrecio());
+			pStament.setBoolean(4, habitacion.isHabilitado());
+			if (habitacion.getFechaHastaCuandoEstaDesactivado() != null)
+				pStament.setDate(5, java.sql.Date.valueOf(habitacion.getFechaHastaCuandoEstaDesactivado()));
+			pStament.setInt(6, habitacion.getNumHabitaciones()); // Para el WHERE
+
+			// Ejecuta la actualización
+			int filasModificadas = pStament.executeUpdate();
+			if (filasModificadas > 0) {
+				System.out.println("Habitación modificada con éxito.");
+			} else {
+				System.out.println(
+						"No se encontró la habitación con numHabitaciones: " + habitacion.getNumHabitaciones());
 			}
+
+		} catch (SQLException e) {
+			System.out.println("Error al actualizar la habitación: " + e.getMessage());
 		}
 	}
 
