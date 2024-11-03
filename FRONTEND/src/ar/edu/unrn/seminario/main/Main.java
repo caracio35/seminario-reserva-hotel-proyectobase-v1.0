@@ -17,8 +17,8 @@ public class Main {
 			public void run() {
 				try {
 
-					//IApi api = new MemoryApi();
-					
+					// IApi api = new MemoryApi();
+
 					PersistenceApi api = new PersistenceApi();
 					VentanaPrincipal frame = new VentanaPrincipal(api);
 					frame.setVisible(true);
@@ -41,7 +41,7 @@ public class Main {
 					// p.generarReserva(habitaciones, usuario, fechaInicio, fechaFin, fechaReserva,
 					// cantidadPersonas, servicios, pagoMinimo);
 					// }
-					//p.generarCalificacionHabitacion(35, 1, "Una mierda su habitacion");
+					// p.generarCalificacionHabitacion(35, 1, "Una mierda su habitacion");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

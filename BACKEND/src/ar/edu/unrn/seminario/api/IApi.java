@@ -50,23 +50,26 @@ public interface IApi {
 	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);// carga una o mas caracteristica especiales
 																			// a una habitación especifica
 
-
 	boolean autenticarContraseña(String username, String password);// autentica un usuario verificando su nombre de
 																	// usuario y contrasena
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
-			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption;// Genera una reserva para una o mas
-																			// habitaciones durante un periodo
+			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption;// Genera una
+																										// reserva para
+																										// una o mas
+	// habitaciones durante un periodo
 	// especifico de tiempo
 
 	void modificarReserva(); // modifica una reserva existente
 
-	void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;// marca una habitacion como no habilitada segun
-																		// su numero de
+	void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;// marca una habitacion como no habilitada
+																			// segun
+	// su numero de
 
 	List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption;
 
-	List<HabitacionDTO> obtenerHabitacionesHabilitada(); // habitacion habilitadas
+	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption; // habitacion habilitadas
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica();
 
@@ -74,7 +77,8 @@ public interface IApi {
 
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
-			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption;
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption;
 
 	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
 
@@ -86,7 +90,8 @@ public interface IApi {
 	void eliminarCaracteristica(String nombreCaracteristica);
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption;
+			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption;
 
-	void generarCalificacionHabitacion(int idReserva , int calificacion , String comentario);
+	void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario);
 }

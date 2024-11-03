@@ -9,12 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -71,8 +73,16 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmListadoHabitaciones = new JMenuItem("Listado Habitaciones");
 		mntmListadoHabitaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(api);
-				listaHabitaciones.setVisible(true);
+				ListadoHabitaciones listaHabitaciones;
+
+				try {
+					listaHabitaciones = new ListadoHabitaciones(api);
+					listaHabitaciones.setVisible(true);
+				} catch (ConexionFallidaExeption e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
 			}
 		});
 		mntmListadoHabitaciones.setSelected(true);

@@ -3,8 +3,10 @@ package ar.edu.unrn.seminario.api;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import acceso.ImplementacionCalificacionDAO;
 import acceso.ImplementacionCaracteristicasEspecialDAO;
@@ -135,7 +137,8 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void generarReserva(int[] habitacion, String usuario, String fechaInicio, String fechaFin,
-			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo) throws ConexionFallidaExeption {
+			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo)
+			throws ConexionFallidaExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
 		Usuario usuario1 = usuarioDAO.find(usuario);
@@ -199,9 +202,11 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerHabitacionesHabilitada() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption {
+		List<HabitacionDTO> listaHabitacionesDTO = this.obtenerTodasLasHabitaciones();
+		List<HabitacionDTO> HabitacionHabilitada = listaHabitacionesDTO.stream().filter(h -> h.isHabilitado() == true)
+				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion())).collect(Collectors.toList());
+		return HabitacionHabilitada;
 	}
 
 	@Override
@@ -276,7 +281,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public void eliminarHabitacion(int numeroHabitacion)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionHabitacionDAO i = new ImplementacionHabitacionDAO();
 		i.remove(numeroHabitacion);
 

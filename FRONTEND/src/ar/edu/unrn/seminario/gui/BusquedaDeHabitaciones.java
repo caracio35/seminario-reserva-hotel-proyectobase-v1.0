@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +29,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 
 public class BusquedaDeHabitaciones extends JFrame {
 
@@ -213,14 +215,18 @@ public class BusquedaDeHabitaciones extends JFrame {
 				if (!textFieldHuespedes.getText().isEmpty()) {
 					camas = Integer.parseInt(textFieldHuespedes.getText());
 				}
-				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
-				// aplicando filtro de precio minimo con stream
-				List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
-						.filter(h -> h.getCantidadDeCamas() >= camas)
-						.sorted(Comparator.comparingDouble(h -> h.getPrecio()))
-						.collect(Collectors.toList());
+				try {
+					List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+					// aplicando filtro de precio minimo con stream
+					List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
+							.filter(h -> h.getCantidadDeCamas() >= camas)
+							.sorted(Comparator.comparingDouble(h -> h.getPrecio()))
+							.collect(Collectors.toList());
 
-				cargarHabitacionesFiltradas(filtrado);
+					cargarHabitacionesFiltradas(filtrado);
+				} catch (ConexionFallidaExeption e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
 			}
 
 		});
@@ -228,17 +234,22 @@ public class BusquedaDeHabitaciones extends JFrame {
 	}
 
 	public void cargarHabitaciones() {
-		List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+		try {
 
-		modelo.setRowCount(0);
+			List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 
-		for (HabitacionDTO habitacion : habitaciones) {
+			modelo.setRowCount(0);
 
-			List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
-			String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
-					.collect(Collectors.joining(", "));
-			modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
-					habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas });
+			for (HabitacionDTO habitacion : habitaciones) {
+
+				List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
+				String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
+						.collect(Collectors.joining(", "));
+				modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
+						habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas });
+			}
+		} catch (ConexionFallidaExeption e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
 
