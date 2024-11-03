@@ -149,7 +149,7 @@ public class ListadoHabitaciones extends JFrame {
 								// table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
 								numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 								try {
-									api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
+									// api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
 									llenarTabla();
 									// Lógica para desactivar la habitación
 									JOptionPane.showMessageDialog(null,
@@ -183,8 +183,14 @@ public class ListadoHabitaciones extends JFrame {
 				// Obtener el valor de la celda en la fila y columna seleccionada
 				Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
 				int numero = ((Number) valor).intValue();
-				CargarHabitacion modificarHabitacion = new CargarHabitacion(api, numero);
-				modificarHabitacion.setVisible(true);
+				try {
+					api.habitacionAModificar(numero);
+					CargarHabitacion modificarHabitacion = new CargarHabitacion(api);
+					modificarHabitacion.setVisible(true);
+				} catch (ConexionFallidaExeption e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
 			}
 		});
 		btnEditarHabitacion.setBounds(874, 66, 99, 21);

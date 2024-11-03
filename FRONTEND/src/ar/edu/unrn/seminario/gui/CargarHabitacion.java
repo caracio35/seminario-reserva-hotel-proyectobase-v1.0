@@ -41,6 +41,14 @@ public class CargarHabitacion extends JFrame {
 	private JTable table;
 	private DefaultTableModel modelo;
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
+	private TextField textFieldNumeroHabitacion = new TextField();
+	private TextField textFieldCamas = new TextField();
+	private TextField textFieldDescripccion = new TextField();
+	private TextField textFieldPrecioRegistrado = new TextField();
+	private JScrollPane scrollPane = new JScrollPane();
+	private ButtonGroup group = new ButtonGroup();
+	private JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
+	private JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
 
 	public CargarHabitacion(IApi api) {
 		try {
@@ -60,19 +68,15 @@ public class CargarHabitacion extends JFrame {
 			contentPane.add(panel);
 			panel.setLayout(null);
 
-			TextField textFieldNumeroHabitacion = new TextField();
 			textFieldNumeroHabitacion.setBounds(10, 39, 150, 21);
 			panel.add(textFieldNumeroHabitacion);
 
-			TextField textFieldCamas = new TextField();
 			textFieldCamas.setBounds(203, 39, 150, 21);
 			panel.add(textFieldCamas);
 
-			TextField textFieldDescripccion = new TextField();
 			textFieldDescripccion.setBounds(10, 96, 150, 21);
 			panel.add(textFieldDescripccion);
 
-			TextField textFieldPrecioRegistrado = new TextField();
 			textFieldPrecioRegistrado.setBounds(10, 150, 150, 21);
 			panel.add(textFieldPrecioRegistrado);
 
@@ -80,17 +84,14 @@ public class CargarHabitacion extends JFrame {
 			lblNewLabel.setBounds(202, 76, 151, 14);
 			panel.add(lblNewLabel);
 
-			JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
 			buttonDesabilitado.setBounds(272, 96, 109, 23);
 			panel.add(buttonDesabilitado);
 
-			JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
 			// setear el boton en true por defecto
 			buttonHabilitado.setSelected(true);
 			buttonHabilitado.setBounds(188, 96, 109, 23);
 			panel.add(buttonHabilitado);
 
-			ButtonGroup group = new ButtonGroup();
 			group.add(buttonDesabilitado);
 			group.add(buttonHabilitado);
 
@@ -190,7 +191,6 @@ public class CargarHabitacion extends JFrame {
 			btnSalircancelar.setBounds(272, 287, 144, 21);
 			panel.add(btnSalircancelar);
 
-			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setBounds(203, 150, 172, 123);
 			panel.add(scrollPane);
 
@@ -208,17 +208,66 @@ public class CargarHabitacion extends JFrame {
 
 			cargarHabitacionParaModificar();
 		} catch (Exception e) {
-			System.out.println("esto falla");
+			System.out.println("aca " + e.getStackTrace() + e.getMessage());
 		}
 	}
 
 	private void cargarHabitacionParaModificar() {
 		if (api.modificamosHabitacion()) {
-			HabitacioDTO hDTO = api.dameLaHabitacion;
+			HabitacionDTO hDTO = api.dameLaHabitacion();
 			textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));
-
+			textFieldDescripccion.setText(hDTO.getDescripcion());
+			textFieldPrecioRegistrado.setText(String.valueOf(hDTO.getPrecio()));
+			textFieldCamas.setText(String.valueOf(hDTO.getCantidadDeCamas()));
+			if (hDTO.isHabilitado())
+				buttonHabilitado.setSelected(true);
+			else
+				buttonDesabilitado.setSelected(false);
+			cargarCaracteristica(hDTO);
 		}
 
+	}
+
+	private void cargarCaracteristicaEspecial() {
+		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+		modelo.setRowCount(0);
+		for (CaracteristicaEspecialDTO caracteristicaEspecialDTO : this.caracteristicasEspeciales) {
+			Object[] fila = new Object[2];
+			fila[0] = caracteristicaEspecialDTO.getNombre();
+			modelo.addRow(fila);
+		}
+	}
+
+	private void cargarCaracteristica(HabitacionDTO h) {
+		List<CaracteristicaEspecialDTO> car = h.getCaracteristicasEspeciale();
+		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+		modelo.setRowCount(0);
+
+		for (CaracteristicaEspecialDTO caracteristicaEspecialDTO : this.caracteristicasEspeciales) {
+			Object[] fila = new Object[2];
+			fila[0] = caracteristicaEspecialDTO.getNombre();
+
+			boolean activada = false;
+
+			for (CaracteristicaEspecialDTO carHab : car) {
+				if (carHab.getNombre().equals(caracteristicaEspecialDTO.getNombre())) {
+					activada = true;
+				}
+			}
+
+			fila[1] = activada;
+			modelo.addRow(fila);
+		}
+	}
+
+	private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			if (value instanceof Boolean) {
+				this.setSelected((Boolean) value);
+			}
+			return this;
+		}
 	}
 
 	/**
@@ -368,48 +417,6 @@ public class CargarHabitacion extends JFrame {
 		table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 
-	}
-
-	private void cargarCaracteristicaEspecial() {
-		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-		modelo.setRowCount(0);
-		for (CaracteristicaEspecialDTO caracteristicaEspecialDTO : this.caracteristicasEspeciales) {
-			Object[] fila = new Object[2];
-			fila[0] = caracteristicaEspecialDTO.getNombre();
-			modelo.addRow(fila);
-		}
-	}
-
-	private void cargarCaracteristica(HabitacionDTO h) {
-		List<CaracteristicaEspecialDTO> car = h.getCaracteristicasEspeciale();
-		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-		modelo.setRowCount(0);
-
-		for (CaracteristicaEspecialDTO caracteristicaEspecialDTO : this.caracteristicasEspeciales) {
-			Object[] fila = new Object[2];
-			fila[0] = caracteristicaEspecialDTO.getNombre();
-
-			boolean activada = false;
-
-			for (CaracteristicaEspecialDTO carHab : car) {
-				if (carHab.getNombre().equals(caracteristicaEspecialDTO.getNombre())) {
-					activada = true;
-				}
-			}
-
-			fila[1] = activada;
-			modelo.addRow(fila);
-		}
-	}
-
-	private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-				int row, int column) {
-			if (value instanceof Boolean) {
-				this.setSelected((Boolean) value);
-			}
-			return this;
-		}
 	}
 
 }

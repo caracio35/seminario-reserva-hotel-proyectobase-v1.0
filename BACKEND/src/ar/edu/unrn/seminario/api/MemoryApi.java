@@ -92,9 +92,10 @@ public class MemoryApi implements IApi {
 	 * void registrarUsuario(String username, String password, String email, String
 	 * nombre, Integer rol);
 	 */
-	public void registrarUsuario(String usuario, String contrasena, String nombre, String apellido , String email, int dni , String telefono) {
+	public void registrarUsuario(String usuario, String contrasena, String nombre, String apellido, String email,
+			int dni, String telefono) {
 
-		Usuario usuario1 = new Usuario(usuario , contrasena , nombre , apellido , email , dni , telefono);
+		Usuario usuario1 = new Usuario(usuario, contrasena, nombre, apellido, email, dni, telefono);
 		this.usuarios.add(usuario1);
 		this.usuarios1.put(usuario, contrasena);
 
@@ -315,7 +316,8 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption{
+	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
 		if (habitacionObtenida != null) {
 			habitaciones.remove(habitacionObtenida);
@@ -324,8 +326,7 @@ public class MemoryApi implements IApi {
 			LocalDate fechaDesactivacion = LocalDate.parse(fecha, formatter);
 			habitacionObtenida.setFechaHastaCuandoEstaDesactivado(fechaDesactivacion);
 			habitaciones.add(habitacionObtenida);
-		}
-		else {
+		} else {
 			throw new ErrorDatosNoEncontradosExeption();
 		}
 	}
@@ -455,7 +456,8 @@ public class MemoryApi implements IApi {
 
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
-			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption {
 
 		if (existeHabitacionConNumero(numHabitacion)) {
 			throw new NumeroHabitacionExistenteException(
@@ -562,7 +564,8 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
+			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
 		// TODO Auto-generated method stub
 
 	}
@@ -570,7 +573,25 @@ public class MemoryApi implements IApi {
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public HabitacionDTO dameLaHabitacion() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'dameLaHabitacion'");
+	}
+
+	@Override
+	public boolean modificamosHabitacion() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'modificamosHabitacion'");
+	}
+
+	@Override
+	public void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'habitacionAModificar'");
 	}
 
 }

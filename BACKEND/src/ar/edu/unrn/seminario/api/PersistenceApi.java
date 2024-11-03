@@ -48,7 +48,15 @@ public class PersistenceApi implements IApi {
 
 	public HabitacionDTO dameLaHabitacion() {
 
-		return null;
+		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
+		for (CaracteristicaEspecial c : habitacion.getCaracteristicasEspeciale()) {
+			CaracteristicaEspecialDTO carDTO = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(),
+					c.getPrecio());
+			car.add(carDTO);
+		}
+		return new HabitacionDTO(habitacion.getCantidadDeCamas(), habitacion.getDescripcion(), habitacion.getPrecio(),
+				habitacion.isHabilitado(), habitacion.getNumHabitaciones(), car,
+				habitacion.getFechaHastaCuandoEstaDesactivado().toString());
 	}
 
 	@Override
