@@ -19,7 +19,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
-
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
@@ -315,7 +315,7 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) {
+	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption{
 		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
 		if (habitacionObtenida != null) {
 			habitaciones.remove(habitacionObtenida);
@@ -324,6 +324,9 @@ public class MemoryApi implements IApi {
 			LocalDate fechaDesactivacion = LocalDate.parse(fecha, formatter);
 			habitacionObtenida.setFechaHastaCuandoEstaDesactivado(fechaDesactivacion);
 			habitaciones.add(habitacionObtenida);
+		}
+		else {
+			throw new ErrorDatosNoEncontradosExeption();
 		}
 	}
 

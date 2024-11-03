@@ -12,6 +12,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
@@ -54,16 +55,16 @@ public interface IApi {
 																	// usuario y contrasena
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
-			int cantidadPersonas, String servicio[], boolean pagoMinimo);// Genera una reserva para una o mas
+			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption;// Genera una reserva para una o mas
 																			// habitaciones durante un periodo
 	// especifico de tiempo
 
 	void modificarReserva(); // modifica una reserva existente
 
-	void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x);// marca una habitacion como no habilitada segun
+	void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;// marca una habitacion como no habilitada segun
 																		// su numero de
 
-	List<HabitacionDTO> obtenerTodasLasHabitaciones();
+	List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption;
 
 	List<HabitacionDTO> obtenerHabitacionesHabilitada(); // habitacion habilitadas
 
@@ -80,7 +81,7 @@ public interface IApi {
 	void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio, boolean estado,
 			List<CaracteristicaEspecialDTO> caracteristicas);
 
-	void eliminarHabitacion(int numeroHabitacion);
+	void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void eliminarCaracteristica(String nombreCaracteristica);
 

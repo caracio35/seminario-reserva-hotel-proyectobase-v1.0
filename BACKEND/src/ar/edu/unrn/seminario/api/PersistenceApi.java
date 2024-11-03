@@ -21,6 +21,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
@@ -134,7 +135,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void generarReserva(int[] habitacion, String usuario, String fechaInicio, String fechaFin,
-			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo) {
+			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo) throws ConexionFallidaExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
 		Usuario usuario1 = usuarioDAO.find(usuario);
@@ -167,7 +168,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerTodasLasHabitaciones() {
+	public List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
 		List<HabitacionDTO> listaHabitacionesDTO = new ArrayList<>();
@@ -275,7 +276,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarHabitacion(int numeroHabitacion) {
+	public void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionHabitacionDAO i = new ImplementacionHabitacionDAO();
 		i.remove(numeroHabitacion);
 
@@ -298,7 +299,7 @@ public class PersistenceApi implements IApi {
 		// Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar
 	}
 
-	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion) {
+	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion) throws ConexionFallidaExeption {
 		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new ImplementacionCaracteristicasEspecialDAO();
 

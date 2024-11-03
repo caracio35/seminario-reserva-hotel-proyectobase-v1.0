@@ -4,5 +4,7 @@ public class CampoVacioExeption extends Exception {
     public CampoVacioExeption(String mensaje) {
         super(mensaje);
     }
-
+    public CampoVacioExeption() {
+    	super("Campo vacio");
+    }
 }

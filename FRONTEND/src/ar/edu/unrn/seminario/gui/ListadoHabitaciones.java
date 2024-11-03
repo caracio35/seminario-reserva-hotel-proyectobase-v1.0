@@ -20,6 +20,9 @@ import com.toedter.calendar.JDateChooser;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
+
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.SystemColor;
@@ -35,7 +38,7 @@ public class ListadoHabitaciones extends JFrame {
 	private int numHabitacionSelected;
 	private JTextField textField;
 
-	public ListadoHabitaciones(PersistenceApi api) {
+	public ListadoHabitaciones(PersistenceApi api) throws ConexionFallidaExeption {
 		
 		setBackground(SystemColor.textHighlight);
 		getContentPane().setBackground(new Color(240, 240, 240));
@@ -147,11 +150,15 @@ public class ListadoHabitaciones extends JFrame {
 								// table.setValueAt(fechaFormateada, selectedRow, 4);
 								// table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
 								numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-								api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
-								llenarTabla();
+								try{
+									api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
+									llenarTabla();
 								// Lógica para desactivar la habitación
-								JOptionPane.showMessageDialog(null,
+									JOptionPane.showMessageDialog(null,
 										"Habitación desactivada hasta " + fechaFormateada + ".");
+								} catch(ConexionFallidaExeption e1){
+									JOptionPane.showMessageDialog(null, e1.getMessage());
+								} 
 							}
 
 						} else {
@@ -197,6 +204,7 @@ public class ListadoHabitaciones extends JFrame {
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 					if (response == JOptionPane.YES_OPTION) {
+						try{
 						// Eliminar la fila de la tabla
 						numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 						((DefaultTableModel) table.getModel()).removeRow(selectedRow);
@@ -204,6 +212,11 @@ public class ListadoHabitaciones extends JFrame {
 						api.eliminarHabitacion(numHabitacionSelected);
 						// Lógica para eliminar la habitación
 						JOptionPane.showMessageDialog(null, "Habitación eliminada.");
+						} catch(ConexionFallidaExeption e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						} catch(ErrorDatosNoEncontradosExeption e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
@@ -239,7 +252,7 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(lblNewLabel);
 	}
 
-	private void llenarTabla() {
+	private void llenarTabla() throws ConexionFallidaExeption {
 
 		List<HabitacionDTO> habitaciones = api.obtenerTodasLasHabitaciones();
 		model.setRowCount(0);
