@@ -1,25 +1,27 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class CalificarHabitaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTable table;
+	private JTextField textFieldIdReserva;
 
 	public CalificarHabitaciones() {
+
 		setTitle("Calificar Habitaciones");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 311);
@@ -28,27 +30,19 @@ public class CalificarHabitaciones extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Habitacion N^:");
-		lblNewLabel.setBounds(10, 21, 113, 14);
-		contentPane.add(lblNewLabel);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Califique del 1 al 5:");
-		lblNewLabel_1.setBounds(249, 21, 113, 14);
+		lblNewLabel_1.setBounds(10, 11, 113, 14);
 		contentPane.add(lblNewLabel_1);
-		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBounds(249, 40, 154, 20);
-		contentPane.add(formattedTextField);
-		
-		JFormattedTextField formattedTextField_1 = new JFormattedTextField();
-		formattedTextField_1.setBounds(10, 109, 410, 123);
-		contentPane.add(formattedTextField_1);
-		
+
+		JFormattedTextField TextFieldComentario = new JFormattedTextField();
+		TextFieldComentario.setBounds(10, 153, 410, 67);
+		contentPane.add(TextFieldComentario);
+
 		JLabel lblNewLabel_2 = new JLabel("Comentario:");
-		lblNewLabel_2.setBounds(10, 84, 113, 14);
+		lblNewLabel_2.setBounds(10, 129, 113, 14);
 		contentPane.add(lblNewLabel_2);
-		
+
 		JButton btnNewButton = new JButton("Cancelar ");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -57,17 +51,34 @@ public class CalificarHabitaciones extends JFrame {
 		});
 		btnNewButton.setBounds(232, 243, 89, 23);
 		contentPane.add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("Calificar");
+
 		btnNewButton_1.setBounds(331, 243, 89, 23);
 		contentPane.add(btnNewButton_1);
-		
-		JLabel lblReservadaDesdeY = new JLabel("reservada desde y hasta ");
-		lblReservadaDesdeY.setBounds(10, 45, 135, 14);
-		contentPane.add(lblReservadaDesdeY);
-		
-		JLabel lblNewLabel_3 = new JLabel("**/**/****/    **/**/****");
-		lblNewLabel_3.setBounds(10, 69, 135, 14);
-		contentPane.add(lblNewLabel_3);
+
+		JLabel lblNewLabel_1_1 = new JLabel("Id Reserva");
+		lblNewLabel_1_1.setBounds(184, 11, 113, 14);
+		contentPane.add(lblNewLabel_1_1);
+
+		textFieldIdReserva = new JTextField();
+		textFieldIdReserva.setBounds(184, 33, 62, 19);
+		contentPane.add(textFieldIdReserva);
+		textFieldIdReserva.setColumns(10);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(10, 32, 89, 21);
+		contentPane.add(comboBox);
+		comboBox.addItem(1);
+		comboBox.addItem(2);
+		comboBox.addItem(3);
+		comboBox.addItem(4);
+		comboBox.addItem(5);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				comboBox.getSelectedIndex();
+			}
+		});
+
 	}
 }

@@ -268,18 +268,19 @@ public class ListadoHabitaciones extends JFrame {
 				String text = textField.getText();
 
 				if (!text.isEmpty()) {
-					numeroHabitacion = Integer.parseInt(textField.getText());
-
 					try {
+						numeroHabitacion = Integer.parseInt(textField.getText());
 						List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 						// aplicando filtro de precio minimo con stream
 						List<HabitacionDTO> filtrado = habitaciones.stream()
-								.filter(h -> h.getNumHabitacion() == numeroHabitacion).collect(Collectors.toList());
+								.filter(h -> h.getNumHabitacion() >= numeroHabitacion).collect(Collectors.toList());
 
 						cargarHabitacionesFiltradas(filtrado);
 
 					} catch (ConexionFallidaExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
+					} catch (NumberFormatException e1) {
+						JOptionPane.showMessageDialog(null, "Revisar los buscar habitacion tiene que ser un numero ");
 					}
 				} else
 					try {

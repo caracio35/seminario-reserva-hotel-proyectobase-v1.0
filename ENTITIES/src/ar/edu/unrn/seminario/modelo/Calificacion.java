@@ -5,10 +5,20 @@ import java.util.Objects;
 public class Calificacion {
 	private int valor;
 	private String comentario;
+	private int idReservaFK;
 
-	public Calificacion(int valor, String comentario) {
+	public Calificacion(int valor, String comentario, int idReservaFK) {
 		this.valor = valor;
 		this.comentario = comentario;
+		this.idReservaFK = idReservaFK;
+	}
+
+	public int getIdReservaFK() {
+		return idReservaFK;
+	}
+
+	public void getIdReservaFK(int idReservaFK) {
+		this.idReservaFK = idReservaFK;
 	}
 
 	public int getValor() {
@@ -44,5 +54,4 @@ public class Calificacion {
 		return Objects.equals(comentario, other.comentario) && valor == other.valor;
 	}
 
-	
 }
