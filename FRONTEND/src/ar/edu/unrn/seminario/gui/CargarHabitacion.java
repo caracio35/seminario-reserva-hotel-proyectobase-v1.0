@@ -132,24 +132,15 @@ public class CargarHabitacion extends JFrame {
 								textFieldDescripccion.getText(),
 								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 								Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
-					} catch (NumeroHabitacionExistenteException e1) {
+					} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption | CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption e1 ) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
 								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
-					} catch (ConexionFallidaExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (CampoVacioExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (EnterosEnCeroExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (PrecioCeroExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					} catch (DuplicadaExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
-					}else {if (modificar == true) {
+					}
+					else {if (modificar == true) {
 						try {
 							
 							api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
