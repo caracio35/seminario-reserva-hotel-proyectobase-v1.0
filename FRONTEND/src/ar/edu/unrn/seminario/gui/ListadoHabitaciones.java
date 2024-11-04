@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -179,16 +182,20 @@ public class ListadoHabitaciones extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Lógica para editar la habitación
 				int selectedRow = table.getSelectedRow();
-				int columnaSeleccionada = 0;
-				// Obtener el valor de la celda en la fila y columna seleccionada
-				Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
-				int numero = ((Number) valor).intValue();
-				try {
-					api.habitacionAModificar(numero);
-					CargarHabitacion modificarHabitacion = new CargarHabitacion(api , true);
-					modificarHabitacion.setVisible(true);
-				} catch (ConexionFallidaExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
+				if (selectedRow != -1) {
+					int columnaSeleccionada = 0;
+					// Obtener el valor de la celda en la fila y columna seleccionada
+					Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
+					int numero = ((Number) valor).intValue();
+					try {
+						api.habitacionAModificar(numero);
+						CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true);
+						modificarHabitacion.setVisible(true);
+					} catch (ConexionFallidaExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
 				}
 
 			}
@@ -247,6 +254,44 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(btnSalir);
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			private int numeroHabitacion;
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				search();
+			}
+
+			private void search() {
+				numeroHabitacion = 0;
+				String text = textField.getText();
+
+				if (!text.isEmpty()) {
+					numeroHabitacion = Integer.parseInt(textField.getText());
+
+					try {
+						List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+						// aplicando filtro de precio minimo con stream
+						List<HabitacionDTO> filtrado = habitaciones.stream()
+								.filter(h -> h.getNumHabitacion() == numeroHabitacion).collect(Collectors.toList());
+
+						cargarHabitacionesFiltradas(filtrado);
+
+					} catch (ConexionFallidaExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					}
+				} else
+					try {
+						llenarTabla();
+					} catch (ConexionFallidaExeption e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+			}
+		});
+
 		textField.setBounds(110, 25, 139, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
@@ -258,9 +303,32 @@ public class ListadoHabitaciones extends JFrame {
 
 	private void llenarTabla() throws ConexionFallidaExeption {
 
+		System.out.println("siiiiiiiiiiii");
 		List<HabitacionDTO> habitaciones = api.obtenerTodasLasHabitaciones();
 		model.setRowCount(0);
 		for (HabitacionDTO habitacionDTO : habitaciones) {
+			Object[] fila = new Object[5];
+			fila[0] = habitacionDTO.getNumHabitacion();
+			fila[2] = habitacionDTO.getCantidadDeCamas();
+			fila[3] = habitacionDTO.isHabilitado();
+			if (!habitacionDTO.isHabilitado()) {
+				System.out.println("Esta desahabilitado");
+				if (habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null) {
+					fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado();
+				} else {
+					fila[4] = "Indefinido";
+				}
+			}
+
+			model.addRow(fila);
+		}
+		table.setModel(model);
+	}
+
+	public void cargarHabitacionesFiltradas(List<HabitacionDTO> habitaciones1) {
+
+		model.setRowCount(0);
+		for (HabitacionDTO habitacionDTO : habitaciones1) {
 			Object[] fila = new Object[5];
 			fila[0] = habitacionDTO.getNumHabitacion();
 			fila[2] = habitacionDTO.getCantidadDeCamas();
