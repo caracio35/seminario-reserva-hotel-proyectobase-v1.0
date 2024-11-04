@@ -61,7 +61,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmCarcarHabitacion = new JMenuItem("Cargar Habitacion");
 		mntmCarcarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CargarHabitacion cargaH = new CargarHabitacion(api);
+				CargarHabitacion cargaH = new CargarHabitacion(api, false);
 				cargaH.setVisible(true);
 			}
 		});

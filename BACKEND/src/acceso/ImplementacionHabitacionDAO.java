@@ -102,7 +102,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public void update(Habitacion habitacion) {
-		String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ?, fechaHastaCuandoEstaDesactivado = ? WHERE numHabitaciones = ?";
+		String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ? WHERE numHabitaciones = ?";
 		try (Connection miConeccion = conectar();
 				PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);) {
 
@@ -111,9 +111,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			pStament.setString(2, habitacion.getDescripcion());
 			pStament.setDouble(3, habitacion.getPrecio());
 			pStament.setBoolean(4, habitacion.isHabilitado());
-			if (habitacion.getFechaHastaCuandoEstaDesactivado() != null)
-				pStament.setDate(5, java.sql.Date.valueOf(habitacion.getFechaHastaCuandoEstaDesactivado()));
-			pStament.setInt(6, habitacion.getNumHabitaciones()); // Para el WHERE
+			pStament.setInt(5, habitacion.getNumHabitaciones()); // Para el WHERE
 
 			// Ejecuta la actualización
 			int filasModificadas = pStament.executeUpdate();
@@ -126,6 +124,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 		} catch (SQLException e) {
 			System.out.println("Error al actualizar la habitación: " + e.getMessage());
+			 e.printStackTrace();
 		}
 	}
 

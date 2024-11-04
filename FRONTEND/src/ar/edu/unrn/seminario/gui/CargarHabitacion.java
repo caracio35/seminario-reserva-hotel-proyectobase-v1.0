@@ -48,12 +48,14 @@ public class CargarHabitacion extends JFrame {
 	private ButtonGroup group = new ButtonGroup();
 	private JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
 	private JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
+	private boolean modificar;
 
-	public CargarHabitacion(IApi api) {
+	public CargarHabitacion(IApi api , boolean modificar) {
 		try {
 
 			this.api = api;
 			this.caracteristicasEspeciales = api.obtenerCaracteristica();
+			this.modificar = modificar ; 
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 450, 420);
 			contentPane = new JPanel();
@@ -69,8 +71,11 @@ public class CargarHabitacion extends JFrame {
 
 			textFieldNumeroHabitacion.setBounds(10, 39, 150, 21);
 			panel.add(textFieldNumeroHabitacion);
-			textFieldNumeroHabitacion.setEditable(false);
-
+			if(modificar == false) {
+			textFieldNumeroHabitacion.setEditable(true);
+			}else {
+				textFieldNumeroHabitacion.setEditable(false);
+			}
 			textFieldCamas.setBounds(203, 39, 150, 21);
 			panel.add(textFieldCamas);
 
@@ -105,20 +110,7 @@ public class CargarHabitacion extends JFrame {
 					} else if (buttonDesabilitado.isSelected()) {
 						habilitado = false;
 					}
-					if (api.modificamosHabitacion()) {
-						try {
-							api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
-									textFieldDescripccion.getText(),
-									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
-									Integer.parseInt(textFieldNumeroHabitacion.getText()), new String[6]);
-						} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
-								| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
-								| PrecioCeroExeption e1) {
-							// TODO Auto-generated catch block
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						}
-					}
-
+					
 					List<String> caracteristicasSeleccionadas = new ArrayList<>();
 					for (int i = 0; i < table.getRowCount(); i++) {
 						String nombreCaracteristica = (String) table.getValueAt(i, 0);
@@ -127,7 +119,10 @@ public class CargarHabitacion extends JFrame {
 							caracteristicasSeleccionadas.add(nombreCaracteristica);
 						}
 					}
+					
 					String[] caracteristicas = caracteristicasSeleccionadas.toArray(new String[0]);
+					
+					if(modificar==false) {
 					try {
 						/*
 						 * darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio,
@@ -154,6 +149,21 @@ public class CargarHabitacion extends JFrame {
 					} catch (DuplicadaExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
+					}else {if (modificar == true) {
+						try {
+							
+							api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
+									textFieldDescripccion.getText(),
+									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
+									Integer.parseInt(textFieldNumeroHabitacion.getText()), new String[6]);
+						} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
+								| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
+								| PrecioCeroExeption e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
+					}
+				}
 				}
 
 				private List<CaracteristicaEspecialDTO> obtenerListaCaracteristicas() {

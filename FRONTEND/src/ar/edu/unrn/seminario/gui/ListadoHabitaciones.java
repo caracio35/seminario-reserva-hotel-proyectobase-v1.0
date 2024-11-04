@@ -185,7 +185,7 @@ public class ListadoHabitaciones extends JFrame {
 				int numero = ((Number) valor).intValue();
 				try {
 					api.habitacionAModificar(numero);
-					CargarHabitacion modificarHabitacion = new CargarHabitacion(api);
+					CargarHabitacion modificarHabitacion = new CargarHabitacion(api , true);
 					modificarHabitacion.setVisible(true);
 				} catch (ConexionFallidaExeption e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
