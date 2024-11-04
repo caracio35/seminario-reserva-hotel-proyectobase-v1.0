@@ -57,7 +57,7 @@ public class CargarHabitacion extends JFrame {
 			this.caracteristicasEspeciales = api.obtenerCaracteristica();
 			this.modificar = modificar ; 
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setBounds(100, 100, 450, 420);
+			setBounds(100, 100, 495, 420);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -65,7 +65,7 @@ public class CargarHabitacion extends JFrame {
 			contentPane.setLayout(null);
 
 			JPanel panel = new JPanel();
-			panel.setBounds(10, 10, 416, 363);
+			panel.setBounds(10, 10, 465, 363);
 			contentPane.add(panel);
 			panel.setLayout(null);
 
@@ -76,7 +76,7 @@ public class CargarHabitacion extends JFrame {
 			}else {
 				textFieldNumeroHabitacion.setEditable(false);
 			}
-			textFieldCamas.setBounds(203, 39, 150, 21);
+			textFieldCamas.setBounds(10, 215, 150, 21);
 			panel.add(textFieldCamas);
 
 			textFieldDescripccion.setBounds(10, 96, 150, 21);
@@ -86,15 +86,15 @@ public class CargarHabitacion extends JFrame {
 			panel.add(textFieldPrecioRegistrado);
 
 			JLabel lblNewLabel = new JLabel("Estado De Habitacion");
-			lblNewLabel.setBounds(202, 76, 151, 14);
+			lblNewLabel.setBounds(203, 19, 151, 14);
 			panel.add(lblNewLabel);
 
-			buttonDesabilitado.setBounds(272, 96, 109, 23);
+			buttonDesabilitado.setBounds(314, 37, 109, 23);
 			panel.add(buttonDesabilitado);
 
 			// setear el boton en true por defecto
 			buttonHabilitado.setSelected(true);
-			buttonHabilitado.setBounds(188, 96, 109, 23);
+			buttonHabilitado.setBounds(203, 39, 109, 23);
 			panel.add(buttonHabilitado);
 
 			group.add(buttonDesabilitado);
@@ -131,7 +131,7 @@ public class CargarHabitacion extends JFrame {
 						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 								textFieldDescripccion.getText(),
 								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
-								Integer.parseInt(textFieldNumeroHabitacion.getText()), new String[6]);
+								Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
 					} catch (NumeroHabitacionExistenteException e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 
@@ -155,7 +155,7 @@ public class CargarHabitacion extends JFrame {
 							api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
 									textFieldDescripccion.getText(),
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
-									Integer.parseInt(textFieldNumeroHabitacion.getText()), new String[6]);
+									Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
 						} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
 								| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
 								| PrecioCeroExeption e1) {
@@ -182,11 +182,11 @@ public class CargarHabitacion extends JFrame {
 			}
 
 			);
-			btnSubirInformacion.setBounds(126, 287, 144, 21);
+			btnSubirInformacion.setBounds(160, 311, 144, 21);
 			panel.add(btnSubirInformacion);
 
 			JButton btnCargarImagen = new JButton("Cargar Imagen");
-			btnCargarImagen.setBounds(10, 287, 116, 21);
+			btnCargarImagen.setBounds(10, 268, 116, 21);
 			panel.add(btnCargarImagen);
 
 			JLabel lblNumeroHabitacion = new JLabel("Numero Habitacion");
@@ -194,7 +194,7 @@ public class CargarHabitacion extends JFrame {
 			panel.add(lblNumeroHabitacion);
 
 			JLabel lblCamas = new JLabel("Camas");
-			lblCamas.setBounds(203, 20, 45, 13);
+			lblCamas.setBounds(10, 196, 45, 13);
 			panel.add(lblCamas);
 
 			JLabel lblDescripcion = new JLabel("Descripccion");
@@ -205,16 +205,16 @@ public class CargarHabitacion extends JFrame {
 			lblPrecioRegistrado.setBounds(10, 131, 106, 13);
 			panel.add(lblPrecioRegistrado);
 
-			JButton btnSalircancelar = new JButton("salir/cancelar");
+			JButton btnSalircancelar = new JButton("Salir");
 			btnSalircancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();
 				}
 			});
-			btnSalircancelar.setBounds(272, 287, 144, 21);
+			btnSalircancelar.setBounds(314, 311, 144, 21);
 			panel.add(btnSalircancelar);
 
-			scrollPane.setBounds(203, 150, 172, 123);
+			scrollPane.setBounds(203, 69, 239, 207);
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
