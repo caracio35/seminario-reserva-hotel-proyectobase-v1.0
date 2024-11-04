@@ -594,6 +594,14 @@ public class MemoryApi implements IApi {
 		throw new UnsupportedOperationException("Unimplemented method 'habitacionAModificar'");
 	}
 
+	@Override
+	public void modificarHabitacion(int numeroHabitacion, String string, double d, boolean habilitado, int i,
+			String[] strings) throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption,
+			PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'modificarHabitacion'");
+	}
+
 }
 
 // Dar de baja una habitación
