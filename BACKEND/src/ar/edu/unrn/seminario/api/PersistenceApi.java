@@ -155,10 +155,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void generarCalificacionHabitacion(int idReserva, int calificacion, String cometario) {
+	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String cometario) {
 		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
-		Calificacion calificion = new Calificacion(calificacion, cometario);
-		calificacionDAO.create(calificion, idReserva);
+		Calificacion calificion = new Calificacion(calificacion.getValor(), cometario, idReserva);
+		calificacionDAO.create(calificacion, idReserva);
 
 	}
 

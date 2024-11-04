@@ -13,6 +13,7 @@ import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public interface IApi {
 
@@ -98,5 +99,6 @@ public interface IApi {
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
 			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption;
 
-	void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario);
+	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario);
+
 }

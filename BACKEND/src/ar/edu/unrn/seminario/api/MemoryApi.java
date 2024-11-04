@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
-
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -22,7 +20,6 @@ import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
-
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -364,9 +361,9 @@ public class MemoryApi implements IApi {
 	 * comentario);
 	 */
 
-	public void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario) {
+	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario) {
 		Reserva reservaObtenida = this.buscarReserva(idReserva);
-		reservaObtenida.setCalificacion(new Calificacion(calificacion, comentario));
+		reservaObtenida.setCalificacion(new Calificacion(calificacion.getValor(), comentario, idReserva));
 
 	}
 
@@ -383,10 +380,8 @@ public class MemoryApi implements IApi {
 		int id = this.generadorID();
 		/*
 		 * public Reserva(int id , ArrayList<Habitacion> habitaciones, Usuario usuario,
-		 * LocalDate fechaDeInicio,
-		 * LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio>
-		 * servicios, LocalDate fechaDeReserva,
-		 * boolean pagoMinimo){
+		 * LocalDate fechaDeInicio, LocalDate fechaDESalida, int cantidadDePersonas,
+		 * ArrayList<Servicio> servicios, LocalDate fechaDeReserva, boolean pagoMinimo){
 		 * 
 		 */
 		Reserva reserva = new Reserva(id, habitacinesObtenidos, usuarioObtenido, fechaIni, fechaFin, 0,
@@ -403,8 +398,8 @@ public class MemoryApi implements IApi {
 			// Crear la lista de características especiales para la habitación
 			List<CaracteristicaEspecialDTO> caracteristicasDTO = new ArrayList<>();
 			for (CaracteristicaEspecial carac : h.getCaracteristicasEspeciale()) {
-				caracteristicasDTO.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
-						carac.getPrecio()));
+				caracteristicasDTO.add(
+						new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(), carac.getPrecio()));
 			}
 
 			// Create the HabitacionDTO object and add it to the list
@@ -434,8 +429,8 @@ public class MemoryApi implements IApi {
 					car.add(new CaracteristicaEspecialDTO(carac.getNombre(), carac.getDescripcion(),
 							carac.getPrecio()));
 				}
-				obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(),
-						h.getPrecio(), h.isHabilitado(), h.getNumHabitaciones(), car, null));
+				obtenerHabitacon.add(new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
+						h.isHabilitado(), h.getNumHabitaciones(), car, null));
 				System.out.println("Este campo no pueden estar en cero ");
 			}
 
@@ -508,8 +503,8 @@ public class MemoryApi implements IApi {
 		HabitacionDTO habitacionNueva = null;
 
 		habitacionNueva = new HabitacionDTO(habitacionOptenida.getCantidadDeCamas(),
-				habitacionOptenida.getDescripcion(), habitacionOptenida.getPrecio(),
-				habitacionOptenida.isHabilitado(), habitacionOptenida.getNumHabitaciones(), car, null);
+				habitacionOptenida.getDescripcion(), habitacionOptenida.getPrecio(), habitacionOptenida.isHabilitado(),
+				habitacionOptenida.getNumHabitaciones(), car, null);
 
 		return habitacionNueva;
 	}
