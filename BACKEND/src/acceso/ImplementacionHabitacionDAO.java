@@ -26,15 +26,16 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
 	private final static String usuario = "root";
 	private final static String clave = "";
-	private final static String nuevaHabitacion = "INSERT INTO habitacion (cantidadDeCamas, descripcion, precio, "
+	private final static String nuevaHabitacion = "INSERT INTO Habitacion (cantidadDeCamas, descripcion, precio, "
 			+ "habilitado, fechaHastaCuandoEstaDesactivado, numHabitaciones) VALUES (?,?,?,?,?,?)";
-	private final static String buscarHabitacion = "SELECT * FROM habitacion WHERE numHabitaciones = ?";
+	private final static String buscarHabitacion = "SELECT * FROM Habitacion WHERE numHabitaciones = ?";
 
-	private final static String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas, descripcion , precio , habilitado, WHERE numHabitaciones VALUES (?,?,?,?,?)";
-	private final static String eliminarHabitacion = "DELETE FROM habitacion WHERE numHabitaciones = ?";
-	private final static String buscarTodaLasHabitaciones = "SELECT * FROM habitacion";
+	private final static String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ? WHERE numHabitaciones = ?";
+	private final static String eliminarHabitacion = "DELETE FROM Habitacion WHERE numHabitaciones = ?";
+	private final static String buscarTodaLasHabitaciones = "SELECT * FROM Habitacion";
 	private final static String modificarFechaDeHabitacion = "UPDATE Habitacion SET habilitado = ?, fechaHastaCuandoEstaDesactivado = ? WHERE numHabitaciones = ?";
-
+	private final static String eliminarCaracteristicasSQL = "DELETE FROM Habitacion_CaracteristicaEspecial WHERE numHabitacion = ?";
+	private final static String insertarCaracteristicaSQL = "INSERT INTO Habitacion_CaracteristicaEspecial (numHabitacion, nombreCaracteristicaEspecial) VALUES (?, ?)";
 
 	public ImplementacionHabitacionDAO() {
 
@@ -86,7 +87,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	}
 
 	private void insertarCaracteristica(Habitacion habitacion, Connection miConeccion) throws SQLException {
-		String insertarHabitacionCaracteristica = "INSERT INTO habitacion_caracteristicaespecial (numHabitacion , nombreCaracteristicaEspecial) VALUES (?, ?)";
+		String insertarHabitacionCaracteristica = "INSERT INTO Habitacion_CaracteristicaEspecial (numHabitacion , nombreCaracteristicaEspecial) VALUES (?, ?)";
 
 		PreparedStatement pStamentCaracteristica = (PreparedStatement) miConeccion
 				.prepareStatement(insertarHabitacionCaracteristica);
@@ -106,24 +107,37 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public void update(Habitacion habitacion) {
-		String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ? WHERE numHabitaciones = ?";
 		try (Connection miConeccion = conectar();
-				PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);) {
+				PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
+				PreparedStatement eliminarStmt = (PreparedStatement) miConeccion
+						.prepareStatement(eliminarCaracteristicasSQL);
+				PreparedStatement insertarStmt = (PreparedStatement) miConeccion
+						.prepareStatement(insertarCaracteristicaSQL)) {
 
-			// Asigna los valores a cada parámetro en la consulta
+			// Actualizar los datos de la habitación en la tabla Habitacion
 			pStament.setInt(1, habitacion.getCantidadDeCamas());
 			pStament.setString(2, habitacion.getDescripcion());
 			pStament.setDouble(3, habitacion.getPrecio());
 			pStament.setBoolean(4, habitacion.isHabilitado());
 			pStament.setInt(5, habitacion.getNumHabitaciones()); // Para el WHERE
-
-			// Ejecuta la actualización
-		
 			pStament.executeUpdate();
+
+			// Eliminar las relaciones de características especiales existentes
+			eliminarStmt.setInt(1, habitacion.getNumHabitaciones());
+			eliminarStmt.executeUpdate();
+
+			// Insertar las nuevas relaciones de características especiales
+			for (CaracteristicaEspecial caracteristica : habitacion.getCaracteristicasEspeciale()) {
+				insertarStmt.setInt(1, habitacion.getNumHabitaciones());
+				insertarStmt.setString(2, caracteristica.getNombre());
+				insertarStmt.executeUpdate();
+			}
+
+			System.out.println("Habitación y características especiales actualizadas con éxito.");
 
 		} catch (SQLException e) {
 			System.out.println("Error al actualizar la habitación: " + e.getMessage());
-			 e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
@@ -245,8 +259,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			throws SQLException {
 		Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
 		String consultaCaracteristicas = "SELECT ce.nombre, ce.descripcion, ce.precio "
-				+ "FROM habitacion_caracteristicaespecial hce "
-				+ "JOIN caracteristicaespecial ce ON hce.nombreCaracteristicaEspecial = ce.nombre "
+				+ "FROM Habitacion_CaracteristicaEspecial hce "
+				+ "JOIN CaracteristicaEspecial ce ON hce.nombreCaracteristicaEspecial = ce.nombre "
 				+ "WHERE hce.numHabitacion = ?";
 
 		PreparedStatement pStamentConsuta = (PreparedStatement) miConeccion.prepareStatement(consultaCaracteristicas);

@@ -17,14 +17,14 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
 	private final static String usuario = "root";
 	private final static String clave = "";
-	private final static String nuevaCaracteristica = "INSERT INTO caracteristicaespecial (nombre,descripcion,precio) VALUES (?,?,?) ";
-	private final static String eliminarCaracteristica = "DELETE FROM caracteristicaespecial WHERE nombre = ?";
-	private final static String encontrarCaracteristica = "SELECT * FROM `caracteristicaespecial` WHERE nombre = ?";
+	private final static String nuevaCaracteristica = "INSERT INTO CaracteristicaEspecial (nombre,descripcion,precio) VALUES (?,?,?) ";
+	private final static String eliminarCaracteristica = "DELETE FROM CaracteristicaEspecial WHERE nombre = ?";
+	private final static String encontrarCaracteristica = "SELECT * FROM `CaracteristicaEspecial` WHERE nombre = ?";
 	private final static String encontrarTodasLasCaracteristicas = "SELECT * FROM CaracteristicaEspecial";
-	private final static String modificarCaracteristica = "UPDATE caracteristicaespecial SET descripcion = ?, precio = ? WHERE nombre = ?";
+	private final static String modificarCaracteristica = "UPDATE CaracteristicaEspecial SET descripcion = ?, precio = ? WHERE nombre = ?";
 	private final static String buscarCaracteristicasPorHabitacion = "SELECT ce.nombre, ce.descripcion, ce.precio "
-			+ "FROM caracteristicaespecial ce "
-			+ "JOIN habitacion_caracteristicaespecial hce ON ce.nombre = hce.nombreCaracteristicaEspecial "
+			+ "FROM CaracteristicaEspecial ce "
+			+ "JOIN Habitacion_CaracteristicaEspecial hce ON ce.nombre = hce.nombreCaracteristicaEspecial "
 			+ "WHERE hce.numHabitacion = ?;"; // Filtro por el número de habitación
 
 	public ImplementacionCaracteristicasEspecialDAO() {
