@@ -27,6 +27,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
@@ -146,7 +147,7 @@ public class CargarHabitacion extends JFrame {
 										Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
 							} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
 									| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
-									| PrecioCeroExeption e1) {
+									| PrecioCeroExeption | ErrorDatosNoEncontradosExeption e1) {
 								
 								JOptionPane.showMessageDialog(null, e1.getMessage());
 							}

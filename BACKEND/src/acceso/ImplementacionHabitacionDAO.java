@@ -106,8 +106,9 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	}
 
 	@Override
-	public void update(Habitacion habitacion) {
-		try (Connection miConeccion = conectar();
+	public void update(Habitacion habitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		Connection miConeccion = conectar();
+		try (
 				PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
 				PreparedStatement eliminarStmt = (PreparedStatement) miConeccion
 						.prepareStatement(eliminarCaracteristicasSQL);
@@ -136,9 +137,16 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			System.out.println("Habitación y características especiales actualizadas con éxito.");
 
 		} catch (SQLException e) {
-			System.out.println("Error al actualizar la habitación: " + e.getMessage());
-			e.printStackTrace();
+			throw new ErrorDatosNoEncontradosExeption();
+		} finally {
+			if (miConeccion != null) {
+				try {
+					miConeccion.close();
+				} catch (SQLException e) {
+					throw new ConexionFallidaExeption();
+				}
 		}
+	}
 	}
 
 	@Override

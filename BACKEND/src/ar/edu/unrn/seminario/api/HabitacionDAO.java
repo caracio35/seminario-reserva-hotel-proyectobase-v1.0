@@ -12,7 +12,7 @@ import ar.edu.unrn.seminario.modelo.Habitacion;
 public interface HabitacionDAO {
 	void create(Habitacion habitacion) throws ConexionFallidaExeption;
 
-	void update(Habitacion habitacion) throws ConexionFallidaExeption;
+	void update(Habitacion habitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	Habitacion find(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 

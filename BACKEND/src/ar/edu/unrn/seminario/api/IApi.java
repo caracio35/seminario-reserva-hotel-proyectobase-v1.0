@@ -91,7 +91,7 @@ public interface IApi {
 
 	void modificarHabitacion(int numeroHabitacion, String string, double d, boolean habilitado, int i, String[] strings)
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
-			ConexionFallidaExeption, DuplicadaExeption;
+			ConexionFallidaExeption, DuplicadaExeption, ErrorDatosNoEncontradosExeption;
 
 	void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
