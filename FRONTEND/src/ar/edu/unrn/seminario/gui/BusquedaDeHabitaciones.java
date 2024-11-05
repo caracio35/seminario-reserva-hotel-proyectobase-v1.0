@@ -28,6 +28,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 
 public class BusquedaDeHabitaciones extends JFrame {
 
@@ -221,7 +222,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 							.sorted(Comparator.comparingDouble(h -> h.getPrecio())).collect(Collectors.toList());
 
 					cargarHabitacionesFiltradas(filtrado);
-				} catch (ConexionFallidaExeption e1) {
+				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			}
@@ -250,7 +251,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 								caracteristicas
 						});
 					});
-		} catch (ConexionFallidaExeption e) {
+		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}

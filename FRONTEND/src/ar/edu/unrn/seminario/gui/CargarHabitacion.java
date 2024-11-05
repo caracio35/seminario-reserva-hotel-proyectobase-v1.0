@@ -27,6 +27,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
@@ -130,12 +131,15 @@ public class CargarHabitacion extends JFrame {
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 									Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
 						} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption
-								| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption e1) {
+								| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption   e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 
 						} catch (NumberFormatException e1) {
 							JOptionPane.showMessageDialog(null,
 									"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
+						} catch (ErrorConsultaExeption e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showConfirmDialog(null, e1.getMessage());
 						}
 					} else {
 						if (modificar == true) {

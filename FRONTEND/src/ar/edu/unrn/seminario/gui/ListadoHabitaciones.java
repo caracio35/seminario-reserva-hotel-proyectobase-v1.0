@@ -296,22 +296,17 @@ public class ListadoHabitaciones extends JFrame {
 
 						cargarHabitacionesFiltradas(filtrado);
 
-					} catch (ConexionFallidaExeption e1) {
+					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null, "Revisar los buscar habitacion tiene que ser un numero ");
 					}
-				} else
-					try {
+				} else {
 						llenarTabla();
-					} catch (ConexionFallidaExeption e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
+				}
 			}
 		});
-
+		
 		textField.setBounds(110, 25, 139, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
@@ -321,23 +316,31 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(lblNewLabel);
 	}
 
-	private void llenarTabla() throws ConexionFallidaExeption {
-		List<HabitacionDTO> habitaciones = api.obtenerTodasLasHabitaciones();
-		model.setRowCount(0);
-		habitaciones.stream()
-				.forEach(habitacionDTO -> {
-					Object[] fila = new Object[5];
-					fila[0] = habitacionDTO.getNumHabitacion();
-					fila[2] = habitacionDTO.getCantidadDeCamas();
-					fila[3] = habitacionDTO.isHabilitado();
-					if (!habitacionDTO.isHabilitado()) {
-						fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
-								? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
-								: "Indefinido";
-					}
-					model.addRow(fila);
-				});
-		table.setModel(model);
+	private void llenarTabla() {
+		List<HabitacionDTO> habitaciones;
+		try {
+			habitaciones = api.obtenerTodasLasHabitaciones();
+			model.setRowCount(0);
+			habitaciones.stream()
+					.forEach(habitacionDTO -> {
+						Object[] fila = new Object[5];
+						fila[0] = habitacionDTO.getNumHabitacion();
+						fila[2] = habitacionDTO.getCantidadDeCamas();
+						fila[3] = habitacionDTO.isHabilitado();
+						if (!habitacionDTO.isHabilitado()) {
+							fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
+									? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
+									: "Indefinido";
+						}
+						model.addRow(fila);
+					});
+			table.setModel(model);
+			
+			
+		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+
 	}
 
 	public void cargarHabitacionesFiltradas(List<HabitacionDTO> habitaciones1) {

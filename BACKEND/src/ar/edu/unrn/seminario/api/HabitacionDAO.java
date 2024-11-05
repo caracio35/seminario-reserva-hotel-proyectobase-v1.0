@@ -5,12 +5,13 @@ import java.util.Set;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 
 public interface HabitacionDAO {
-	void create(Habitacion habitacion) throws ConexionFallidaExeption;
+	void create(Habitacion habitacion) throws ConexionFallidaExeption, ErrorConsultaExeption;
 
 	void update(Habitacion habitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
@@ -18,5 +19,5 @@ public interface HabitacionDAO {
 
 	void remove(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	Set<Habitacion> findAll() throws ConexionFallidaExeption;
+	Set<Habitacion> findAll() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 }

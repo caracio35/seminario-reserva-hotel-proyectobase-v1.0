@@ -22,6 +22,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
@@ -214,7 +215,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption {
+	public List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
 		List<HabitacionDTO> listaHabitacionesDTO = ListaHabitaciones.stream()
@@ -250,7 +251,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption {
+	public List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		List<HabitacionDTO> listaHabitacionesDTO = this.obtenerTodasLasHabitaciones();
 		List<HabitacionDTO> HabitacionHabilitada = listaHabitacionesDTO.stream().filter(h -> h.isHabilitado() == true)
 				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion())).collect(Collectors.toList());
@@ -281,7 +282,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();

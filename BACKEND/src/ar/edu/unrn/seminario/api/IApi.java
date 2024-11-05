@@ -10,6 +10,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
@@ -74,9 +75,9 @@ public interface IApi {
 																			// segun
 	// su numero de
 
-	List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption;
+	List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption; // habitacion habilitadas
+	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption; // habitacion habilitadas
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica();
 
@@ -99,7 +100,7 @@ public interface IApi {
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption;
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption;
 
 	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario);
 	
