@@ -73,7 +73,7 @@ public class CargarHabitacion extends JFrame {
 			if (modificar == false) {
 				textFieldNumeroHabitacion.setEditable(true);
 			} else {
-				textFieldNumeroHabitacion.setEditable(false);
+				textFieldNumeroHabitacion.setEditable(true);
 			}
 			textFieldCamas.setBounds(10, 215, 150, 21);
 			panel.add(textFieldCamas);

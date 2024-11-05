@@ -27,8 +27,13 @@ import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.DuplicadaExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
+import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 public class ListadoHabitaciones extends JFrame {
 
@@ -114,7 +119,7 @@ public class ListadoHabitaciones extends JFrame {
 							// Lógica para desactivar la habitación
 							JOptionPane.showMessageDialog(null,
 									"Habitación desactivada hasta " + fechaFormateada + ".");
-						} catch (ConexionFallidaExeption e1) {
+						} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
 						JOptionPane.showMessageDialog(null, "Habitación activada.");}
@@ -171,12 +176,9 @@ public class ListadoHabitaciones extends JFrame {
 									// Lógica para desactivar la habitación
 									JOptionPane.showMessageDialog(null,
 											"Habitación desactivada hasta " + fechaFormateada + ".");
-								} catch (ConexionFallidaExeption e1) {
+								} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
 									JOptionPane.showMessageDialog(null, e1.getMessage());
-								} catch (ErrorDatosNoEncontradosExeption e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace(); ///esto me lo hagrego automaticamente 
-								}
+								} 
 							}
 
 						} else {
@@ -208,7 +210,7 @@ public class ListadoHabitaciones extends JFrame {
 						api.habitacionAModificar(numero);
 						CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true);
 						modificarHabitacion.setVisible(true);
-					} catch (ConexionFallidaExeption e1) {
+					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
 				} else {

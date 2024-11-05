@@ -16,6 +16,7 @@ import ar.edu.unrn.seminario.api.HabitacionDAO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -127,12 +128,12 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	}
 
 	@Override
-	public Habitacion find(int numHabitaciones) {
+	public Habitacion find(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		int numeroHabitacionBuscada = numHabitaciones;
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutataBuscarHabitacion = null;
+		miConeccion = conectar();
 		try {
-			miConeccion = conectar();
 			Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
 			ImplementacionCaracteristicasEspecialDAO carEspDAO = new ImplementacionCaracteristicasEspecialDAO();
 			caracteristicas = carEspDAO.obtenerCaracteristicasPorHabitacion(numeroHabitacionBuscada);
@@ -153,14 +154,14 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			}
 			pStamentConsutataBuscarHabitacion.execute();
 			pStamentConsutataBuscarHabitacion.close();
-		} catch (SQLException | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
-			System.out.println("excepcion propia ");
+		} catch (SQLException e) {
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption();
 				}
 			}
 		}
@@ -239,49 +240,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		}
 		return listaHabitaciones;
 	}
-	public void deactivate(int numHabitacion , LocalDate fechaDeSactivacion) {
-		Connection miConexion = null;
-		PreparedStatement pStamentConsultaHabitacion = null;
-		try {
-			miConexion = conectar();
-			pStamentConsultaHabitacion= (PreparedStatement) miConexion.prepareStatement(modificarFechaDeHabitacion);
-			pStamentConsultaHabitacion.setBoolean(1, false);
-			pStamentConsultaHabitacion.setDate(2, Date.valueOf(fechaDeSactivacion));
-			pStamentConsultaHabitacion.setInt(3, numHabitacion);
-			pStamentConsultaHabitacion.executeUpdate();
-		} catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (pStamentConsultaHabitacion != null) pStamentConsultaHabitacion.close();
-	            if (miConexion != null) miConexion.close();
-	        } catch (SQLException ex) {
-	            ex.printStackTrace();
-	        }
-	    }
-	}
 	
-	public void activate(int numHabitacion) throws ConexionFallidaExeption {
-		Connection miConexion = null;
-		PreparedStatement pStamentConsultaHabitacion = null;
-		miConexion = conectar();
-		try {
-			pStamentConsultaHabitacion= (PreparedStatement) miConexion.prepareStatement(modificarFechaDeHabitacion);
-			pStamentConsultaHabitacion.setBoolean(1, true);
-			pStamentConsultaHabitacion.setNull(2, java.sql.Types.DATE);
-			pStamentConsultaHabitacion.setInt(3, numHabitacion);
-			pStamentConsultaHabitacion.executeUpdate();
-		} catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (pStamentConsultaHabitacion != null) pStamentConsultaHabitacion.close();
-	            if (miConexion != null) miConexion.close();
-	        } catch (SQLException ex) {
-	        	throw new ConexionFallidaExeption();
-	        }
-	    }
-	}
 	private Set<CaracteristicaEspecial> obtenerCaracteristicas(int numHabitacion, Connection miConeccion)
 			throws SQLException {
 		Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();

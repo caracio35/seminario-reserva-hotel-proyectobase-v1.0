@@ -23,7 +23,7 @@ public interface IApi {
 
 	void resetearMemoria();
 
-	void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption;
+	void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
@@ -61,7 +61,7 @@ public interface IApi {
 																	// usuario y contrasena
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
-			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption;// Genera una
+			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// Genera una
 																										// reserva para
 																										// una o mas
 	// habitaciones durante un periodo
@@ -70,7 +70,7 @@ public interface IApi {
 	void modificarReserva(); // modifica una reserva existente
 
 	void desactivarHabitacion(int numeroHabitacion, String fecha)
-			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;// marca una habitacion como no habilitada
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// marca una habitacion como no habilitada
 																			// segun
 	// su numero de
 
@@ -103,6 +103,6 @@ public interface IApi {
 
 	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario);
 	
-	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption;
+	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 }
