@@ -315,23 +315,12 @@ public class PersistenceApi implements IApi {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
 		ArrayList<CaracteristicaEspecial> obtenidaCar = buscarCaracteristica(caracteristicas, caracteristicaDAO);
-		// fijase esto aca debe ser tratadas las excepciones??
-		try {
+
 			Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
 					obtenidaCar);
 			habitacion.update(habitacion1);
 			this.habitacionAModificar = 0;
 			this.habitacion = null;
-		} catch (CampoVacioExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EnterosEnCeroExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PrecioCeroExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
