@@ -103,6 +103,6 @@ public interface IApi {
 
 	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario);
 	
-	void activarHabitacion(int numHabitacion);
+	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption;
 
 }

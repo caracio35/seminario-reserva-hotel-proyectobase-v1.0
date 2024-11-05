@@ -376,7 +376,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void activarHabitacion(int numHabitacion) {
+	public void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption {
 		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
 		habitacionDAO.activate(numHabitacion);
 	}

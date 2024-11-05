@@ -261,11 +261,11 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	    }
 	}
 	
-	public void activate(int numHabitacion) {
+	public void activate(int numHabitacion) throws ConexionFallidaExeption {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsultaHabitacion = null;
+		miConexion = conectar();
 		try {
-			miConexion = conectar();
 			pStamentConsultaHabitacion= (PreparedStatement) miConexion.prepareStatement(modificarFechaDeHabitacion);
 			pStamentConsultaHabitacion.setBoolean(1, true);
 			pStamentConsultaHabitacion.setNull(2, java.sql.Types.DATE);
@@ -278,7 +278,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	            if (pStamentConsultaHabitacion != null) pStamentConsultaHabitacion.close();
 	            if (miConexion != null) miConexion.close();
 	        } catch (SQLException ex) {
-	            ex.printStackTrace();
+	        	throw new ConexionFallidaExeption();
 	        }
 	    }
 	}

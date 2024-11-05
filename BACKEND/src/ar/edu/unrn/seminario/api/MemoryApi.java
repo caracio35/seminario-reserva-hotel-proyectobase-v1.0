@@ -509,30 +509,18 @@ public class MemoryApi implements IApi {
 	}
 
 	public void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio,
-			boolean estado, List<CaracteristicaEspecialDTO> caracteristicas) {
+			boolean estado, List<CaracteristicaEspecialDTO> caracteristicas) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption{
 		Habitacion habitacionOptenida = this.buscarHabitacion(numeroHabitacion);
 		ArrayList<CaracteristicaEspecial> caracteristica = this.pasarDesdeCaracteristicasDTO(caracteristicas);
 		if (habitacionOptenida != null) {
 
 			habitaciones.remove(habitacionOptenida);
-			try {
 				Habitacion nuevaHabitacion = new Habitacion(cantidadCamas, descripcion, precio, estado,
 						numeroHabitacion, caracteristica);
 				habitaciones.add(nuevaHabitacion);
-			} catch (CampoVacioExeption e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
-			} catch (EnterosEnCeroExeption e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
-			} catch (PrecioCeroExeption e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
-			}
 
-		}
 	}
-
+}
 	public void eliminarHabitacion(int numeroHabitacion) {
 		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
 		if (habitacionObtenida != null) {
