@@ -312,7 +312,6 @@ public class MemoryApi implements IApi {
 		return caracteristicas;
 	}
 
-	@Override
 	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x)
 			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
@@ -599,6 +598,19 @@ public class MemoryApi implements IApi {
 
 	public void resetearMemoria() {
 
+	}
+
+	@Override
+	public void desactivarHabitacion(int numeroHabitacion, String fecha)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'desactivarHabitacion'");
+	}
+
+	@Override
+	public void activarHabitacion(int numHabitacion) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'activarHabitacion'");
 	}
 
 }
