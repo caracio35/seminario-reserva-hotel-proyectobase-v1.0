@@ -69,7 +69,7 @@ public interface IApi {
 
 	void modificarReserva(); // modifica una reserva existente
 
-	void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x)
+	void desactivarHabitacion(int numeroHabitacion, String fecha)
 			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;// marca una habitacion como no habilitada
 																			// segun
 	// su numero de
@@ -102,5 +102,7 @@ public interface IApi {
 			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption;
 
 	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario);
+	
+	void activarHabitacion(int numHabitacion);
 
 }

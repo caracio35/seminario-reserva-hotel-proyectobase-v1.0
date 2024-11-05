@@ -52,12 +52,10 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 	            int dni = rs.getInt("dni");
 	            
 	            Usuario usu2 = new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
-	            System.out.println("Usuario encontrado con éxito");
 	            return usu2;
 	        }
 			pStamentConsultaUsuario.execute();
 			pStamentConsultaUsuario.close();
-			System.out.println("Servicio Encontrado con exito");
 		} catch (SQLException e) {
 			System.out.println("faloooooooosda");
 		} finally {

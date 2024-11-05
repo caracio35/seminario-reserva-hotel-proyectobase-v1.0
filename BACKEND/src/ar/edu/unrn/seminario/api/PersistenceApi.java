@@ -203,9 +203,11 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void darDeBajaHabitacion(int numeroHabitacion, String fecha, int x) {
-		// TODO Auto-generated method stub
-
+	public void desactivarHabitacion(int numeroHabitacion, String fecha) {
+		
+		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
+		LocalDate fechaDesactivacion = convertiFecha(fecha);
+		habitacionDAO.deactivate(numeroHabitacion, fechaDesactivacion);
 	}
 
 	@Override
@@ -382,6 +384,12 @@ public class PersistenceApi implements IApi {
 	private LocalDate convertiFecha(String fecha) {
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(fecha, formato);
+	}
+
+	@Override
+	public void activarHabitacion(int numHabitacion) {
+		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
+		habitacionDAO.activate(numHabitacion);
 	}
 
 }

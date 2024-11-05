@@ -1,9 +1,11 @@
 package acceso;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +32,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	private final static String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas, descripcion , precio , habilitado, WHERE numHabitaciones VALUES (?,?,?,?,?)";
 	private final static String eliminarHabitacion = "DELETE FROM habitacion WHERE numHabitaciones = ?";
 	private final static String buscarTodaLasHabitaciones = "SELECT * FROM habitacion";
+	private final static String modificarFechaDeHabitacion = "UPDATE Habitacion SET habilitado = ?, fechaHastaCuandoEstaDesactivado = ? WHERE numHabitaciones = ?";
+
 
 	public ImplementacionHabitacionDAO() {
 
@@ -57,7 +61,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			insertarCaracteristica(habitacion, miConeccion);
 
 			miConeccion.commit();
-			System.out.println("Habitacion creada correctamente.");
 
 		} catch (SQLException e) {
 			try {
@@ -114,13 +117,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			pStament.setInt(5, habitacion.getNumHabitaciones()); // Para el WHERE
 
 			// Ejecuta la actualización
-			int filasModificadas = pStament.executeUpdate();
-			if (filasModificadas > 0) {
-				System.out.println("Habitación modificada con éxito.");
-			} else {
-				System.out.println(
-						"No se encontró la habitación con numHabitaciones: " + habitacion.getNumHabitaciones());
-			}
+		
+			pStament.executeUpdate();
 
 		} catch (SQLException e) {
 			System.out.println("Error al actualizar la habitación: " + e.getMessage());
@@ -155,7 +153,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			}
 			pStamentConsutataBuscarHabitacion.execute();
 			pStamentConsutataBuscarHabitacion.close();
-			System.out.println("Caracteristica Encontrada con exito");
 		} catch (SQLException | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -180,7 +177,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			pStament.setInt(1, numHabitaciones);
 			pStament.executeUpdate();
 			pStament.close();
-			System.out.println("eliminado con exito " + numHabitaciones);
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -214,7 +210,14 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				habitacion.setPrecio(resultadoBusquedaHab.getDouble("precio"));
 				habitacion.setHabilitado(resultadoBusquedaHab.getBoolean("habilitado"));
 				habitacion.setNumHabitaciones(resultadoBusquedaHab.getInt("numHabitaciones"));
-
+				
+				java.sql.Date fechaHastaCuandoEstaDesactivado = resultadoBusquedaHab.getDate("fechaHastaCuandoEstaDesactivado");
+				if(fechaHastaCuandoEstaDesactivado != null) {
+			        LocalDate fechaLocalDate = fechaHastaCuandoEstaDesactivado.toLocalDate();
+			        habitacion.setFechaHastaCuandoEstaDesactivado(fechaLocalDate);
+			    } else {
+			        habitacion.setFechaHastaCuandoEstaDesactivado(null); 
+			    }
 				caracteristicasLista = obtenerCaracteristicas(habitacion.getNumHabitaciones(), miConeccion);
 				ArrayList<CaracteristicaEspecial> arrayCar = new ArrayList<>(caracteristicasLista);
 				habitacion.setCaracteristicasEspeciale(arrayCar);
@@ -236,7 +239,49 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		}
 		return listaHabitaciones;
 	}
-
+	public void deactivate(int numHabitacion , LocalDate fechaDeSactivacion) {
+		Connection miConexion = null;
+		PreparedStatement pStamentConsultaHabitacion = null;
+		try {
+			miConexion = conectar();
+			pStamentConsultaHabitacion= (PreparedStatement) miConexion.prepareStatement(modificarFechaDeHabitacion);
+			pStamentConsultaHabitacion.setBoolean(1, false);
+			pStamentConsultaHabitacion.setDate(2, Date.valueOf(fechaDeSactivacion));
+			pStamentConsultaHabitacion.setInt(3, numHabitacion);
+			pStamentConsultaHabitacion.executeUpdate();
+		} catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (pStamentConsultaHabitacion != null) pStamentConsultaHabitacion.close();
+	            if (miConexion != null) miConexion.close();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	}
+	
+	public void activate(int numHabitacion) {
+		Connection miConexion = null;
+		PreparedStatement pStamentConsultaHabitacion = null;
+		try {
+			miConexion = conectar();
+			pStamentConsultaHabitacion= (PreparedStatement) miConexion.prepareStatement(modificarFechaDeHabitacion);
+			pStamentConsultaHabitacion.setBoolean(1, true);
+			pStamentConsultaHabitacion.setNull(2, java.sql.Types.DATE);
+			pStamentConsultaHabitacion.setInt(3, numHabitacion);
+			pStamentConsultaHabitacion.executeUpdate();
+		} catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (pStamentConsultaHabitacion != null) pStamentConsultaHabitacion.close();
+	            if (miConexion != null) miConexion.close();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	}
 	private Set<CaracteristicaEspecial> obtenerCaracteristicas(int numHabitacion, Connection miConeccion)
 			throws SQLException {
 		Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();

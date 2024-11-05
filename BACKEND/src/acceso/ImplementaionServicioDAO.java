@@ -38,7 +38,8 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.setInt(4, s.getIdServicio());
 			pStament.execute();
 			pStament.close();
-			System.out.println("Servicio CreadoS con exito");
+		
+			
 		} catch (Exception e) {
 			System.out.println("no se subio" + e.getMessage());
 		} finally {
@@ -67,7 +68,8 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.setString(3, c.getNombre());
 			pStament.execute();
 			pStament.close();
-			System.out.println("Caracteristica Modificada con exito");
+			
+			
 		} catch (Exception e) {
 			System.out.println("no se subio" + e.getMessage());
 		} finally {
@@ -102,7 +104,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			}
 			pStament.execute();
 			pStament.close();
-			System.out.println("Servicio Encontrado con exito");
+			
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -127,7 +129,8 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.setInt(1, id);
 			pStament.executeUpdate();
 			pStament.close();
-			System.out.println("eliminado con exito " + id);
+			
+			
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -164,7 +167,8 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			}
 			pStament.execute();
 			pStament.close();
-			System.out.println("Caracteristicas Encontradas con exito");
+			
+			
 
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");

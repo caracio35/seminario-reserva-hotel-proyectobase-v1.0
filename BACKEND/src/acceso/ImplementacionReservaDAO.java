@@ -51,7 +51,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
         insertarHabitaciones(reservaId, reserva, miConeccion);
         insertarServicios(reservaId, reserva, miConeccion);
         miConeccion.commit();
-        System.out.println("se creo la reserva");
+        
         } catch (SQLException e) {
 	        try {
 	            if (miConeccion != null) {

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -21,7 +20,6 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
@@ -49,6 +47,7 @@ public class CargarHabitacion extends JFrame {
 	private JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
 	private JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
 	private boolean modificar;
+	
 
 	public CargarHabitacion(IApi api, boolean modificar) {
 		try {
@@ -124,10 +123,7 @@ public class CargarHabitacion extends JFrame {
 
 					if (modificar == false) {
 						try {
-							/*
-							 * darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio,
-							 * boolean habilitado, int numHabitacion, String[] caracteristicas)
-							 */
+							
 							api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 									textFieldDescripccion.getText(),
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
@@ -151,7 +147,7 @@ public class CargarHabitacion extends JFrame {
 							} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
 									| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
 									| PrecioCeroExeption e1) {
-								// TODO Auto-generated catch block
+								
 								JOptionPane.showMessageDialog(null, e1.getMessage());
 							}
 						}
@@ -212,7 +208,6 @@ public class CargarHabitacion extends JFrame {
 
 			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
 				public boolean isCellEditable(int row, int column) {
-
 					return column != 0;
 				}
 			};
@@ -223,14 +218,12 @@ public class CargarHabitacion extends JFrame {
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 			cargarHabitacionParaModificar();
 		} catch (Exception e) {
-
 			System.out.println("aca " + e.getStackTrace() + e.getMessage());
 		}
 	}
 
 	private void cargarHabitacionParaModificar() {
-		System.out.println(api.modificamosHabitacion());
-		System.out.println(api.dameLaHabitacion());
+		
 		if (api.modificamosHabitacion()) {
 			HabitacionDTO hDTO = api.dameLaHabitacion();
 			textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));

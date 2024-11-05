@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,12 +103,21 @@ public class ListadoHabitaciones extends JFrame {
 
 					if (response == JOptionPane.YES_OPTION) {
 						// Actualizar la tabla
+						int numHabitacion = Integer.parseInt(table.getValueAt(selectedRow, 0).toString()); 
 						table.setValueAt(Boolean.TRUE, selectedRow, 3); // Activar la habitación
 						table.setValueAt("", selectedRow, 4); // Limpiar la fecha de desactivación
-
-						// Lógica para activar la habitación
-						JOptionPane.showMessageDialog(null, "Habitación activada.");
-					}
+						
+						try {
+							
+							api.activarHabitacion(numHabitacion);
+							llenarTabla();
+							// Lógica para desactivar la habitación
+							JOptionPane.showMessageDialog(null,
+									"Habitación desactivada hasta " + fechaFormateada + ".");
+						} catch (ConexionFallidaExeption e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
+						JOptionPane.showMessageDialog(null, "Habitación activada.");}
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
 				}
@@ -136,10 +147,13 @@ public class ListadoHabitaciones extends JFrame {
 
 					if (option == JOptionPane.OK_OPTION) {
 						java.util.Date fecha = dateChooser.getDate();
+						
 						if (fecha != null) {
-							// Formatear la fecha para mostrar
-							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-							fechaFormateada = sdf.format(fecha);
+							
+							int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+							
+							String fechaFormateada = new SimpleDateFormat("yyyy-MM-dd").format(fecha); 
+		
 
 							int response = JOptionPane.showConfirmDialog(null,
 									"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada
@@ -148,17 +162,20 @@ public class ListadoHabitaciones extends JFrame {
 
 							if (response == JOptionPane.YES_OPTION) {
 								// Actualizar la tabla
-								// table.setValueAt(fechaFormateada, selectedRow, 4);
-								// table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
-								numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+								table.setValueAt(fechaFormateada, selectedRow, 4);
+								table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
+								
 								try {
-									// api.darDeBajaHabitacion(numHabitacionSelected, fechaFormateada, selectedRow);
+									api.desactivarHabitacion(numHabitacionSelected, fechaFormateada);
 									llenarTabla();
 									// Lógica para desactivar la habitación
 									JOptionPane.showMessageDialog(null,
 											"Habitación desactivada hasta " + fechaFormateada + ".");
 								} catch (ConexionFallidaExeption e1) {
 									JOptionPane.showMessageDialog(null, e1.getMessage());
+								} catch (ErrorDatosNoEncontradosExeption e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace(); ///esto me lo hagrego automaticamente 
 								}
 							}
 

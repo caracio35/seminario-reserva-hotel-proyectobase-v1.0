@@ -45,7 +45,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.setDouble(3, c.getPrecio());
 			pStament.execute();
 			pStament.close();
-			System.out.println("Caracteristica Creada con exito");
 		} catch (Exception e) {
 			System.out.println("no se subio" + e.getMessage());
 		} finally {
@@ -74,7 +73,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.setString(3, c.getNombre());
 			pStament.execute();
 			pStament.close();
-			System.out.println("Caracteristica Modificada con exito");
 		} catch (Exception e) {
 			System.out.println("no se subio" + e.getMessage());
 		} finally {
@@ -108,7 +106,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			}
 			pStament.execute();
 			pStament.close();
-			System.out.println("Caracteristica Encontrada con exito");
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -133,7 +130,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.setString(1, id_caracteristicas);
 			pStament.executeUpdate();
 			pStament.close();
-			System.out.println("eliminado con exito " + id_caracteristicas);
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -169,8 +165,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			}
 			pStament.execute();
 			pStament.close();
-			System.out.println("Caracteristicas Encontradas con exito");
-
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -206,8 +200,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 				caracteristicaSet.add(caracteristica);
 			}
 			pStamentBuscarCar.close();
-			System.out.println("Lista de características retornada con éxito");
-
 		} catch (SQLException e) {
 			System.out.println("Ocurrió un error al obtener las características de la habitación: " + e.getMessage());
 			e.printStackTrace();
