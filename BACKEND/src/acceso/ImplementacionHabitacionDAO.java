@@ -1,7 +1,6 @@
 package acceso;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +17,7 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
+import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -44,7 +44,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 
-	public void create(Habitacion habitacion) throws ConexionFallidaExeption, ErrorConsultaExeption {
+	public void create(Habitacion habitacion)
+			throws ConexionFallidaExeption, ErrorConsultaExeption, NumeroHabitacionExistenteException {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutaCreaHabitacion = null;
 		miConeccion = conectar();
@@ -65,6 +66,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 			miConeccion.commit();
 
+		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
+			throw new NumeroHabitacionExistenteException();
 		} catch (SQLException e) {
 			try {
 				if (miConeccion != null) {
@@ -87,13 +90,12 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		}
 	}
 
-	private void insertarCaracteristica(Habitacion habitacion, Connection miConeccion) throws ErrorConsultaExeption  {
+	private void insertarCaracteristica(Habitacion habitacion, Connection miConeccion) throws ErrorConsultaExeption {
 		String insertarHabitacionCaracteristica = "INSERT INTO Habitacion_CaracteristicaEspecial (numHabitacion , nombreCaracteristicaEspecial) VALUES (?, ?)";
 
 		PreparedStatement pStamentCaracteristica;
 		try {
-			pStamentCaracteristica = (PreparedStatement) miConeccion
-					.prepareStatement(insertarHabitacionCaracteristica);
+			pStamentCaracteristica = (PreparedStatement) miConeccion.prepareStatement(insertarHabitacionCaracteristica);
 			if (habitacion.getCaracteristicasEspeciale() != null) {
 				for (CaracteristicaEspecial car : habitacion.getCaracteristicasEspeciale()) {
 					if (car != null) {
@@ -115,8 +117,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	@Override
 	public void update(Habitacion habitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection miConeccion = conectar();
-		try (
-				PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
+		try (PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
 				PreparedStatement eliminarStmt = (PreparedStatement) miConeccion
 						.prepareStatement(eliminarCaracteristicasSQL);
 				PreparedStatement insertarStmt = (PreparedStatement) miConeccion
@@ -152,12 +153,13 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				} catch (SQLException e) {
 					throw new ConexionFallidaExeption();
 				}
+			}
 		}
-	}
 	}
 
 	@Override
-	public Habitacion find(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+	public Habitacion find(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		int numeroHabitacionBuscada = numHabitaciones;
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutataBuscarHabitacion = null;
@@ -203,7 +205,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		PreparedStatement pStament = null;
 		miConeccion = conectar();
 		try {
-			
+
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarHabitacion);
 			pStament.setInt(1, numHabitaciones);
 			pStament.executeUpdate();
@@ -230,7 +232,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		ResultSet resultadoBusquedaHab = null;
 		miConeccion = conectar();
 		try {
-			
+
 			pStamentConsulta = (PreparedStatement) miConeccion.prepareStatement(buscarTodaLasHabitaciones);
 			resultadoBusquedaHab = pStamentConsulta.executeQuery();
 
@@ -241,14 +243,15 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				habitacion.setPrecio(resultadoBusquedaHab.getDouble("precio"));
 				habitacion.setHabilitado(resultadoBusquedaHab.getBoolean("habilitado"));
 				habitacion.setNumHabitaciones(resultadoBusquedaHab.getInt("numHabitaciones"));
-				
-				java.sql.Date fechaHastaCuandoEstaDesactivado = resultadoBusquedaHab.getDate("fechaHastaCuandoEstaDesactivado");
-				if(fechaHastaCuandoEstaDesactivado != null) {
-			        LocalDate fechaLocalDate = fechaHastaCuandoEstaDesactivado.toLocalDate();
-			        habitacion.setFechaHastaCuandoEstaDesactivado(fechaLocalDate);
-			    } else {
-			        habitacion.setFechaHastaCuandoEstaDesactivado(null); 
-			    }
+
+				java.sql.Date fechaHastaCuandoEstaDesactivado = resultadoBusquedaHab
+						.getDate("fechaHastaCuandoEstaDesactivado");
+				if (fechaHastaCuandoEstaDesactivado != null) {
+					LocalDate fechaLocalDate = fechaHastaCuandoEstaDesactivado.toLocalDate();
+					habitacion.setFechaHastaCuandoEstaDesactivado(fechaLocalDate);
+				} else {
+					habitacion.setFechaHastaCuandoEstaDesactivado(null);
+				}
 				caracteristicasLista = obtenerCaracteristicas(habitacion.getNumHabitaciones(), miConeccion);
 				ArrayList<CaracteristicaEspecial> arrayCar = new ArrayList<>(caracteristicasLista);
 				habitacion.setCaracteristicasEspeciale(arrayCar);
@@ -270,7 +273,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		}
 		return listaHabitaciones;
 	}
-	
+
 	private Set<CaracteristicaEspecial> obtenerCaracteristicas(int numHabitacion, Connection miConeccion)
 			throws SQLException {
 		Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
