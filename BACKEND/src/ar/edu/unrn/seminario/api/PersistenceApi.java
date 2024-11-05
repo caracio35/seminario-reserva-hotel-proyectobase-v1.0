@@ -36,6 +36,11 @@ public class PersistenceApi implements IApi {
 	private int habitacionAModificar = 0;
 	private Habitacion habitacion;
 
+	public void resetearMemoria() {
+		this.habitacionAModificar = 0;
+		this.habitacion = null;
+	}
+
 	public boolean modificamosHabitacion() {
 		return habitacionAModificar != 0;
 	}
@@ -207,26 +212,31 @@ public class PersistenceApi implements IApi {
 	public List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
-		List<HabitacionDTO> listaHabitacionesDTO = new ArrayList<>();
-		for (Habitacion h : ListaHabitaciones) {
-			HabitacionDTO habitacionDTO = new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
-					h.isHabilitado(), h.getNumHabitaciones(), mapearCaracteriticasDTO(h), tranformaFechaString(h));
-			listaHabitacionesDTO.add(habitacionDTO);
-		}
+		List<HabitacionDTO> listaHabitacionesDTO = ListaHabitaciones.stream()
+				.map(h -> new HabitacionDTO(
+						h.getCantidadDeCamas(),
+						h.getDescripcion(),
+						h.getPrecio(),
+						h.isHabilitado(),
+						h.getNumHabitaciones(),
+						mapearCaracteriticasDTO(h),
+						tranformaFechaString(h)))
+				.collect(Collectors.toList());
 		return listaHabitacionesDTO;
 	}
 
 	private List<CaracteristicaEspecialDTO> mapearCaracteriticasDTO(Habitacion h) {
-		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
-		for (CaracteristicaEspecial c : h.getCaracteristicasEspeciale()) {
-			CaracteristicaEspecialDTO caracteristica = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(),
-					c.getPrecio());
-			car.add(caracteristica);
-		}
+		List<CaracteristicaEspecialDTO> car = h.getCaracteristicasEspeciale().stream()
+				.map(c -> new CaracteristicaEspecialDTO(
+						c.getNombre(),
+						c.getDescripcion(),
+						c.getPrecio()))
+				.collect(Collectors.toList());
 		return car;
 	}
 
 	private String tranformaFechaString(Habitacion h) {
+		// fijase esto
 		if (h.getFechaHastaCuandoEstaDesactivado() != null) {
 			String fechaDesactivacion = h.getFechaHastaCuandoEstaDesactivado().toString();
 			return fechaDesactivacion;
@@ -247,13 +257,12 @@ public class PersistenceApi implements IApi {
 		ImplementacionCaracteristicasEspecialDAO i = new ImplementacionCaracteristicasEspecialDAO();
 		Set<CaracteristicaEspecial> caracteristicas = i.findAll();
 
-		List<CaracteristicaEspecialDTO> car = new ArrayList<>();
-		// Mostrar las características
-		for (CaracteristicaEspecial c : caracteristicas) {
-			CaracteristicaEspecialDTO carDTO = new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(),
-					c.getPrecio());
-			car.add(carDTO);
-		}
+		List<CaracteristicaEspecialDTO> car = caracteristicas.stream()
+				.map(c -> new CaracteristicaEspecialDTO(
+						c.getNombre(),
+						c.getDescripcion(),
+						c.getPrecio()))
+				.collect(Collectors.toList());
 
 		return car;
 	}
@@ -272,20 +281,11 @@ public class PersistenceApi implements IApi {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
 		ArrayList<CaracteristicaEspecial> obtenidaCar = buscarCaracteristica(caracteristicas, caracteristicaDAO);
-		try {
-			Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
-					obtenidaCar);
-			habitacion.create(habitacion1);
-		} catch (CampoVacioExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EnterosEnCeroExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PrecioCeroExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
+				obtenidaCar);
+		habitacion.create(habitacion1);
+
 	}
 
 	private ArrayList<CaracteristicaEspecial> buscarCaracteristica(String[] caracteristicas,
@@ -313,10 +313,13 @@ public class PersistenceApi implements IApi {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
 		ArrayList<CaracteristicaEspecial> obtenidaCar = buscarCaracteristica(caracteristicas, caracteristicaDAO);
+		// fijase esto aca debe ser tratadas las excepciones??
 		try {
 			Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
 					obtenidaCar);
 			habitacion.update(habitacion1);
+			this.habitacionAModificar = 0;
+			this.habitacion = null;
 		} catch (CampoVacioExeption e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

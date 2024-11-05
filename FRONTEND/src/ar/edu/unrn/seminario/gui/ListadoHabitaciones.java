@@ -303,48 +303,40 @@ public class ListadoHabitaciones extends JFrame {
 	}
 
 	private void llenarTabla() throws ConexionFallidaExeption {
-
-		System.out.println("siiiiiiiiiiii");
 		List<HabitacionDTO> habitaciones = api.obtenerTodasLasHabitaciones();
 		model.setRowCount(0);
-		for (HabitacionDTO habitacionDTO : habitaciones) {
-			Object[] fila = new Object[5];
-			fila[0] = habitacionDTO.getNumHabitacion();
-			fila[2] = habitacionDTO.getCantidadDeCamas();
-			fila[3] = habitacionDTO.isHabilitado();
-			if (!habitacionDTO.isHabilitado()) {
-				System.out.println("Esta desahabilitado");
-				if (habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null) {
-					fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado();
-				} else {
-					fila[4] = "Indefinido";
-				}
-			}
-
-			model.addRow(fila);
-		}
+		habitaciones.stream()
+				.forEach(habitacionDTO -> {
+					Object[] fila = new Object[5];
+					fila[0] = habitacionDTO.getNumHabitacion();
+					fila[2] = habitacionDTO.getCantidadDeCamas();
+					fila[3] = habitacionDTO.isHabilitado();
+					if (!habitacionDTO.isHabilitado()) {
+						fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
+								? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
+								: "Indefinido";
+					}
+					model.addRow(fila);
+				});
 		table.setModel(model);
 	}
 
 	public void cargarHabitacionesFiltradas(List<HabitacionDTO> habitaciones1) {
 
 		model.setRowCount(0);
-		for (HabitacionDTO habitacionDTO : habitaciones1) {
-			Object[] fila = new Object[5];
-			fila[0] = habitacionDTO.getNumHabitacion();
-			fila[2] = habitacionDTO.getCantidadDeCamas();
-			fila[3] = habitacionDTO.isHabilitado();
-			if (!habitacionDTO.isHabilitado()) {
-				System.out.println("Esta desahabilitado");
-				if (habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null) {
-					fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado();
-				} else {
-					fila[4] = "Indefinido";
-				}
-			}
-
-			model.addRow(fila);
-		}
+		habitaciones1.stream()
+				.forEach(habitacionDTO -> {
+					Object[] fila = new Object[5];
+					fila[0] = habitacionDTO.getNumHabitacion();
+					fila[2] = habitacionDTO.getCantidadDeCamas();
+					fila[3] = habitacionDTO.isHabilitado();
+					if (!habitacionDTO.isHabilitado()) {
+						fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
+								? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
+								: "Indefinido";
+					}
+					model.addRow(fila);
+				});
 		table.setModel(model);
 	}
 }

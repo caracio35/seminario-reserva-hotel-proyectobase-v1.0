@@ -237,14 +237,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 
 			modelo.setRowCount(0);
 
-			for (HabitacionDTO habitacion : habitaciones) {
-
-				List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
-				String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
-						.collect(Collectors.joining(", "));
-				modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
-						habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas });
-			}
+			habitaciones.stream()
+					.forEach(habitacion -> {
+						String caracteristicas = habitacion.getCaracteristicasEspeciale().stream()
+								.map(CaracteristicaEspecialDTO::getNombre)
+								.collect(Collectors.joining(", "));
+						modelo.addRow(new Object[] {
+								habitacion.getCantidadDeCamas(),
+								habitacion.getDescripcion(),
+								habitacion.getPrecio(),
+								habitacion.getNumHabitacion(),
+								caracteristicas
+						});
+					});
 		} catch (ConexionFallidaExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -254,13 +259,18 @@ public class BusquedaDeHabitaciones extends JFrame {
 
 		modelo.setRowCount(0);
 
-		for (HabitacionDTO habitacion : habitaciones1) {
-
-			List<CaracteristicaEspecialDTO> caracteristicasList = habitacion.getCaracteristicasEspeciale();
-			String caracteristicas = caracteristicasList.stream().map(CaracteristicaEspecialDTO::getNombre)
-					.collect(Collectors.joining(", "));
-			modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
-					habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas });
-		}
+		habitaciones1.stream()
+				.forEach(habitacion -> {
+					String caracteristicas = habitacion.getCaracteristicasEspeciale().stream()
+							.map(CaracteristicaEspecialDTO::getNombre)
+							.collect(Collectors.joining(", "));
+					modelo.addRow(new Object[] {
+							habitacion.getCantidadDeCamas(),
+							habitacion.getDescripcion(),
+							habitacion.getPrecio(),
+							habitacion.getNumHabitacion(),
+							caracteristicas
+					});
+				});
 	}
 }

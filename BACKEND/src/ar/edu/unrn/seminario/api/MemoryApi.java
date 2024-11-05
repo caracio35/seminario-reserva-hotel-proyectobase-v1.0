@@ -597,6 +597,10 @@ public class MemoryApi implements IApi {
 		throw new UnsupportedOperationException("Unimplemented method 'modificarHabitacion'");
 	}
 
+	public void resetearMemoria() {
+
+	}
+
 }
 
 // Dar de baja una habitación

@@ -21,6 +21,8 @@ public interface IApi {
 
 	boolean modificamosHabitacion();
 
+	void resetearMemoria();
+
 	void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption;
 
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
