@@ -31,7 +31,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	    miConeccion = conectar();
         miConeccion.setAutoCommit(false);
         pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearHabitacion, Statement.RETURN_GENERATED_KEYS);
-        int idUsuario = buscarIdUsuario(reserva, miConeccion);
+        int idUsuario = findUserId(reserva, miConeccion);
         
         pStamentConsutaCreaReserva.setInt(1, idUsuario);
         pStamentConsutaCreaReserva.setDate(2, Date.valueOf(reserva.getFechaDeInicio()));
@@ -48,8 +48,8 @@ public class ImplementacionReservaDAO implements ReservaDAO{
         if (obtenerIdReserva.next()) { 
             reservaId = obtenerIdReserva.getInt(1); 
         }
-        insertarHabitaciones(reservaId, reserva, miConeccion);
-        insertarServicios(reservaId, reserva, miConeccion);
+        insertRooms(reservaId, reserva, miConeccion);
+        insertServices(reservaId, reserva, miConeccion);
         miConeccion.commit();
         
         } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	}
 
 	@Override
-	public Reserva find(String nombre) {
+	public Reserva find(int idReserva) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -97,7 +97,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	private int buscarIdUsuario(Reserva r , Connection miConeccion) throws SQLException {
+	private int findUserId(Reserva r , Connection miConeccion) throws SQLException {
 		String buscarIdUsuario = "SELECT id FROM usuarios WHERE nombre = ? AND email = ?";
 		PreparedStatement pStamentUsuario = (PreparedStatement) miConeccion.prepareStatement(buscarIdUsuario);
 		pStamentUsuario.setString(1, r.getUsuario().getNombre());
@@ -109,7 +109,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	    }
 		return -1; 
 	}
-	private void insertarHabitaciones(int reservaId , Reserva r ,Connection miConeccion) {
+	private void insertRooms(int reservaId , Reserva r ,Connection miConeccion) {
 		
 		 PreparedStatement pStamentBuscarHabitacion = null;
 		    PreparedStatement pStamentConsutaInsertaHabitacion = null;
@@ -142,7 +142,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
         }
     }
 	}
-	private void insertarServicios(int reservaId, Reserva r, Connection miConeccion) {
+	private void insertServices(int reservaId, Reserva r, Connection miConeccion) {
 	    PreparedStatement pStamentBuscarServicio = null;
 	    PreparedStatement pStamentConsutaInsertaServicio = null;
 	    ResultSet rsServicio = null;

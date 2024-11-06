@@ -1,6 +1,7 @@
 package acceso;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,10 +32,9 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			+ "habilitado, fechaHastaCuandoEstaDesactivado, numHabitaciones) VALUES (?,?,?,?,?,?)";
 	private final static String buscarHabitacion = "SELECT * FROM Habitacion WHERE numHabitaciones = ?";
 
-	private final static String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ? WHERE numHabitaciones = ?";
+	private final static String modificarHabitacion = "UPDATE Habitacion SET cantidadDeCamas = ?, descripcion = ?, precio = ?, habilitado = ? , fechaHastaCuandoEstaDesactivado = ? WHERE numHabitaciones = ?";
 	private final static String eliminarHabitacion = "DELETE FROM Habitacion WHERE numHabitaciones = ?";
 	private final static String buscarTodaLasHabitaciones = "SELECT * FROM Habitacion";
-	private final static String modificarFechaDeHabitacion = "UPDATE Habitacion SET habilitado = ?, fechaHastaCuandoEstaDesactivado = ? WHERE numHabitaciones = ?";
 	private final static String eliminarCaracteristicasSQL = "DELETE FROM Habitacion_CaracteristicaEspecial WHERE numHabitacion = ?";
 	private final static String insertarCaracteristicaSQL = "INSERT INTO Habitacion_CaracteristicaEspecial (numHabitacion, nombreCaracteristicaEspecial) VALUES (?, ?)";
 
@@ -128,7 +128,12 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			pStament.setString(2, habitacion.getDescripcion());
 			pStament.setDouble(3, habitacion.getPrecio());
 			pStament.setBoolean(4, habitacion.isHabilitado());
-			pStament.setInt(5, habitacion.getNumHabitaciones()); // Para el WHERE
+			if (habitacion.getFechaHastaCuandoEstaDesactivado() != null) {
+		            pStament.setDate(5, Date.valueOf(habitacion.getFechaHastaCuandoEstaDesactivado()));
+		      } else {
+		            pStament.setNull(5, java.sql.Types.DATE);
+		       }
+			pStament.setInt(6, habitacion.getNumHabitaciones()); // Para el WHERE
 			pStament.executeUpdate();
 
 			// Eliminar las relaciones de características especiales existentes
@@ -136,13 +141,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			eliminarStmt.executeUpdate();
 
 			// Insertar las nuevas relaciones de características especiales
-			for (CaracteristicaEspecial caracteristica : habitacion.getCaracteristicasEspeciale()) {
-				insertarStmt.setInt(1, habitacion.getNumHabitaciones());
-				insertarStmt.setString(2, caracteristica.getNombre());
-				insertarStmt.executeUpdate();
-			}
+			insertarCaracteristica(habitacion, miConeccion);
 
-			System.out.println("Habitación y características especiales actualizadas con éxito.");
 
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();

@@ -18,43 +18,43 @@ public class Factura {
 		this.descripcion = descripcion;
 	}
 
-	Reserva getReserva() {
+	public Reserva getReserva() {
 		return reserva;
 	}
 
-	void setReserva(Reserva reserva) {
+	public void setReserva(Reserva reserva) {
 		this.reserva = reserva;
 	}
 
-	LocalDate getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	void setFecha(LocalDate fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
-	Integer getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
 
-	void setCodigo(Integer codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 
-	double getMonto() {
+	public double getMonto() {
 		return monto;
 	}
 
-	void setMonto(int monto) {
+	public void setMonto(int monto) {
 		this.monto = monto;
 	}
 
-	String getDescripcion() {
+	public String getDescripcion() {
 		return descripcion;
 	}
 
-	void setDescripcion(String descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
