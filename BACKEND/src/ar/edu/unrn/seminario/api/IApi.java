@@ -102,7 +102,7 @@ public interface IApi {
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
 			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption;
 
-	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario);
+	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario) throws ConexionFallidaExeption;
 	
 	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 

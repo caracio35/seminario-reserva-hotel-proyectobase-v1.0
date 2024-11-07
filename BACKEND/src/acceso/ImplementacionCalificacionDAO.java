@@ -10,6 +10,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.CalificacionDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public class ImplementacionCalificacionDAO implements CalificacionDAO {
@@ -19,12 +20,13 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 	private final static String nuevoCalificacion = "INSERT INTO calificacion (reserva_id, puntaje, descripcion) VALUES (?, ?, ?)";
 	private final static String buscarCalificacion = "SELECT puntaje , descripcion FROM Calificacion WHERE = reserva_id ?";
 	@Override
-	public void create(Calificacion calificacion, int idReserva) {
+	
+	public void create(Calificacion calificacion, int idReserva) throws ConexionFallidaExeption {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsutaCrearCalificacion = null;
-
+		miConexion = conectar();
 		try {
-			miConexion = conectar();
+			
 			miConexion.setAutoCommit(false);
 			pStamentConsutaCrearCalificacion = (PreparedStatement) miConexion.prepareStatement(nuevoCalificacion);
 			pStamentConsutaCrearCalificacion.setInt(1, idReserva);
@@ -40,10 +42,8 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 					
 				}
 			} catch (SQLException ex) {
-				
-				ex.printStackTrace();
+				throw new ConexionFallidaExeption();
 			}
-			e.printStackTrace();
 		} finally {
 			try {
 				if (pStamentConsutaCrearCalificacion != null)
@@ -51,7 +51,7 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 				if (miConexion != null)
 					miConexion.close();
 			} catch (SQLException e) {
-				
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 	}
@@ -63,14 +63,15 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 	}
 
 	@Override
-	public Calificacion find(int idReserva) {
+	public Calificacion find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 	    Connection miConexion = null;
 	    PreparedStatement pStatementConsultaBuscarCalificacion = null;
 	    ResultSet resultSet = null;
 	    Calificacion calificacionObtenida = null;
 
+	    miConexion = conectar();
 	    try {
-	        miConexion = conectar();
+	        
 	        
 	        pStatementConsultaBuscarCalificacion = (PreparedStatement) miConexion.prepareStatement(buscarCalificacion);
 	        pStatementConsultaBuscarCalificacion.setInt(1, idReserva);
@@ -83,14 +84,14 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 	            calificacionObtenida = new Calificacion(valor, comentario, idReserva);
 	        }
 	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
+			throw new ErrorDatosNoEncontradosExeption();
+		} finally {
 	        try {
 	            if (resultSet != null) resultSet.close();
 	            if (pStatementConsultaBuscarCalificacion != null) pStatementConsultaBuscarCalificacion.close();
 	            if (miConexion != null) miConexion.close();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	throw new ConexionFallidaExeption("Error al cerrar los recursos");
 	        }
 	    }
 	    return calificacionObtenida;

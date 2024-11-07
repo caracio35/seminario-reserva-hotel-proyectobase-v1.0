@@ -46,7 +46,6 @@ public class ImplementacionFacturaDAO implements FacturaDAO {
 			System.out.println("Error al hacer rollback");
 			throw new ConexionFallidaExeption();
 		}
-		e.printStackTrace();
 	} finally {
 		try {
 			if (pStamentConsutaCreFactura != null)
