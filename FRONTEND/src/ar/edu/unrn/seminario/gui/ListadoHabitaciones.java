@@ -116,9 +116,6 @@ public class ListadoHabitaciones extends JFrame {
 							
 							api.activarHabitacion(numHabitacion);
 							llenarTabla();
-							// Lógica para desactivar la habitación
-							JOptionPane.showMessageDialog(null,
-									"Habitación desactivada hasta " + fechaFormateada + ".");
 						} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}

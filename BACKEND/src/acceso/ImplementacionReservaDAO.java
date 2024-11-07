@@ -5,11 +5,11 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Set;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
-
 import ar.edu.unrn.seminario.api.ReservaDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.Habitacion;
@@ -31,7 +31,9 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	    miConeccion = conectar();
         miConeccion.setAutoCommit(false);
         pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearHabitacion, Statement.RETURN_GENERATED_KEYS);
-        int idUsuario = findUserId(reserva, miConeccion);
+        
+        Optional<Integer> obtenerlUserId = findUserId(reserva, miConeccion);
+        int idUsuario = obtenerlUserId.get();
         
         pStamentConsutaCreaReserva.setInt(1, idUsuario);
         pStamentConsutaCreaReserva.setDate(2, Date.valueOf(reserva.getFechaDeInicio()));
@@ -81,9 +83,9 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	}
 
 	@Override
-	public Reserva find(int idReserva) {
+	public Optional<Reserva> find(int idReserva) {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
@@ -97,7 +99,7 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	private int findUserId(Reserva r , Connection miConeccion) throws SQLException {
+	private Optional<Integer> findUserId(Reserva r, Connection miConeccion) throws SQLException {
 		String buscarIdUsuario = "SELECT id FROM usuarios WHERE nombre = ? AND email = ?";
 		PreparedStatement pStamentUsuario = (PreparedStatement) miConeccion.prepareStatement(buscarIdUsuario);
 		pStamentUsuario.setString(1, r.getUsuario().getNombre());
@@ -105,10 +107,11 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 	    
 	    ResultSet rs = pStamentUsuario.executeQuery();
 	    if (rs.next()) {
-	        return rs.getInt("id");
+	        return Optional.of(rs.getInt("id"));
 	    }
-		return -1; 
+	    return Optional.empty(); 
 	}
+
 	private void insertRooms(int reservaId , Reserva r ,Connection miConeccion) {
 		
 		 PreparedStatement pStamentBuscarHabitacion = null;
@@ -184,4 +187,6 @@ public class ImplementacionReservaDAO implements ReservaDAO{
 
 		}
 	}
+
+
 }

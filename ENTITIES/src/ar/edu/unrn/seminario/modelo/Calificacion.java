@@ -7,12 +7,11 @@ public class Calificacion {
 	private String comentario;
 	private int idReservaFK;
 
-	public Calificacion(int valor, String comentario, int idReservaFK) {
+	public Calificacion(int valor , String comentario , int idReservaFK) {
 		this.valor = valor;
 		this.comentario = comentario;
 		this.idReservaFK = idReservaFK;
 	}
-
 	public int getIdReservaFK() {
 		return idReservaFK;
 	}

@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.api;
 
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -9,7 +10,7 @@ public interface ReservaDAO {
 	
 	void create (Reserva reserva);
 	void update(Reserva reserva);
-	Reserva find(int idReserva);
+	Optional<Reserva> find(int idReserva);
 	void remove(String nombre);
 	Set<Reserva>findAll();
 }
