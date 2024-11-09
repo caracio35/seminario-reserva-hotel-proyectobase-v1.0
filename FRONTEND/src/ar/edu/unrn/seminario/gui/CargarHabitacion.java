@@ -49,7 +49,6 @@ public class CargarHabitacion extends JFrame {
 	private JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
 	private JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
 	private boolean modificar;
-	
 
 	public CargarHabitacion(IApi api, boolean modificar) {
 		try {
@@ -125,13 +124,14 @@ public class CargarHabitacion extends JFrame {
 
 					if (modificar == false) {
 						try {
-							
 							api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 									textFieldDescripccion.getText(),
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 									Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
+							dispose();
+							JOptionPane.showMessageDialog(null, "habitacion agregada con exito");
 						} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption
-								| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption   e1) {
+								| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 
 						} catch (NumberFormatException e1) {
@@ -142,17 +142,37 @@ public class CargarHabitacion extends JFrame {
 							JOptionPane.showConfirmDialog(null, e1.getMessage());
 						}
 					} else {
+						// Dentro del ActionListener del botón btnSubirInformacion
 						if (modificar == true) {
 							try {
-
 								api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
 										textFieldDescripccion.getText(),
-										Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
-										Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
+										Double.parseDouble(textFieldPrecioRegistrado.getText()),
+										habilitado,
+										Integer.parseInt(textFieldNumeroHabitacion.getText()),
+										caracteristicas);
+
+								// Mostrar mensaje de éxito
+								JOptionPane.showMessageDialog(null,
+										"Habitación modificada exitosamente",
+										"Éxito",
+										JOptionPane.INFORMATION_MESSAGE);
+
+								// Cerrar la ventana actual
+								dispose();
+
+								// Actualizar la lista de habitaciones
+								// Opción 1: Actualizar la ventana principal
+								((ListadoHabitaciones) getParent()).llenarTabla();
+
+								// Opción 2: Si no tienes acceso directo a ListadoHabitaciones
+								// puedes crear una nueva instancia
+								// ListadoHabitaciones listado = new ListadoHabitaciones(api);
+								// listado.setVisible(true);
+
 							} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
 									| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
 									| PrecioCeroExeption | ErrorDatosNoEncontradosExeption e1) {
-								
 								JOptionPane.showMessageDialog(null, e1.getMessage());
 							}
 						}
@@ -228,7 +248,7 @@ public class CargarHabitacion extends JFrame {
 	}
 
 	private void cargarHabitacionParaModificar() {
-		
+
 		if (api.modificamosHabitacion()) {
 			HabitacionDTO hDTO = api.dameLaHabitacion();
 			textFieldNumeroHabitacion.setText(String.valueOf(hDTO.getNumHabitacion()));

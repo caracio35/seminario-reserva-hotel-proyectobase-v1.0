@@ -46,7 +46,8 @@ public class PersistenceApi implements IApi {
 		return habitacionAModificar != 0;
 	}
 
-	public void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+	public void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ImplementacionHabitacionDAO habitacion1 = new ImplementacionHabitacionDAO();
 		this.habitacionAModificar = numeroHabitacion;
 		this.habitacion = habitacion1.find(numeroHabitacion);
@@ -161,7 +162,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String cometario) throws ConexionFallidaExeption {
+	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String cometario)
+			throws ConexionFallidaExeption {
 		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
 		Calificacion calificion = new Calificacion(calificacion.getValor(), cometario, idReserva);
 		calificacionDAO.create(calificacion, idReserva);
@@ -177,7 +179,8 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void generarReserva(int[] habitacion, String usuario, String fechaInicio, String fechaFin,
 			String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo)
-			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption,
+			PrecioCeroExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
 		Usuario usuario1 = usuarioDAO.find(usuario);
@@ -204,8 +207,9 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void desactivarHabitacion(int numeroHabitacion, String fecha) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
-		
+	public void desactivarHabitacion(int numeroHabitacion, String fecha) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+
 		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
 		LocalDate fechaDesactivacion = convertiFecha(fecha);
 		habitacion = habitacionDAO.find(numeroHabitacion);
@@ -215,7 +219,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public List<HabitacionDTO> obtenerTodasLasHabitaciones()
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
 		List<HabitacionDTO> listaHabitacionesDTO = ListaHabitaciones.stream()
@@ -251,7 +256,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public List<HabitacionDTO> obtenerHabitacionesHabilitada()
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		List<HabitacionDTO> listaHabitacionesDTO = this.obtenerTodasLasHabitaciones();
 		List<HabitacionDTO> HabitacionHabilitada = listaHabitacionesDTO.stream().filter(h -> h.isHabilitado() == true)
 				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion())).collect(Collectors.toList());
@@ -268,6 +274,7 @@ public class PersistenceApi implements IApi {
 						c.getNombre(),
 						c.getDescripcion(),
 						c.getPrecio()))
+				.sorted(Comparator.comparing(c -> c.getNombre()))
 				.collect(Collectors.toList());
 
 		return car;
@@ -282,7 +289,8 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption {
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption,
+			ErrorConsultaExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
@@ -314,17 +322,18 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void modificarHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption, ErrorDatosNoEncontradosExeption {
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption,
+			ErrorDatosNoEncontradosExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
 		ArrayList<CaracteristicaEspecial> obtenidaCar = buscarCaracteristica(caracteristicas, caracteristicaDAO);
 
-			Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
-					obtenidaCar);
-			habitacion.update(habitacion1);
-			this.habitacionAModificar = 0;
-			this.habitacion = null;
+		Habitacion habitacion1 = new Habitacion(cantidadDeCamas, descripcion, precio, habilitado, numHabitacion,
+				obtenidaCar);
+		habitacion.update(habitacion1);
+		this.habitacionAModificar = 0;
+		this.habitacion = null;
 	}
 
 	@Override
@@ -352,7 +361,8 @@ public class PersistenceApi implements IApi {
 		// Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar
 	}
 
-	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new ImplementacionCaracteristicasEspecialDAO();
 
@@ -380,7 +390,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+	public void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
 		habitacion = habitacionDAO.find(numHabitacion);
 		habitacion.setFechaHastaCuandoEstaDesactivado(null);

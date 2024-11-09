@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,27 +102,35 @@ public class ListadoHabitaciones extends JFrame {
 		btnActivarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				if (selectedRow != -1) { // Verificar si se ha seleccionado una fila
-					int response = JOptionPane.showConfirmDialog(null,
-							"¿Está seguro de que desea activar esta habitación?", "Confirmación",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-					if (response == JOptionPane.YES_OPTION) {
-						// Actualizar la tabla
-						int numHabitacion = Integer.parseInt(table.getValueAt(selectedRow, 0).toString()); 
-						table.setValueAt(Boolean.TRUE, selectedRow, 3); // Activar la habitación
-						table.setValueAt("", selectedRow, 4); // Limpiar la fecha de desactivación
-						
-						try {
-							
-							api.activarHabitacion(numHabitacion);
-							llenarTabla();
-						} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						}
-						JOptionPane.showMessageDialog(null, "Habitación activada.");}
-				} else {
+				if (selectedRow == -1) {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+					return;
+				}
+
+				int response = JOptionPane.showConfirmDialog(null,
+						"¿Está seguro de que desea activar esta habitación?",
+						"Confirmación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (response != JOptionPane.YES_OPTION) {
+					return;
+				}
+
+				try {
+					int numHabitacion = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+					api.activarHabitacion(numHabitacion);
+
+					// Actualizar la tabla
+					table.setValueAt(Boolean.TRUE, selectedRow, 3); // Activar la habitación
+					table.setValueAt("", selectedRow, 4); // Limpiar la fecha de desactivación
+					llenarTabla();
+
+					JOptionPane.showMessageDialog(null, "Habitación activada.");
+
+				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			}
 		});
@@ -134,57 +143,63 @@ public class ListadoHabitaciones extends JFrame {
 		btnDesactivar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				if (selectedRow != -1) { // Verificar si se ha seleccionado una fila
-					// Crear el panel con JDateChooser
-					JPanel panel = new JPanel();
-					panel.add(new JLabel("Seleccione la fecha de desactivación:"));
+				if (selectedRow == -1) {
+					JOptionPane.showMessageDialog(null,
+							"Por favor, seleccione una habitación de la tabla.");
+					return;
+				}
 
-					// Crear JDateChooser
-					JDateChooser dateChooser = new JDateChooser();
-					dateChooser.setDateFormatString("dd/MM/yyyy"); // Establecer el formato de la fecha
-					panel.add(dateChooser);
+				// Crear el panel con JDateChooser
+				JPanel panel = new JPanel();
+				panel.add(new JLabel("Seleccione la fecha de desactivación:"));
 
-					int option = JOptionPane.showConfirmDialog(null, panel, "Ingrese fecha de desactivación",
-							JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				// Crear JDateChooser
+				JDateChooser dateChooser = new JDateChooser();
+				dateChooser.setDateFormatString("dd/MM/yyyy");
+				panel.add(dateChooser);
 
-					if (option == JOptionPane.OK_OPTION) {
-						java.util.Date fecha = dateChooser.getDate();
-						
-						if (fecha != null) {
-							
-							int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-							
-							String fechaFormateada = new SimpleDateFormat("yyyy-MM-dd").format(fecha); 
-		
+				int option = JOptionPane.showConfirmDialog(null, panel,
+						"Ingrese fecha de desactivación",
+						JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.PLAIN_MESSAGE);
 
-							int response = JOptionPane.showConfirmDialog(null,
-									"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada
-											+ "?",
-									"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option != JOptionPane.OK_OPTION) {
+					return;
+				}
 
-							if (response == JOptionPane.YES_OPTION) {
-								// Actualizar la tabla
-								table.setValueAt(fechaFormateada, selectedRow, 4);
-								table.setValueAt(Boolean.FALSE, selectedRow, 3); // Desactivar la habitación
-								
-								try {
-									api.desactivarHabitacion(numHabitacionSelected, fechaFormateada);
-									llenarTabla();
-									// Lógica para desactivar la habitación
-									JOptionPane.showMessageDialog(null,
-											"Habitación desactivada hasta " + fechaFormateada + ".");
-								} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
-									JOptionPane.showMessageDialog(null, e1.getMessage());
-								} 
-							}
+				java.util.Date fecha = dateChooser.getDate();
+				if (fecha == null) {
+					JOptionPane.showMessageDialog(null,
+							"Por favor, seleccione una fecha.");
+					return;
+				}
 
-						} else {
-							JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.");
-						}
+				int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+				String fechaFormateada = new SimpleDateFormat("yyyy-MM-dd").format(fecha);
 
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+				int response = JOptionPane.showConfirmDialog(null,
+						"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada + "?",
+						"Confirmación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (response != JOptionPane.YES_OPTION) {
+					return;
+				}
+
+				try {
+					// Actualizar la tabla y la base de datos
+					table.setValueAt(fechaFormateada, selectedRow, 4);
+					table.setValueAt(Boolean.FALSE, selectedRow, 3);
+					api.desactivarHabitacion(numHabitacionSelected, fechaFormateada);
+					llenarTabla();
+
+					JOptionPane.showMessageDialog(null,
+							"Habitación desactivada hasta " + fechaFormateada + ".");
+
+				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			}
 		});
@@ -207,7 +222,8 @@ public class ListadoHabitaciones extends JFrame {
 						api.habitacionAModificar(numero);
 						CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true);
 						modificarHabitacion.setVisible(true);
-					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+							| EnterosEnCeroExeption | PrecioCeroExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
 				} else {
@@ -225,28 +241,32 @@ public class ListadoHabitaciones extends JFrame {
 		btnEliminarHabitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				if (selectedRow != -1) { // Verificar si se ha seleccionado una fila
-					int response = JOptionPane.showConfirmDialog(null,
-							"¿Está seguro de que desea eliminar esta habitación?", "Confirmación",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (selectedRow == -1) {
+					JOptionPane.showMessageDialog(null,
+							"Por favor, seleccione una habitación de la tabla.");
+					return;
+				}
 
-					if (response == JOptionPane.YES_OPTION) {
-						try {
-							// Eliminar la fila de la tabla
-							numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-							((DefaultTableModel) table.getModel()).removeRow(selectedRow);
-							// eliminar Habitacion
-							api.eliminarHabitacion(numHabitacionSelected);
-							// Lógica para eliminar la habitación
-							JOptionPane.showMessageDialog(null, "Habitación eliminada.");
-						} catch (ConexionFallidaExeption e1) {
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						} catch (ErrorDatosNoEncontradosExeption e1) {
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						}
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+				int response = JOptionPane.showConfirmDialog(null,
+						"¿Está seguro de que desea eliminar esta habitación?",
+						"Confirmación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (response != JOptionPane.YES_OPTION) {
+					return;
+				}
+
+				try {
+					// Obtener y eliminar la habitación
+					numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+					((DefaultTableModel) table.getModel()).removeRow(selectedRow);
+					api.eliminarHabitacion(numHabitacionSelected);
+
+					JOptionPane.showMessageDialog(null, "Habitación eliminada.");
+
+				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			}
 		});
@@ -299,11 +319,11 @@ public class ListadoHabitaciones extends JFrame {
 						JOptionPane.showMessageDialog(null, "Revisar los buscar habitacion tiene que ser un numero ");
 					}
 				} else {
-						llenarTabla();
+					llenarTabla();
 				}
 			}
 		});
-		
+
 		textField.setBounds(110, 25, 139, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
@@ -313,12 +333,13 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(lblNewLabel);
 	}
 
-	private void llenarTabla() {
+	public void llenarTabla() {
 		List<HabitacionDTO> habitaciones;
 		try {
 			habitaciones = api.obtenerTodasLasHabitaciones();
 			model.setRowCount(0);
 			habitaciones.stream()
+					.sorted(Comparator.comparingInt(h -> h.getNumHabitacion()))
 					.forEach(habitacionDTO -> {
 						Object[] fila = new Object[5];
 						fila[0] = habitacionDTO.getNumHabitacion();
@@ -332,8 +353,7 @@ public class ListadoHabitaciones extends JFrame {
 						model.addRow(fila);
 					});
 			table.setModel(model);
-			
-			
+
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -344,6 +364,7 @@ public class ListadoHabitaciones extends JFrame {
 
 		model.setRowCount(0);
 		habitaciones1.stream()
+				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion()))
 				.forEach(habitacionDTO -> {
 					Object[] fila = new Object[5];
 					fila[0] = habitacionDTO.getNumHabitacion();
