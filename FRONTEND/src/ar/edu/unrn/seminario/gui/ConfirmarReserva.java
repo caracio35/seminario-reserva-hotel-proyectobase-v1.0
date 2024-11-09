@@ -11,9 +11,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import java.util.Random;
 
 public class ConfirmarReserva extends JFrame {
 
@@ -28,9 +33,9 @@ public class ConfirmarReserva extends JFrame {
 	private JTextField textFieldFechaIngreso;
 	private JTextField texFilFechaSalida;
 
-	public ConfirmarReserva(String fechaInicio , String fechaFin , String usuario ) {
-		
-		System.out.println(fechaFin + fechaFin + usuario );
+	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario) {
+
+		System.out.println(fechaFin + fechaFin + usuario);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 528, 455);
 		contentPane = new JPanel();
@@ -60,7 +65,10 @@ public class ConfirmarReserva extends JFrame {
 		textFieldDNIPasaporte.setColumns(10);
 
 		JComboBox comboBoxMetodoPago = new JComboBox();
+		// dos metodos de pago en el combobox mercado pago y tarjeta de credito
 		comboBoxMetodoPago.setBounds(10, 217, 137, 21);
+		comboBoxMetodoPago.addItem("MercadoPago");
+		comboBoxMetodoPago.addItem("Tarjeta de Credito");
 		panel.add(comboBoxMetodoPago);
 
 		JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
@@ -74,12 +82,44 @@ public class ConfirmarReserva extends JFrame {
 		panel.add(rdbtnPagoTotal);
 
 		JButton btnRealizarPago = new JButton("Realizar Pago");
-		btnRealizarPago.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PagarReserva pagar=new PagarReserva();
-				pagar.setVisible(true);
+		btnRealizarPago.addActionListener(e -> {
+			String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
+			Random random = new Random();
+
+			if ("Tarjeta de Credito".equals(metodoPago)) {
+				// 30% de probabilidad de falla por monto insuficiente
+				if (random.nextInt(100) < 30) {
+					JOptionPane.showMessageDialog(contentPane,
+							"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
+					// Lógica para generar la reserva
+					generarReserva();
+				}
+			} else if ("MercadoPago".equals(metodoPago)) {
+				// Mostrar un JOptionPane con QR
+				JOptionPane.showMessageDialog(this, "Mostrando QR para MercadoPago...");
+
+				// Generar tiempo de visualización aleatorio entre 5 y 10 segundos
+
+				int displayTime = random.nextInt(10) + 5;
+
+				// Configurar un Timer para verificar el resultado del pago
+				new Timer(displayTime, evt -> {
+					// 30% de probabilidad de fallo del pago
+					if (random.nextInt(100) < 30) {
+						JOptionPane.showMessageDialog(contentPane,
+								"El pago con MercadoPago falló. Intente nuevamente.");
+					} else {
+						JOptionPane.showMessageDialog(contentPane, "Pago con MercadoPago exitoso!");
+						// Lógica para generar la reserva
+						generarReserva();
+					}
+					((Timer) evt.getSource()).stop();
+				}).start();
 			}
 		});
+
 		btnRealizarPago.setBounds(312, 367, 117, 21);
 		panel.add(btnRealizarPago);
 
@@ -92,7 +132,7 @@ public class ConfirmarReserva extends JFrame {
 		btnCancelar.setBounds(217, 367, 85, 21);
 		panel.add(btnCancelar);
 
-		JScrollPane scrollPane = new JScrollPane(); 
+		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(216, 72, 266, 252);
 		panel.add(scrollPane);
 
@@ -122,32 +162,54 @@ public class ConfirmarReserva extends JFrame {
 		JLabel lblFechaSalida = new JLabel("Fecha Salida");
 		lblFechaSalida.setBounds(10, 299, 96, 13);
 		panel.add(lblFechaSalida);
-		
+
 		textFieldUsuario = new JTextField();
 		textFieldUsuario.setBounds(10, 36, 173, 20);
 		panel.add(textFieldUsuario);
 		textFieldUsuario.setColumns(10);
 		textFieldUsuario.setText("brunohuaiqui@hotmail.com");
 		textFieldUsuario.setEditable(false);
-		
+
 		JLabel lblNewLabel = new JLabel("Usuario");
 		lblNewLabel.setBounds(9, 22, 46, 14);
 		panel.add(lblNewLabel);
-		
+
 		textFieldFechaIngreso = new JTextField();
 		textFieldFechaIngreso.setBounds(10, 262, 137, 20);
 		panel.add(textFieldFechaIngreso);
 		textFieldFechaIngreso.setColumns(10);
 		textFieldFechaIngreso.setText(fechaInicio);
 		textFieldFechaIngreso.setEditable(false);
-		
+
 		texFilFechaSalida = new JTextField();
 		texFilFechaSalida.setBounds(10, 315, 137, 20);
 		panel.add(texFilFechaSalida);
 		texFilFechaSalida.setColumns(10);
 		texFilFechaSalida.setText(fechaFin);
 		texFilFechaSalida.setEditable(false);
-		
-		
+
+	}
+
+	private void generarReserva() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+		for (int i = 0; i < model.getRowCount(); i++) {
+			Boolean isSelected = (Boolean) model.getValueAt(i, 1);
+			if (isSelected != null && isSelected) {
+				// Obtener el identificador de la habitación
+				Object roomId = model.getValueAt(i, 0);
+				// Procesar la reserva para esta habitación
+				reservarHabitacion(roomId);
+			}
+		}
+
+		System.out.println("Reserva(s) generada(s) exitosamente.");
+		// Cierra la ventana si lo deseas
+		dispose();
+	}
+
+	private void reservarHabitacion(Object roomId) {
+		// Implementa la lógica para reservar una habitación individual
+		System.out.println("Habitación " + roomId + " reservada.");
 	}
 }

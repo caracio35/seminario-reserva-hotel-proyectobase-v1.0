@@ -49,6 +49,8 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private String fechaReservaFin;
 	private String fechaReservaInicio;
 	private JTextField textFieldPrecio;
+	private int precioMinimo = 0;
+	private int camas = 0;
 
 	/**
 	 * Create the frame.
@@ -72,25 +74,41 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-				"Numero de Habitacion", "  Caracteristicas Especiales   " }) {
+				"Numero de Habitacion", "  Caracteristicas Especiales   ", "Seleccionado" }) {
 			public boolean isCellEditable(int row, int column) {
-				return false;
+				// Only the "Seleccionado" column is editable
+				return column == 5;
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				// Return Boolean.class for the "Seleccionado" column to handle it as a checkbox
+				if (columnIndex == 5) {
+					return Boolean.class;
+				}
+				return super.getColumnClass(columnIndex);
 			}
 		};
 
-		table_1 = new JTable(modelo);
+		table_1 = new JTable(modelo) {
+			@Override
+			public Class<?> getColumnClass(int column) {
+				// This is for rendering the checkbox in the "Seleccionado" column
+				if (column == 5) {
+					return Boolean.class;
+				}
+				return super.getColumnClass(column);
+			}
+		};
 
+		// Ensure the scroll pane contains the table
+		scrollPane.setViewportView(table_1);
 		table_1.setShowGrid(false);
 
 		scrollPane.setViewportView(table_1);
 		this.cargarHabitaciones();
 
 		scrollPane.setViewportView(table_1);
-
-		textField = new JTextField();
-		textField.setBounds(136, 23, 134, 19);
-		getContentPane().add(textField);
-		textField.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Fecha Ingreso");
 		lblNewLabel.setBounds(10, 192, 85, 13);
@@ -103,10 +121,6 @@ public class BusquedaDeHabitaciones extends JFrame {
 		lblNewLabel_2 = new JLabel("Camas");
 		lblNewLabel_2.setBounds(10, 280, 96, 13);
 		getContentPane().add(lblNewLabel_2);
-
-		lblNewLabel_3 = new JLabel("Buscar");
-		lblNewLabel_3.setBounds(136, 5, 45, 13);
-		getContentPane().add(lblNewLabel_3);
 
 		lblNewLabel_4 = new JLabel("Descripción");
 		lblNewLabel_4.setBounds(10, 5, 85, 13);
@@ -132,11 +146,9 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(comboBox);
 
 		JButton btnReservar = new JButton("RESERVAR");
-		btnReservar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, null);
-				confirmacion.setVisible(true);
-			}
+		btnReservar.addActionListener(e -> {
+			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, null);
+			confirmacion.setVisible(true);
 		});
 		btnReservar.setBounds(136, 346, 116, 21);
 		getContentPane().add(btnReservar);
@@ -147,11 +159,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(textFieldHuespedes);
 
 		btnCancelarsalir = new JButton("CANCELAR/SALIR");
-		btnCancelarsalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		btnCancelarsalir.addActionListener(e -> dispose());
 		btnCancelarsalir.setBounds(599, 346, 116, 21);
 		getContentPane().add(btnCancelarsalir);
 
@@ -200,33 +208,26 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JButton btnBuscar = new JButton("filtrar");
 		btnBuscar.setBounds(10, 322, 85, 21);
 		getContentPane().add(btnBuscar);
-		btnBuscar.addActionListener(new ActionListener() {
-			private int precioMinimo;
-			private int camas;
-
-			public void actionPerformed(ActionEvent e) {
-				precioMinimo = 0;
-				camas = 0;
-
-				if (!textFieldPrecio.getText().isEmpty()) {
-					precioMinimo = Integer.parseInt(textFieldPrecio.getText());
-				}
-				if (!textFieldHuespedes.getText().isEmpty()) {
-					camas = Integer.parseInt(textFieldHuespedes.getText());
-				}
-				try {
-					List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
-					// aplicando filtro de precio minimo con stream
-					List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
-							.filter(h -> h.getCantidadDeCamas() >= camas)
-							.sorted(Comparator.comparingDouble(h -> h.getPrecio())).collect(Collectors.toList());
-
-					cargarHabitacionesFiltradas(filtrado);
-				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
+		btnBuscar.addActionListener(e -> {
+			if (!textFieldPrecio.getText().isEmpty()) {
+				precioMinimo = Integer.parseInt(textFieldPrecio.getText());
 			}
+			if (!textFieldHuespedes.getText().isEmpty()) {
+				camas = Integer.parseInt(textFieldHuespedes.getText());
+			}
+			try {
+				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
+				// aplicando filtro de precio minimo con stream
+				List<HabitacionDTO> filtrado = habitaciones.stream()
+						.filter(h -> h.getPrecio() >= precioMinimo)
+						.filter(h -> h.getCantidadDeCamas() >= camas)
+						.sorted(Comparator.comparingDouble(HabitacionDTO::getPrecio))
+						.collect(Collectors.toList());
 
+				cargarHabitacionesFiltradas(filtrado);
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
 		});
 
 	}
@@ -239,6 +240,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 			modelo.setRowCount(0);
 
 			habitaciones.stream()
+					.sorted(Comparator.comparingInt(HabitacionDTO::getNumHabitacion))
 					.forEach(habitacion -> {
 						String caracteristicas = habitacion.getCaracteristicasEspeciale().stream()
 								.map(CaracteristicaEspecialDTO::getNombre)
@@ -248,7 +250,8 @@ public class BusquedaDeHabitaciones extends JFrame {
 								habitacion.getDescripcion(),
 								habitacion.getPrecio(),
 								habitacion.getNumHabitacion(),
-								caracteristicas
+								caracteristicas,
+								false // Checkbox for selection
 						});
 					});
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e) {

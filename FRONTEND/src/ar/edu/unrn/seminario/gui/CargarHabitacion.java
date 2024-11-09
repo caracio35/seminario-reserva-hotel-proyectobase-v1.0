@@ -231,13 +231,18 @@ public class CargarHabitacion extends JFrame {
 			scrollPane.setBounds(203, 69, 239, 207);
 			panel.add(scrollPane);
 
-			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
+			table = new JTable(new DefaultTableModel(new Object[][] {}, new String[] { "Habitación", "Seleccionar" }) {
 				public boolean isCellEditable(int row, int column) {
-					return column != 0;
+					return column == 1; // Permitir editar solo la columna de los checkboxes
 				}
-			};
-			table = new JTable(modelo);
-			scrollPane.setViewportView(table); // Establecer la vista de la tabla correctamente
+
+				public Class<?> getColumnClass(int columnIndex) {
+					if (columnIndex == 1) {
+						return Boolean.class; // Hacer que la segunda columna sea de tipo Boolean
+					}
+					return String.class; // La primera columna es de tipo String para el nombre de la habitación
+				}
+			});
 			this.cargarCaracteristicaEspecial();
 			table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
