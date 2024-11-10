@@ -11,6 +11,7 @@ import java.util.Set;
 
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -509,18 +510,20 @@ public class MemoryApi implements IApi {
 	}
 
 	public void modificarHabitacion(int numeroHabitacion, int cantidadCamas, String descripcion, double precio,
-			boolean estado, List<CaracteristicaEspecialDTO> caracteristicas) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption{
+			boolean estado, List<CaracteristicaEspecialDTO> caracteristicas)
+			throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		Habitacion habitacionOptenida = this.buscarHabitacion(numeroHabitacion);
 		ArrayList<CaracteristicaEspecial> caracteristica = this.pasarDesdeCaracteristicasDTO(caracteristicas);
 		if (habitacionOptenida != null) {
 
 			habitaciones.remove(habitacionOptenida);
-				Habitacion nuevaHabitacion = new Habitacion(cantidadCamas, descripcion, precio, estado,
-						numeroHabitacion, caracteristica);
-				habitaciones.add(nuevaHabitacion);
+			Habitacion nuevaHabitacion = new Habitacion(cantidadCamas, descripcion, precio, estado,
+					numeroHabitacion, caracteristica);
+			habitaciones.add(nuevaHabitacion);
 
+		}
 	}
-}
+
 	public void eliminarHabitacion(int numeroHabitacion) {
 		Habitacion habitacionObtenida = this.buscarHabitacion(numeroHabitacion);
 		if (habitacionObtenida != null) {
@@ -599,6 +602,12 @@ public class MemoryApi implements IApi {
 	public void activarHabitacion(int numHabitacion) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'activarHabitacion'");
+	}
+
+	@Override
+	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'obtenerReserva'");
 	}
 
 }
