@@ -129,16 +129,15 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			while (rsReservas.next()) {
 				// Obtener datos básicos de la reserva
 				int reservaId = rsReservas.getInt("id");
-				
-				LocalDate fechaDeInicio = rsReservas.getDate("fechaDeInicio").toLocalDate();
-				LocalDate fechaDeSalida = rsReservas.getDate("fechaDeSalida").toLocalDate();
+				LocalDate fechaDeInicio = pasarSqlDate(rsReservas.getDate("fechaDeInicio"));
+				LocalDate fechaDeSalida = pasarSqlDate(rsReservas.getDate("fechaDeSalida"));
+				LocalDate fechaDeReserva = pasarSqlDate(rsReservas.getDate("fechaDeReserva"));
 				int cantidadDePersonas = rsReservas.getInt("cantidadDePersonas");
-				LocalDate fechaDeReserva = rsReservas.getDate("fechaDeReserva").toLocalDate();
 				boolean pagoMinimo = rsReservas.getBoolean("pagoMinimo");
-
+				System.out.println(fechaDeReserva);
 				// Crear la lista de habitaciones asociadas a la reserva
 				ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, reservaId);
-
+				
 				// Crear la lista de servicios asociados a la reserva
 				ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, reservaId);
 
@@ -153,6 +152,11 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		}
 
 		return reservas;
+	}
+
+	private LocalDate pasarSqlDate(java.sql.Date fecha) throws SQLException { 
+		LocalDate fechaLocalDate = fecha.toLocalDate();
+		return fechaLocalDate;
 	}
 
 	private ArrayList<Habitacion> obtenerHabitacionesPorReserva(Connection conn, int reservaId)
