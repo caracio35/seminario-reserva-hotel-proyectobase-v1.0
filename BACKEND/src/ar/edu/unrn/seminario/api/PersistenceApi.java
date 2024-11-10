@@ -314,9 +314,14 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion) {
-		// TODO Auto-generated method stub
-		return null;
+	public HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+		HabitacionDAO hDao = new ImplementacionHabitacionDAO();
+		Habitacion h = hDao.find(numeroHabitacion);
+		HabitacionDTO hDTO = new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
+				h.isHabilitado(), h.getNumHabitaciones(), mapearCaracteriticasDTO(h),
+				tranformaFechaString(h));
+		return hDTO;
 	}
 
 	@Override

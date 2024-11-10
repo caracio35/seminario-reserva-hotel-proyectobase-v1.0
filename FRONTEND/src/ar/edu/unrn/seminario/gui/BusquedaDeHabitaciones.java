@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -147,7 +148,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 
 		JButton btnReservar = new JButton("RESERVAR");
 		btnReservar.addActionListener(e -> {
-			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, null);
+			List<Integer> habitacionesSeleccionadas = new ArrayList<>();
+			for (int i = 0; i < table_1.getRowCount(); i++) {
+				Boolean estado = (Boolean) table_1.getValueAt(i, 5); // Assuming the "Seleccionado" column index is 5
+				if (estado != null && estado) {
+					Integer numeroHabitacion = (Integer) table_1.getValueAt(i, 3); // Assuming the "Numero de
+																					// Habitacion" column index is 3
+					habitacionesSeleccionadas.add(numeroHabitacion);
+				}
+			}
+			JOptionPane.showMessageDialog(null, "habitaciones seleccionadas" + habitacionesSeleccionadas);
+			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio,
+					fechaReservaFin, null, api,
+					habitacionesSeleccionadas);
 			confirmacion.setVisible(true);
 		});
 		btnReservar.setBounds(136, 346, 116, 21);

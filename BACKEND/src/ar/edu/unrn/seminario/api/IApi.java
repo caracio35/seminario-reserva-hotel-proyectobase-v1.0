@@ -24,7 +24,8 @@ public interface IApi {
 
 	void resetearMemoria();
 
-	void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
+	void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
@@ -62,22 +63,25 @@ public interface IApi {
 																	// usuario y contrasena
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
-			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// Genera una
-																										// reserva para
-																										// una o mas
+			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// Genera una
+	// reserva para
+	// una o mas
 	// habitaciones durante un periodo
 	// especifico de tiempo
 
 	void modificarReserva(); // modifica una reserva existente
 
 	void desactivarHabitacion(int numeroHabitacion, String fecha)
-			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// marca una habitacion como no habilitada
-																			// segun
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption,
+			PrecioCeroExeption;// marca una habitacion como no habilitada
+	// segun
 	// su numero de
 
 	List<HabitacionDTO> obtenerTodasLasHabitaciones() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption; // habitacion habilitadas
+	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption; // habitacion
+																															// habilitadas
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica();
 
@@ -88,7 +92,8 @@ public interface IApi {
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
 			ConexionFallidaExeption, DuplicadaExeption;
 
-	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion);
+	HabitacionDTO buscarHabitacionDTOPorNumero(int numeroHabitacion) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 	void modificarHabitacion(int numeroHabitacion, String string, double d, boolean habilitado, int i, String[] strings)
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
@@ -100,10 +105,13 @@ public interface IApi {
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption;
+			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption,
+			ErrorConsultaExeption;
 
-	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario) throws ConexionFallidaExeption;
-	
-	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
+	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario)
+			throws ConexionFallidaExeption;
+
+	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 }

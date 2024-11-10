@@ -12,10 +12,17 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
+import java.util.ArrayList;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import java.util.ArrayList;
+
+import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.dto.HabitacionDTO;
+
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import java.util.Random;
@@ -32,162 +39,170 @@ public class ConfirmarReserva extends JFrame {
 	private JTextField textFieldUsuario;
 	private JTextField textFieldFechaIngreso;
 	private JTextField texFilFechaSalida;
+	IApi api;
+	private java.util.List<Integer> habitacionesSeleccionadas;
 
-	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario) {
+	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario, IApi api,
+			java.util.List<Integer> habitacionesSeleccionadas) {
 
-		System.out.println(fechaFin + fechaFin + usuario);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 528, 455);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		{
+			this.api = api;
+			java.util.List<HabitacionDTO> habitaciones;
+			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+			System.out.println(fechaFin + fechaFin + usuario);
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setBounds(100, 100, 528, 455);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 10, 492, 398);
-		contentPane.add(panel);
-		panel.setLayout(null);
+			setContentPane(contentPane);
+			contentPane.setLayout(null);
 
-		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(10, 75, 137, 19);
-		panel.add(textFieldNombre);
-		textFieldNombre.setColumns(10);
+			JPanel panel = new JPanel();
+			panel.setBounds(10, 10, 492, 398);
+			contentPane.add(panel);
+			panel.setLayout(null);
 
-		textFieldApellido = new JTextField();
-		textFieldApellido.setBounds(10, 122, 137, 19);
-		panel.add(textFieldApellido);
-		textFieldApellido.setColumns(10);
+			textFieldNombre = new JTextField();
+			textFieldNombre.setBounds(10, 75, 137, 19);
+			panel.add(textFieldNombre);
+			textFieldNombre.setColumns(10);
 
-		textFieldDNIPasaporte = new JTextField();
-		textFieldDNIPasaporte.setBounds(10, 167, 137, 19);
-		panel.add(textFieldDNIPasaporte);
-		textFieldDNIPasaporte.setColumns(10);
+			textFieldApellido = new JTextField();
+			textFieldApellido.setBounds(10, 122, 137, 19);
+			panel.add(textFieldApellido);
+			textFieldApellido.setColumns(10);
 
-		JComboBox comboBoxMetodoPago = new JComboBox();
-		// dos metodos de pago en el combobox mercado pago y tarjeta de credito
-		comboBoxMetodoPago.setBounds(10, 217, 137, 21);
-		comboBoxMetodoPago.addItem("MercadoPago");
-		comboBoxMetodoPago.addItem("Tarjeta de Credito");
-		panel.add(comboBoxMetodoPago);
+			textFieldDNIPasaporte = new JTextField();
+			textFieldDNIPasaporte.setBounds(10, 167, 137, 19);
+			panel.add(textFieldDNIPasaporte);
+			textFieldDNIPasaporte.setColumns(10);
 
-		JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
-		buttonGroup.add(rdbtnPrecioMinimo);
-		rdbtnPrecioMinimo.setBounds(3, 355, 103, 21);
-		panel.add(rdbtnPrecioMinimo);
+			JComboBox comboBoxMetodoPago = new JComboBox();
+			// dos metodos de pago en el combobox mercado pago y tarjeta de credito
+			comboBoxMetodoPago.setBounds(10, 217, 137, 21);
+			comboBoxMetodoPago.addItem("MercadoPago");
+			comboBoxMetodoPago.addItem("Tarjeta de Credito");
+			panel.add(comboBoxMetodoPago);
 
-		JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
-		buttonGroup.add(rdbtnPagoTotal);
-		rdbtnPagoTotal.setBounds(108, 355, 103, 21);
-		panel.add(rdbtnPagoTotal);
+			JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
+			buttonGroup.add(rdbtnPrecioMinimo);
+			rdbtnPrecioMinimo.setBounds(3, 355, 103, 21);
+			panel.add(rdbtnPrecioMinimo);
 
-		JButton btnRealizarPago = new JButton("Realizar Pago");
-		btnRealizarPago.addActionListener(e -> {
-			String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
-			Random random = new Random();
+			JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
+			buttonGroup.add(rdbtnPagoTotal);
+			rdbtnPagoTotal.setBounds(108, 355, 103, 21);
+			panel.add(rdbtnPagoTotal);
 
-			if ("Tarjeta de Credito".equals(metodoPago)) {
-				// 30% de probabilidad de falla por monto insuficiente
-				if (random.nextInt(100) < 30) {
-					JOptionPane.showMessageDialog(contentPane,
-							"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
-				} else {
-					JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
-					// Lógica para generar la reserva
-					generarReserva();
-				}
-			} else if ("MercadoPago".equals(metodoPago)) {
-				// Mostrar un JOptionPane con QR
-				JOptionPane.showMessageDialog(this, "Mostrando QR para MercadoPago...");
+			JButton btnRealizarPago = new JButton("Realizar Pago");
+			btnRealizarPago.addActionListener(e -> {
+				String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
+				Random random = new Random();
 
-				// Generar tiempo de visualización aleatorio entre 5 y 10 segundos
-
-				int displayTime = random.nextInt(10) + 5;
-
-				// Configurar un Timer para verificar el resultado del pago
-				new Timer(displayTime, evt -> {
-					// 30% de probabilidad de fallo del pago
+				if ("Tarjeta de Credito".equals(metodoPago)) {
+					// 30% de probabilidad de falla por monto insuficiente
 					if (random.nextInt(100) < 30) {
 						JOptionPane.showMessageDialog(contentPane,
-								"El pago con MercadoPago falló. Intente nuevamente.");
+								"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
 					} else {
-						JOptionPane.showMessageDialog(contentPane, "Pago con MercadoPago exitoso!");
+						JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
 						// Lógica para generar la reserva
 						generarReserva();
 					}
-					((Timer) evt.getSource()).stop();
-				}).start();
-			}
-		});
+				} else if ("MercadoPago".equals(metodoPago)) {
+					// Mostrar un JOptionPane con QR
+					JOptionPane.showMessageDialog(this, "Mostrando QR para MercadoPago...");
 
-		btnRealizarPago.setBounds(312, 367, 117, 21);
-		panel.add(btnRealizarPago);
+					// Generar tiempo de visualización aleatorio entre 5 y 10 segundos
 
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnCancelar.setBounds(217, 367, 85, 21);
-		panel.add(btnCancelar);
+					int displayTime = random.nextInt(10) + 5;
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(216, 72, 266, 252);
-		panel.add(scrollPane);
+					// Configurar un Timer para verificar el resultado del pago
+					new Timer(displayTime, evt -> {
+						// 30% de probabilidad de fallo del pago
+						if (random.nextInt(100) < 30) {
+							JOptionPane.showMessageDialog(contentPane,
+									"El pago con MercadoPago falló. Intente nuevamente.");
+						} else {
+							JOptionPane.showMessageDialog(contentPane, "Pago con MercadoPago exitoso!");
+							// Lógica para generar la reserva
+							generarReserva();
+						}
+						((Timer) evt.getSource()).stop();
+					}).start();
+				}
+			});
 
-		table = new JTable();
-		scrollPane.setViewportView(table);
+			btnRealizarPago.setBounds(312, 367, 117, 21);
+			panel.add(btnRealizarPago);
 
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(10, 60, 45, 13);
-		panel.add(lblNombre);
+			JButton btnCancelar = new JButton("Cancelar");
+			btnCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
+			btnCancelar.setBounds(217, 367, 85, 21);
+			panel.add(btnCancelar);
 
-		JLabel lblApellido = new JLabel("Apellido");
-		lblApellido.setBounds(10, 105, 58, 13);
-		panel.add(lblApellido);
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(216, 72, 266, 252);
+			panel.add(scrollPane);
 
-		JLabel lblDNIPasaporte = new JLabel("DNI o Pasaporte");
-		lblDNIPasaporte.setBounds(10, 152, 96, 13);
-		panel.add(lblDNIPasaporte);
+			table = new JTable();
+			scrollPane.setViewportView(table);
 
-		JLabel lblMetodoDePago = new JLabel("Metodo de Pago");
-		lblMetodoDePago.setBounds(10, 197, 96, 13);
-		panel.add(lblMetodoDePago);
+			JLabel lblNombre = new JLabel("Nombre");
+			lblNombre.setBounds(10, 60, 45, 13);
+			panel.add(lblNombre);
 
-		JLabel lblFechaIngreso = new JLabel("Fecha Ingreso");
-		lblFechaIngreso.setBounds(10, 249, 96, 13);
-		panel.add(lblFechaIngreso);
+			JLabel lblApellido = new JLabel("Apellido");
+			lblApellido.setBounds(10, 105, 58, 13);
+			panel.add(lblApellido);
 
-		JLabel lblFechaSalida = new JLabel("Fecha Salida");
-		lblFechaSalida.setBounds(10, 299, 96, 13);
-		panel.add(lblFechaSalida);
+			JLabel lblDNIPasaporte = new JLabel("DNI o Pasaporte");
+			lblDNIPasaporte.setBounds(10, 152, 96, 13);
+			panel.add(lblDNIPasaporte);
 
-		textFieldUsuario = new JTextField();
-		textFieldUsuario.setBounds(10, 36, 173, 20);
-		panel.add(textFieldUsuario);
-		textFieldUsuario.setColumns(10);
-		textFieldUsuario.setText("brunohuaiqui@hotmail.com");
-		textFieldUsuario.setEditable(false);
+			JLabel lblMetodoDePago = new JLabel("Metodo de Pago");
+			lblMetodoDePago.setBounds(10, 197, 96, 13);
+			panel.add(lblMetodoDePago);
 
-		JLabel lblNewLabel = new JLabel("Usuario");
-		lblNewLabel.setBounds(9, 22, 46, 14);
-		panel.add(lblNewLabel);
+			JLabel lblFechaIngreso = new JLabel("Fecha Ingreso");
+			lblFechaIngreso.setBounds(10, 249, 96, 13);
+			panel.add(lblFechaIngreso);
 
-		textFieldFechaIngreso = new JTextField();
-		textFieldFechaIngreso.setBounds(10, 262, 137, 20);
-		panel.add(textFieldFechaIngreso);
-		textFieldFechaIngreso.setColumns(10);
-		textFieldFechaIngreso.setText(fechaInicio);
-		textFieldFechaIngreso.setEditable(false);
+			JLabel lblFechaSalida = new JLabel("Fecha Salida");
+			lblFechaSalida.setBounds(10, 299, 96, 13);
+			panel.add(lblFechaSalida);
 
-		texFilFechaSalida = new JTextField();
-		texFilFechaSalida.setBounds(10, 315, 137, 20);
-		panel.add(texFilFechaSalida);
-		texFilFechaSalida.setColumns(10);
-		texFilFechaSalida.setText(fechaFin);
-		texFilFechaSalida.setEditable(false);
+			textFieldUsuario = new JTextField();
+			textFieldUsuario.setBounds(10, 36, 173, 20);
+			panel.add(textFieldUsuario);
+			textFieldUsuario.setColumns(10);
+			textFieldUsuario.setText("brunohuaiqui@hotmail.com");
+			textFieldUsuario.setEditable(false);
 
+			JLabel lblNewLabel = new JLabel("Usuario");
+			lblNewLabel.setBounds(9, 22, 46, 14);
+			panel.add(lblNewLabel);
+
+			textFieldFechaIngreso = new JTextField();
+			textFieldFechaIngreso.setBounds(10, 262, 137, 20);
+			panel.add(textFieldFechaIngreso);
+			textFieldFechaIngreso.setColumns(10);
+			textFieldFechaIngreso.setText(fechaInicio);
+			textFieldFechaIngreso.setEditable(false);
+
+			texFilFechaSalida = new JTextField();
+			texFilFechaSalida.setBounds(10, 315, 137, 20);
+			panel.add(texFilFechaSalida);
+			texFilFechaSalida.setColumns(10);
+			texFilFechaSalida.setText(fechaFin);
+			texFilFechaSalida.setEditable(false);
+		}
 	}
 
 	private void generarReserva() {
