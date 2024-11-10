@@ -16,6 +16,7 @@ import acceso.ImplementacionUsuarioDAO;
 import acceso.ImplementaionServicioDAO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -404,4 +405,35 @@ public class PersistenceApi implements IApi {
 		habitacionDAO.update(habitacion);
 	}
 
+	@Override
+	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
+		Set<Reserva> listaReseva = reservaDAO.findAll();
+		List<ReservaDTO> reservaDTO = new ArrayList<>();
+		for (Reserva r : listaReseva) {
+			List<Integer> numHabitacioList = new ArrayList<>();
+			List<String> nombreServicio = new ArrayList<>();
+			List<String> nombreCaracteriticas = new ArrayList<>();
+			for (Habitacion h : r.getHabitacion()) {
+			    numHabitacioList.add(h.getNumHabitaciones()); 
+			    }
+			for (Servicio s : r.getServicios()) {
+				nombreServicio.add(s.getNombre());
+			}
+			int[] numHabitacio = numHabitacioList.stream().mapToInt(Integer::intValue).toArray();
+			String[] servicios = nombreServicio.stream().toArray(String[]::new);
+			LocalDate fechaInicio = r.getFechaDeInicio(); 
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
+			String fecha1 = fechaInicio.format(formato);
+			LocalDate fechaFin = r.getFechaDESalida();
+			String fecha2 = fechaFin.format(formato);
+			LocalDate fechaReserva = r.getFechaDeReserva();
+			String fecha3 = fechaReserva.format(formato); 
+			ReservaDTO reservaDTO2 =  new ReservaDTO(numHabitacio, "juan", fecha1, fecha2,r.getCantidadDePersonas(), servicios, r.isCheckIn(), r.isCheckOut(), r.getFactura().getCodigo(), 
+					fecha3, null, r.getPagoMinimo());
+			reservaDTO.add(reservaDTO2);
+		
+	}
+		return reservaDTO;
+	}
 }

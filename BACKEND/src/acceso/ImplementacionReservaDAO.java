@@ -28,7 +28,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
 	private final static String usuario = "root";
 	private final static String clave = "";
-	private final static String crearHabitacion = "INSERT INTO reserva (usuario_id, fechaDeInicio, fechaDeSalida, cantidadDePersonas,"
+	private final static String crearReserva = "INSERT INTO reserva (usuario_id, fechaDeInicio, fechaDeSalida, cantidadDePersonas,"
 			+ "                      fechaDeReserva, saldoFavor, pagoMinimo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 	private static final String SELECT_ALL_RESERVAS = "SELECT * FROM Reserva";
@@ -53,7 +53,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		try {
 			miConeccion = conectar();
 			miConeccion.setAutoCommit(false);
-			pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearHabitacion,
+			pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearReserva,
 					Statement.RETURN_GENERATED_KEYS);
 
 			Optional<Integer> obtenerlUserId = findUserId(reserva, miConeccion);
@@ -103,8 +103,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 	@Override
 	public void update(Reserva reserva) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -130,6 +129,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			while (rsReservas.next()) {
 				// Obtener datos básicos de la reserva
 				int reservaId = rsReservas.getInt("id");
+				
 				LocalDate fechaDeInicio = rsReservas.getDate("fechaDeInicio").toLocalDate();
 				LocalDate fechaDeSalida = rsReservas.getDate("fechaDeSalida").toLocalDate();
 				int cantidadDePersonas = rsReservas.getInt("cantidadDePersonas");
@@ -143,8 +143,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, reservaId);
 
 				// Crear la reserva y agregarla al conjunto
-				Reserva reserva = new Reserva(reservaId, habitaciones, null, fechaDeInicio, fechaDeSalida,
-						cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
+				Reserva reserva = new Reserva(reservaId, habitaciones, fechaDeInicio, fechaDeSalida, cantidadDePersonas, servicios);
 				reservas.add(reserva);
 			}
 

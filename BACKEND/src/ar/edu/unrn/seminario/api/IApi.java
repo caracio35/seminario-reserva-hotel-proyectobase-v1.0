@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
@@ -15,6 +16,7 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
+import ar.edu.unrn.seminario.modelo.Reserva;
 
 public interface IApi {
 
@@ -114,4 +116,6 @@ public interface IApi {
 	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
 			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
+	List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
+	
 }

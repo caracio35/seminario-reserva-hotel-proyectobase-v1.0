@@ -39,6 +39,23 @@ public class Reserva {
 		this.saldoFavor = 0;
 		this.pagoMinimo = pagoMinimo;
 	}
+	public Reserva(int id ,ArrayList<Habitacion> habitaciones, LocalDate fechaDeInicio,LocalDate fechaDESalida ,int cantidadDePersonas, ArrayList<Servicio> servicios )
+	{
+		this.id = id;
+		this.habitaciones = habitaciones;
+		this.usuario = null ; 
+		this.fechaDeInicio = fechaDeInicio;
+		this.fechaDESalida = fechaDESalida;
+		this.cantidadDePersonas = cantidadDePersonas;
+		this.servicios = servicios;
+		this.checkIn = false;
+		this.checkOut = false;
+		this.factura = null;
+		this.fechaDeReserva = null;
+		this.calificacion = null;
+		this.saldoFavor = 0;
+		this.pagoMinimo = false;
+	}
 
 	public void modificarReserva(ArrayList<Habitacion> habitaciones, LocalDate fechaDeInicio, LocalDate fechaDESalida,
 			int cantidadDePersonas, ArrayList<Servicio> servicios) {

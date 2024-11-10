@@ -13,7 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -100,7 +103,13 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmListadoHabitaciones_1 = new JMenuItem("Mis Reservas");
 		mntmListadoHabitaciones_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VerReservas misReservas = new VerReservas();
+				VerReservas misReservas = null;
+				try {
+					misReservas = new VerReservas(api);
+				} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				misReservas.setVisible(true);
 			}
 		});

@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Date;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,6 +16,13 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
+
+import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.dto.ReservaDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+
 import javax.swing.JCheckBox;
 import javax.swing.table.TableCellRenderer;
 
@@ -23,7 +32,7 @@ public class VerReservas extends JFrame {
     private JPanel contentPane;
     private JTable table;
 
-    public VerReservas() {
+    public VerReservas(IApi api) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 752, 300);
         contentPane = new JPanel();
@@ -37,22 +46,12 @@ public class VerReservas extends JFrame {
 
         // Definición del modelo de la tabla con tipos de columnas
         DefaultTableModel model = new DefaultTableModel(
-                new Object[][] {
-                        { 1, true, "2024-01-01", false, "2024-01-07", 5 },
-                        { 2, true, "2024-02-01", false, "2024-02-05", 4 },
-                        { 3, true, "2024-03-15", false, "2024-03-20", 3 },
-                        { 4, true, "2024-04-10", false, "2024-04-15", 2 },
-                        { 5, true, "2024-05-05", true, "2024-05-10", null },
-                        { 6, false, "2024-06-20", false, "2024-06-25", 5 },
-                        { 7, true, "2024-07-01", false, "2024-07-05", null },
-                        { 8, false, "2024-08-10", true, "2024-08-15", 3 },
-                },
+                new Object[][] {},
                 new String[] {
-                        "Num Habitacion", "Check-in", "ingreso", "Check-out", "salida", "Mi Calificacion"
+                        "Num Habitaciones", "Check-in", "ingreso", "Check-out", "salida", "Mi Calificacion" , "Servicios" 
                 }) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                // Especificar el tipo de las columnas
                 switch (columnIndex) {
                     case 1: // Check-in
                     case 3: // Check-out
@@ -61,7 +60,6 @@ public class VerReservas extends JFrame {
                         return Object.class;
                 }
             }
-
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -69,6 +67,23 @@ public class VerReservas extends JFrame {
 
         table = new JTable(model);
         scrollPane.setViewportView(table);
+        
+        List<ReservaDTO> reservas = api.obtenerReserva();
+
+        for (ReservaDTO reserva : reservas) {
+            Object[] rowData = new Object[7]; 
+            rowData[0] = reserva.getHabitacion();  // Número de habitaciones
+            rowData[1] = reserva.isCheckIn();  // Check-in (Booleano)
+            rowData[2] = reserva.getFechaDeInicio();  // Ingreso (fecha u otro valor)
+            rowData[3] = reserva.isCheckOut();  // Check-out (Booleano)
+            rowData[4] = reserva.getFechaDeSalida();  // Salida (fecha u otro valor)
+            rowData[5] = reserva.getCalificacion();  // Mi Calificación
+            rowData[6] = String.join(", ", reserva.getServicios());  // Servicios (suponiendo que es una lista de servicios)
+
+            // Agregar la fila al modelo
+            model.addRow(rowData);
+        }
+        
 
         JButton btnMostrarDetalles = new JButton("Mostrar Detalles");
         btnMostrarDetalles.setBounds(10, 200, 150, 25);
