@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 
@@ -22,6 +24,11 @@ import java.util.ArrayList;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -34,20 +41,22 @@ public class ConfirmarReserva extends JFrame {
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellido;
 	private JTextField textFieldDNIPasaporte;
-	private JTable table;
+	private JTable tabla_Habitaciones;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textFieldUsuario;
 	private JTextField textFieldFechaIngreso;
 	private JTextField texFilFechaSalida;
+	private DefaultTableModel modelo;
 	IApi api;
 	private java.util.List<Integer> habitacionesSeleccionadas;
+	private List<HabitacionDTO> habitaciones;
 
 	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario, IApi api,
 			java.util.List<Integer> habitacionesSeleccionadas) {
 
 		{
 			this.api = api;
-			java.util.List<HabitacionDTO> habitaciones;
+			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
 
 			System.out.println(fechaFin + fechaFin + usuario);
@@ -151,9 +160,22 @@ public class ConfirmarReserva extends JFrame {
 			scrollPane.setBounds(216, 72, 266, 252);
 			panel.add(scrollPane);
 
-			table = new JTable();
-			scrollPane.setViewportView(table);
-
+			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
+					"Numero de Habitacion"});
+			tabla_Habitaciones = new JTable(modelo);
+			scrollPane.setViewportView(tabla_Habitaciones);
+			try {
+				
+			for (Integer numHabitacion : habitacionesSeleccionadas) {
+				habitaciones.add(api.buscarHabitacionDTOPorNumero(numHabitacion));
+				
+			}
+			llenarTabla();
+			} catch(ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+			
+			
 			JLabel lblNombre = new JLabel("Nombre");
 			lblNombre.setBounds(10, 60, 45, 13);
 			panel.add(lblNombre);
@@ -205,14 +227,28 @@ public class ConfirmarReserva extends JFrame {
 		}
 	}
 
+	private void llenarTabla() {
+		modelo.setRowCount(0);
+		habitaciones.stream()
+				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion()))
+				.forEach(habitacionDTO -> {
+					Object[] fila = new Object[4];
+					fila[0] = habitacionDTO.getCantidadDeCamas();
+					fila[1] = habitacionDTO.getDescripcion();
+					fila[2] = habitacionDTO.getPrecio();
+					fila[3] = habitacionDTO.getNumHabitacion();
+					
+					modelo.addRow(fila);
+				});
+		tabla_Habitaciones.setModel(modelo);
+	}
 	private void generarReserva() {
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
 
-		for (int i = 0; i < model.getRowCount(); i++) {
-			Boolean isSelected = (Boolean) model.getValueAt(i, 1);
+		for (int i = 0; i < modelo.getRowCount(); i++) {
+			Boolean isSelected = (Boolean) modelo.getValueAt(i, 1);
 			if (isSelected != null && isSelected) {
 				// Obtener el identificador de la habitación
-				Object roomId = model.getValueAt(i, 0);
+				Object roomId = modelo.getValueAt(i, 0);
 				// Procesar la reserva para esta habitación
 				reservarHabitacion(roomId);
 			}
