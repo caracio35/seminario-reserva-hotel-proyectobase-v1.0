@@ -117,5 +117,7 @@ public interface IApi {
 			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 	List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
-	
+
+	void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception;
+
 }

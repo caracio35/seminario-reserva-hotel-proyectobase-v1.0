@@ -610,6 +610,12 @@ public class MemoryApi implements IApi {
 		throw new UnsupportedOperationException("Unimplemented method 'obtenerReserva'");
 	}
 
+	@Override
+	public void updateCalificacionReserva(int reservaId, int ratingValue) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'updateCalificacionReserva'");
+	}
+
 }
 
 // Dar de baja una habitación

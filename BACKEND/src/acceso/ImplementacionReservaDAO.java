@@ -106,13 +106,98 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 	@Override
 	public void update(Reserva reserva) {
+		Connection miConeccion = null;
+		PreparedStatement pStamentUpdateReserva = null;
+		try {
+			miConeccion = conectar();
+			String updateReservaSql = "UPDATE reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
+					"cantidadDePersonas = ?, pagoMinimo = ? WHERE id = ?";
+			pStamentUpdateReserva = (PreparedStatement) miConeccion.prepareStatement(updateReservaSql);
 
+			pStamentUpdateReserva.setDate(1, Date.valueOf(reserva.getFechaDeInicio()));
+			pStamentUpdateReserva.setDate(2, Date.valueOf(reserva.getFechaDESalida()));
+			pStamentUpdateReserva.setInt(3, reserva.getCantidadDePersonas());
+			pStamentUpdateReserva.setBoolean(4, reserva.getPagoMinimo());
+			pStamentUpdateReserva.setInt(5, reserva.getId());
+
+			int rowsAffected = pStamentUpdateReserva.executeUpdate();
+
+			if (rowsAffected > 0) {
+				System.out.println("Reserva actualizada exitosamente.");
+			} else {
+				System.out.println("No se pudo encontrar la reserva para actualizar.");
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al actualizar la reserva: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStamentUpdateReserva != null)
+					pStamentUpdateReserva.close();
+				if (miConeccion != null)
+					miConeccion.close();
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión después de la actualización.");
+			}
+		}
 	}
 
 	@Override
 	public Optional<Reserva> find(int idReserva) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		Connection conn = null;
+		Reserva reserva = null;
+
+		try {
+			conn = conectar();
+			String sqlReserva = "SELECT * FROM Reserva WHERE id = ?";
+			try (PreparedStatement stmtReserva = (PreparedStatement) conn.prepareStatement(sqlReserva)) {
+				stmtReserva.setInt(1, idReserva);
+				ResultSet rsReserva = stmtReserva.executeQuery();
+
+				if (rsReserva.next()) {
+					LocalDate fechaDeInicio = rsReserva.getDate("fechaDeInicio").toLocalDate();
+					LocalDate fechaDeSalida = rsReserva.getDate("fechaDeSalida").toLocalDate();
+					LocalDate fechaDeReserva = rsReserva.getDate("fechaDeReserva").toLocalDate();
+					int cantidadDePersonas = rsReserva.getInt("cantidadDePersonas");
+					boolean pagoMinimo = rsReserva.getBoolean("pagoMinimo");
+
+					ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
+					Usuario usuario = usuarioDAO.find(rsReserva.getInt("usuario_id"));
+
+					// Obtener habitaciones asociadas
+					ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, idReserva);
+
+					// Obtener servicios asociados
+					ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, idReserva);
+
+					// Crear la instancia de Reserva utilizando los datos obtenidos
+					reserva = new Reserva(idReserva, habitaciones, usuario, fechaDeInicio, fechaDeSalida,
+							cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
+
+					// Opcional: Establecer fechas de check-in y check-out
+					Optional<LocalDate> fechaCheckIn = Optional.ofNullable(rsReserva.getDate("checkIn"))
+							.map(Date::toLocalDate);
+					Optional<LocalDate> fechaCheckOut = Optional.ofNullable(rsReserva.getDate("checkOut"))
+							.map(Date::toLocalDate);
+					Optional<Calificacion> calificacion = findCalificacionByReservaId(idReserva, conn);
+					calificacion.ifPresent(reserva::setCalificacion);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al encontrar la reserva con ID " + idReserva + ": " + e.getMessage());
+			e.printStackTrace();
+		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
+			System.out.println("Error de consistencia en los datos de la reserva: " + e.getMessage());
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión después de buscar la reserva.");
+			}
+		}
+
+		return Optional.ofNullable(reserva);
 	}
 
 	@Override

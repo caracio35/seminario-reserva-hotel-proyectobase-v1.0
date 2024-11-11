@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -441,5 +442,24 @@ public class PersistenceApi implements IApi {
 
 		}
 		return reservaDTOS;
+	}
+
+	public void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception {
+
+		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
+
+		// Fetch the current reservation
+		Optional<Reserva> reservaOptional = reservaDAO.find(reservaId);
+		if (!reservaOptional.isPresent()) {
+			throw new Exception("Reserva no encontrada"); // Handle not found case
+		}
+
+		// Set the new rating on the reservation
+		Reserva reserva = reservaOptional.get();
+		Calificacion calificacion = new Calificacion(ratingValue, "este es un comentario", reservaId);
+		reserva.setCalificacion(calificacion);
+
+		// Persist the changes
+		reservaDAO.update(reserva);
 	}
 }

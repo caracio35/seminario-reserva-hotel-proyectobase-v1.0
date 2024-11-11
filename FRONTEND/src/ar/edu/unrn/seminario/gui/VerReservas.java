@@ -203,11 +203,23 @@ public class VerReservas extends JFrame {
                         "Selecciona una calificación:", "Calificar Reserva",
                         JOptionPane.QUESTION_MESSAGE, null, ratings, "1");
                 if (rating != null) {
-                    int ratingValue = Integer.parseInt(rating);
-                    // Actualizar la calificación en la tabla
-                    table.setValueAt(ratingValue, selectedRow, 5); // Cambia la calificación
-                    System.out.println(
-                            "Calificación de la reserva en fila " + selectedRow + " cambiada a " + ratingValue);
+
+                    // Assuming the ID is stored in column 0
+                    // In your action listener for the "Calificar" button:
+                    try {
+                        int ratingValue = Integer.parseInt(rating);
+                        int reservaId = Integer.parseInt((String) table.getValueAt(selectedRow, 0)); // Parse the ID as
+                                                                                                     // Integer
+                        api.updateCalificacionReserva(reservaId, ratingValue);
+
+                        table.setValueAt(ratingValue, selectedRow, 5); // Updates the rating in the table
+
+                        System.out.println(
+                                "Calificación de la reserva en fila " + selectedRow + " cambiada a " + ratingValue);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar la calificación: " + ex.getMessage());
+
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva.");
