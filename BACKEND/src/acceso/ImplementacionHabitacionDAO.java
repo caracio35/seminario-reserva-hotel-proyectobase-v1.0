@@ -165,11 +165,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		PreparedStatement pStamentConsutataBuscarHabitacion = null;
 		miConeccion = conectar();
 		try {
-			Set<CaracteristicaEspecial> caracteristicas = new HashSet<>();
-			ImplementacionCaracteristicasEspecialDAO carEspDAO = new ImplementacionCaracteristicasEspecialDAO();
-			caracteristicas = carEspDAO.obtenerCaracteristicasPorHabitacion(numeroHabitacionBuscada);
-			// pasar de set a lista
-			ArrayList<CaracteristicaEspecial> caracteristicasList = new ArrayList<>(caracteristicas);
+			Set<CaracteristicaEspecial> caracteristicasLista = new HashSet<>();
+			
 			pStamentConsutataBuscarHabitacion = (PreparedStatement) miConeccion.prepareStatement(buscarHabitacion);
 			pStamentConsutataBuscarHabitacion.setInt(1, numeroHabitacionBuscada);
 			ResultSet habitacionObtenida = pStamentConsutataBuscarHabitacion.executeQuery();
@@ -179,8 +176,11 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				double precio = habitacionObtenida.getDouble("precio");
 				boolean habilitado = (habitacionObtenida.getInt("Habilitado") == 1);
 				int numeroHabitacion = habitacionObtenida.getInt("numHabitaciones");
+				
+				caracteristicasLista = obtenerCaracteristicas(numHabitaciones, miConeccion);
+				ArrayList<CaracteristicaEspecial> arrayCar = new ArrayList<>(caracteristicasLista);
 				Habitacion habitacion = new Habitacion(cantidadCamas, descripcion, precio, habilitado, numeroHabitacion,
-						caracteristicasList);
+						arrayCar);
 				return habitacion;
 			}
 			pStamentConsutataBuscarHabitacion.execute();
