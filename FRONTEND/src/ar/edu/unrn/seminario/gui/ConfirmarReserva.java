@@ -286,21 +286,8 @@ public class ConfirmarReserva extends JFrame {
 			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),texFilFechaSalida.getText(),
 					fechaReserva, cantidadPersonas,serviciosObtenido, true);
 			dispose();
-		} catch (ConexionFallidaExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ErrorDatosNoEncontradosExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CampoVacioExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EnterosEnCeroExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PrecioCeroExeption e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
 	}
