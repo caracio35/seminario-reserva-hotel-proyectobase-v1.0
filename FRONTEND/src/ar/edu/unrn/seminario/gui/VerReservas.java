@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,7 +50,7 @@ public class VerReservas extends JFrame {
         DefaultTableModel model = new DefaultTableModel(
                 new Object[][] {},
                 new String[] {
-                        "Num Habitaciones", "Check-in", "ingreso", "Check-out", "salida", "Mi Calificacion" , "Servicios" 
+                        "Num Habitaciones", "Check-in", "ingreso", "Check-out", "salida", "Mi Calificacion", "Servicios"
                 }) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -60,6 +62,7 @@ public class VerReservas extends JFrame {
                         return Object.class;
                 }
             }
+
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -67,23 +70,23 @@ public class VerReservas extends JFrame {
 
         table = new JTable(model);
         scrollPane.setViewportView(table);
-        
+
         List<ReservaDTO> reservas = api.obtenerReserva();
 
         for (ReservaDTO reserva : reservas) {
-            Object[] rowData = new Object[7]; 
-            rowData[0] = reserva.getHabitacion();  // Número de habitaciones
-            rowData[1] = reserva.isCheckIn();  // Check-in (Booleano)
-            rowData[2] = reserva.getFechaDeInicio();  // Ingreso (fecha u otro valor)
-            rowData[3] = reserva.isCheckOut();  // Check-out (Booleano)
-            rowData[4] = reserva.getFechaDeSalida();  // Salida (fecha u otro valor)
-            rowData[5] = reserva.getCalificacion();  // Mi Calificación
-            rowData[6] = String.join(", ", reserva.getServicios());  // Servicios (suponiendo que es una lista de servicios)
+            Object[] rowData = new Object[7];
+            rowData[0] = numeroDehabitaciones(reserva.getHabitacion()); // Número de habitaciones
+            rowData[1] = reserva.isCheckIn(); // Check-in (Booleano)
+            rowData[2] = reserva.getFechaDeInicio(); // Ingreso (fecha u otro valor)
+            rowData[3] = reserva.isCheckOut(); // Check-out (Booleano)
+            rowData[4] = reserva.getFechaDeSalida(); // Salida (fecha u otro valor)
+            rowData[5] = reserva.getCalificacion(); // Mi Calificación
+            rowData[6] = String.join(", ", reserva.getServicios()); // Servicios (suponiendo que es una lista de
+                                                                    // servicios)
 
             // Agregar la fila al modelo
             model.addRow(rowData);
         }
-        
 
         JButton btnMostrarDetalles = new JButton("Mostrar Detalles");
         btnMostrarDetalles.setBounds(10, 200, 150, 25);
@@ -218,4 +221,11 @@ public class VerReservas extends JFrame {
         contentPane.add(btnSalir);
     }
 
+    private String numeroDehabitaciones(int[] numHabitaciones) {
+        // convertir los numeros de habitaciones a strings
+
+        return Arrays.stream(numHabitaciones)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining(", "));
+    }
 }

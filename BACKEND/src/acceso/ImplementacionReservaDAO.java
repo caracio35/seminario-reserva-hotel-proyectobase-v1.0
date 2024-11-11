@@ -23,6 +23,7 @@ import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Reserva;
 import ar.edu.unrn.seminario.modelo.Servicio;
+import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ImplementacionReservaDAO implements ReservaDAO {
 	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
@@ -103,7 +104,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 	@Override
 	public void update(Reserva reserva) {
-		
+
 	}
 
 	@Override
@@ -135,14 +136,35 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				int cantidadDePersonas = rsReservas.getInt("cantidadDePersonas");
 				boolean pagoMinimo = rsReservas.getBoolean("pagoMinimo");
 				System.out.println(fechaDeReserva);
+				ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
+				Usuario usuario = usuarioDAO.find(rsReservas.getInt("usuario_id"));
 				// Crear la lista de habitaciones asociadas a la reserva
 				ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, reservaId);
-				
+
 				// Crear la lista de servicios asociados a la reserva
 				ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, reservaId);
 
 				// Crear la reserva y agregarla al conjunto
-				Reserva reserva = new Reserva(reservaId, habitaciones, fechaDeInicio, fechaDeSalida, cantidadDePersonas, servicios);
+				/*
+				 * int id , ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate
+				 * fechaDeInicio,
+				 * LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio>
+				 * servicios, LocalDate fechaDeReserva,
+				 * boolean pagoMinimo
+				 */
+
+				Reserva reserva = new Reserva(reservaId, habitaciones, usuario,
+						fechaDeInicio, fechaDeSalida, cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
+				// Obtener fechas de check-in y check-out con opcioonal
+				Optional<LocalDate> fechaCheckIn = Optional.ofNullable(rsReservas.getDate("checkIn"))
+						.map(Date::toLocalDate);
+				Optional<LocalDate> fechaCheckOut = Optional.ofNullable(rsReservas.getDate("checkOut"))
+						.map(Date::toLocalDate);
+
+				// Establece true si el Optional tiene un valor (fecha no nula), false si está
+				// vacío (fecha nula)
+				reserva.setCheckIn(fechaCheckIn.isPresent());
+				reserva.setCheckOut(fechaCheckOut.isPresent());
 				reservas.add(reserva);
 			}
 
@@ -154,7 +176,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		return reservas;
 	}
 
-	private LocalDate pasarSqlDate(java.sql.Date fecha) throws SQLException { 
+	private LocalDate pasarSqlDate(java.sql.Date fecha) throws SQLException {
 		LocalDate fechaLocalDate = fecha.toLocalDate();
 		return fechaLocalDate;
 	}

@@ -9,6 +9,8 @@ public interface UsuarioDAO {
 
 	void update(Usuario usuario);
 
+	Usuario find(int usuario);
+
 	Usuario find(String usuario);
 
 	void remove(int id_usuario);

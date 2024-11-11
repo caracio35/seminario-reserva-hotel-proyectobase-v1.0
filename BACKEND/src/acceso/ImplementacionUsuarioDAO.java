@@ -18,6 +18,8 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 	private final static String usuario = "root";
 	private final static String clave = "";
 	private final static String buscarUsuarioPorNombre = "SELECT * FROM usuarios WHERE usuario = ?";;
+	private static final String buscarUsuarioPorId = "SELECT nombre, apellido, email, usuario, contrasena, telefono, dni FROM usuarios WHERE id = ?";
+
 	@Override
 	public void create(Usuario usuario) {
 		// TODO Auto-generated method stub
@@ -34,26 +36,26 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 	public Usuario find(String usuario) {
 		String usu = usuario;
 		Connection miConexion = null;
-	    PreparedStatement pStamentConsultaUsuario = null;
-	    ResultSet rs = null;
+		PreparedStatement pStamentConsultaUsuario = null;
+		ResultSet rs = null;
 		try {
 			miConexion = conectar();
-	        pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorNombre);
-	        pStamentConsultaUsuario.setString(1, usu);
-	        rs = pStamentConsultaUsuario.executeQuery();
-	        
-	        if (rs.next()) {
-	            String nombres = rs.getString("nombre");
-	            String apellido = rs.getString("apellido");
-	            String email = rs.getString("email");
-	            String usuario1 = rs.getString("usuario");
-	            String contrasenia = rs.getString("contrasena");
-	            String telefono = rs.getString("telefono");
-	            int dni = rs.getInt("dni");
-	            
-	            Usuario usu2 = new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
-	            return usu2;
-	        }
+			pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorNombre);
+			pStamentConsultaUsuario.setString(1, usu);
+			rs = pStamentConsultaUsuario.executeQuery();
+
+			if (rs.next()) {
+				String nombres = rs.getString("nombre");
+				String apellido = rs.getString("apellido");
+				String email = rs.getString("email");
+				String usuario1 = rs.getString("usuario");
+				String contrasenia = rs.getString("contrasena");
+				String telefono = rs.getString("telefono");
+				int dni = rs.getInt("dni");
+
+				Usuario usu2 = new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
+				return usu2;
+			}
 			pStamentConsultaUsuario.execute();
 			pStamentConsultaUsuario.close();
 		} catch (SQLException e) {
@@ -66,7 +68,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 					System.out.println("error de conexion");
 				}
 			}
-		
+
 		}
 		return null;
 	}
@@ -82,6 +84,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	private Connection conectar() throws ConexionFallidaExeption {
 		Connection miConnecion = null;
 		try {
@@ -91,6 +94,45 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 			throw new ConexionFallidaExeption("no se conecto");
 
 		}
+	}
+
+	@Override
+	public Usuario find(int idUsuario) {
+		Connection miConexion = null;
+		PreparedStatement pStamentConsultaUsuario = null;
+		ResultSet rs = null;
+		try {
+			miConexion = conectar();
+			pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorId);
+			pStamentConsultaUsuario.setInt(1, idUsuario);
+			rs = pStamentConsultaUsuario.executeQuery();
+
+			if (rs.next()) {
+				String nombres = rs.getString("nombre");
+				String apellido = rs.getString("apellido");
+				String email = rs.getString("email");
+				String usuario1 = rs.getString("usuario");
+				String contrasenia = rs.getString("contrasena");
+				String telefono = rs.getString("telefono");
+				int dni = rs.getInt("dni");
+
+				return new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al buscar usuario por ID");
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pStamentConsultaUsuario != null)
+					pStamentConsultaUsuario.close();
+				if (miConexion != null)
+					miConexion.close();
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión");
+			}
+		}
+		return null;
 	}
 
 }
