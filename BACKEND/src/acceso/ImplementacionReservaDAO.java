@@ -321,7 +321,6 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 		try {
 			for (Servicio s : r.getServicios()) {
-				System.out.println(s.getNombre());
 				String buscarServicio = "SELECT * FROM servicio WHERE nombre = ?";
 				pStamentBuscarServicio = (PreparedStatement) miConeccion.prepareStatement(buscarServicio);
 				pStamentBuscarServicio.setString(1, s.getNombre());

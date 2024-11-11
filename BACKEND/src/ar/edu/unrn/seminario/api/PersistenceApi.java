@@ -392,7 +392,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	private LocalDate convertiFecha(String fecha) {
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		return LocalDate.parse(fecha, formato);
 	}
 

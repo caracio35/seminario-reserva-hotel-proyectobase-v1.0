@@ -193,7 +193,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 			public void propertyChange(PropertyChangeEvent evt) {
 				Date selectedDate = JcalenderFechaIngreso.getDate();
 				if (selectedDate != null) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 					fechaReservaInicio = sdf.format(selectedDate);
 
 					JcalemderFechaSalida.setMinSelectableDate(selectedDate);
@@ -206,7 +206,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 			public void propertyChange(PropertyChangeEvent evt) {
 				Date selectedDate = JcalemderFechaSalida.getDate();
 				if (selectedDate != null) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 					fechaReservaFin = sdf.format(selectedDate);
 
 				}
@@ -286,7 +286,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 							habitacion.getDescripcion(),
 							habitacion.getPrecio(),
 							habitacion.getNumHabitacion(),
-							caracteristicas
+							caracteristicas, false
 					});
 				});
 	}

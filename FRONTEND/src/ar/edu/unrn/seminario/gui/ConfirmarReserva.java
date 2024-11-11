@@ -17,7 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
-
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import java.util.Random;
@@ -50,6 +50,7 @@ public class ConfirmarReserva extends JFrame {
 	IApi api;
 	private java.util.List<Integer> habitacionesSeleccionadas;
 	private List<HabitacionDTO> habitaciones;
+	private JTextField textFieldCantidaPersonas;
 
 	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario, IApi api,
 			java.util.List<Integer> habitacionesSeleccionadas) {
@@ -59,9 +60,9 @@ public class ConfirmarReserva extends JFrame {
 			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
 
-			System.out.println(fechaFin + fechaFin + usuario);
+			
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setBounds(100, 100, 528, 455);
+			setBounds(100, 100, 528, 499);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -69,7 +70,7 @@ public class ConfirmarReserva extends JFrame {
 			contentPane.setLayout(null);
 
 			JPanel panel = new JPanel();
-			panel.setBounds(10, 10, 492, 398);
+			panel.setBounds(10, 10, 492, 439);
 			contentPane.add(panel);
 			panel.setLayout(null);
 
@@ -97,12 +98,12 @@ public class ConfirmarReserva extends JFrame {
 
 			JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
 			buttonGroup.add(rdbtnPrecioMinimo);
-			rdbtnPrecioMinimo.setBounds(3, 355, 103, 21);
+			rdbtnPrecioMinimo.setBounds(10, 407, 103, 21);
 			panel.add(rdbtnPrecioMinimo);
 
 			JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
 			buttonGroup.add(rdbtnPagoTotal);
-			rdbtnPagoTotal.setBounds(108, 355, 103, 21);
+			rdbtnPagoTotal.setBounds(119, 407, 103, 21);
 			panel.add(rdbtnPagoTotal);
 
 			JButton btnRealizarPago = new JButton("Realizar Pago");
@@ -117,7 +118,6 @@ public class ConfirmarReserva extends JFrame {
 								"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
 					} else {
 						JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
-						// Lógica para generar la reserva
 						generarReserva();
 					}
 				} else if ("MercadoPago".equals(metodoPago)) {
@@ -144,7 +144,7 @@ public class ConfirmarReserva extends JFrame {
 				}
 			});
 
-			btnRealizarPago.setBounds(312, 367, 117, 21);
+			btnRealizarPago.setBounds(365, 407, 117, 21);
 			panel.add(btnRealizarPago);
 
 			JButton btnCancelar = new JButton("Cancelar");
@@ -153,11 +153,11 @@ public class ConfirmarReserva extends JFrame {
 					dispose();
 				}
 			});
-			btnCancelar.setBounds(217, 367, 85, 21);
+			btnCancelar.setBounds(270, 407, 85, 21);
 			panel.add(btnCancelar);
 
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(216, 72, 266, 252);
+			scrollPane.setBounds(167, 36, 315, 288);
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
@@ -201,10 +201,10 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(lblFechaSalida);
 
 			textFieldUsuario = new JTextField();
-			textFieldUsuario.setBounds(10, 36, 173, 20);
+			textFieldUsuario.setBounds(10, 36, 137, 20);
 			panel.add(textFieldUsuario);
 			textFieldUsuario.setColumns(10);
-			textFieldUsuario.setText("brunohuaiqui@hotmail.com");
+			textFieldUsuario.setText("mariag");
 			textFieldUsuario.setEditable(false);
 
 			JLabel lblNewLabel = new JLabel("Usuario");
@@ -224,6 +224,15 @@ public class ConfirmarReserva extends JFrame {
 			texFilFechaSalida.setColumns(10);
 			texFilFechaSalida.setText(fechaFin);
 			texFilFechaSalida.setEditable(false);
+			
+			JLabel lblNewLabel_1 = new JLabel("Personas");
+			lblNewLabel_1.setBounds(9, 346, 46, 14);
+			panel.add(lblNewLabel_1);
+			
+			textFieldCantidaPersonas = new JTextField();
+			textFieldCantidaPersonas.setBounds(10, 367, 137, 20);
+			panel.add(textFieldCantidaPersonas);
+			textFieldCantidaPersonas.setColumns(10);
 		}
 	}
 
@@ -242,23 +251,59 @@ public class ConfirmarReserva extends JFrame {
 				});
 		tabla_Habitaciones.setModel(modelo);
 	}
-	private void generarReserva() {
+	private int[] obtenerNumerosDeHabitacionDesdeTabla() {
+	    int rowCount = modelo.getRowCount();
+	    int[] numerosHabitacion = new int[rowCount];
 
-		for (int i = 0; i < modelo.getRowCount(); i++) {
-			Boolean isSelected = (Boolean) modelo.getValueAt(i, 1);
-			if (isSelected != null && isSelected) {
-				// Obtener el identificador de la habitación
-				Object roomId = modelo.getValueAt(i, 0);
-				// Procesar la reserva para esta habitación
-				reservarHabitacion(roomId);
-			}
-		}
+	    for (int i = 0; i < rowCount; i++) {
+	        numerosHabitacion[i] = (int) modelo.getValueAt(i, 3);
+	    }
 
-		System.out.println("Reserva(s) generada(s) exitosamente.");
-		// Cierra la ventana si lo deseas
-		dispose();
+	    return numerosHabitacion;
 	}
+	private String[] obtenerServiciosDesdeTabla() {
+	    int rowCount = modelo.getRowCount();
+	    String[] servicios = new String[rowCount];
 
+	    for (int i = 0; i < rowCount; i++) {
+	        // Obtener el servicio de la columna correspondiente (aquí usamos columna 1 para "Descripción")
+	        servicios[i] = (String) modelo.getValueAt(i, 1);
+	    }
+
+	    return servicios;
+	}
+	//int[] habitacion, String usuario, String fechaInicio, String fechaFin,
+	//String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo
+	private void generarReserva() {
+		
+		LocalDateTime fechaActual = LocalDateTime.now();
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	    String fechaReserva = fechaActual.format(formato);
+	    int[] numerosHabitacion = obtenerNumerosDeHabitacionDesdeTabla();
+	    int cantidadPersonas = Integer.parseInt(textFieldCantidaPersonas.getText());
+	    String [] serviciosObtenido = {"Desayuno"};
+		try {
+			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),texFilFechaSalida.getText(),
+					fechaReserva, cantidadPersonas,serviciosObtenido, true);
+			dispose();
+		} catch (ConexionFallidaExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ErrorDatosNoEncontradosExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CampoVacioExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EnterosEnCeroExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PrecioCeroExeption e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	private void reservarHabitacion(Object roomId) {
 		// Implementa la lógica para reservar una habitación individual
 		System.out.println("Habitación " + roomId + " reservada.");
