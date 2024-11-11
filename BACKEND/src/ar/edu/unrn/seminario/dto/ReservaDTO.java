@@ -1,18 +1,18 @@
 package ar.edu.unrn.seminario.dto;
 
 public class ReservaDTO {
-	
-	private int [] habitaciones;
+
+	private int[] habitaciones;
 	private String usuario;
 	private String fechaDeInicio;
 	private String fechaDESalida;
 	private int cantidadDePersonas;
-	private String [] servicios;
+	private String[] servicios;
 	private boolean checkIn;
 	private boolean checkOut;
-	private Integer  factura;
+	private Integer factura;
 	private String fechaDeReserva;
-	private String [] calificacion;
+	private String[] calificacion;
 	private double saldoFavor;
 	private boolean pagoMinimo;
 
@@ -34,69 +34,98 @@ public class ReservaDTO {
 		this.saldoFavor = 0;
 		this.pagoMinimo = pagoMinimo;
 	}
+
 	public void setHabitacion(int[] habitacion) {
 		this.habitaciones = habitacion;
 	}
+
 	public void setFechaDeInicio(String fechaDeInicio) {
 		this.fechaDeInicio = fechaDeInicio;
 	}
+
 	public void setFechaDESalida(String fechaDESalida) {
 		this.fechaDESalida = fechaDESalida;
 	}
+
 	public void setCantidadDePersonas(int cantidadDePersonas) {
 		this.cantidadDePersonas = cantidadDePersonas;
 	}
+
 	public void setServicios(String[] servicios) {
 		this.servicios = servicios;
 	}
+
 	public void setCheckOut(boolean checkOut) {
 		this.checkOut = checkOut;
 	}
+
 	public void setSaldoFavor(double saldoFavor) {
-		this.saldoFavor = saldoFavor; 
+		this.saldoFavor = saldoFavor;
 	}
+
 	public void setPagoMinimo(boolean pagoMinimo) {
 		this.pagoMinimo = pagoMinimo;
 	}
+
 	public String getFechaDeInicio() {
 		return fechaDeInicio;
 	}
+
 	public String getFechaDeSalida() {
 		return fechaDESalida;
 	}
+
 	public int getCantidadDePersonas() {
 		return cantidadDePersonas;
 	}
+
 	public String[] getServicios() {
 		return servicios;
 	}
-	public int [] getHabitacion() {
-		
+
+	public int[] getHabitacion() {
+
 		return habitaciones;
 	}
+
 	public String getUsuario() {
 		return usuario;
 	}
+
 	public double getSaldoFavor() {
 		return saldoFavor;
 	}
+
 	public int getFactura() {
 		return factura;
 	}
+
 	public boolean getPagoMinimo() {
-		return pagoMinimo; 
+		return pagoMinimo;
 	}
+
 	public String getFechaDeReserva() {
 		return fechaDeReserva;
 	}
-	public String[] getCalificacion() {
-		return calificacion;
+
+	public String getCalificacion() {
+		return calificacion[0];
 	}
+
 	public boolean isCheckOut() {
 		return checkOut;
 	}
+
 	public boolean isCheckIn() {
 		return checkIn;
 	}
-	
+
+	public void setCalificacion(CalificacionDTO calificacionDTO) {
+		if (calificacionDTO == null) {
+			this.calificacion = new String[] { "No ha calificado" };
+			return;
+		}
+		this.calificacion = new String[] { calificacionDTO.toString() };
+	}
+
 }

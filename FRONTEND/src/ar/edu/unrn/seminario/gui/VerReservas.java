@@ -80,7 +80,7 @@ public class VerReservas extends JFrame {
             rowData[2] = reserva.getFechaDeInicio(); // Ingreso (fecha u otro valor)
             rowData[3] = reserva.isCheckOut(); // Check-out (Booleano)
             rowData[4] = reserva.getFechaDeSalida(); // Salida (fecha u otro valor)
-            rowData[5] = reserva.getCalificacion(); // Mi Calificación
+            rowData[5] = calificacion(reserva); // Mi Calificación
             rowData[6] = String.join(", ", reserva.getServicios()); // Servicios (suponiendo que es una lista de
                                                                     // servicios)
 
@@ -219,6 +219,13 @@ public class VerReservas extends JFrame {
         btnSalir.setBounds(578, 240, 150, 25);
         btnSalir.addActionListener(e -> dispose());
         contentPane.add(btnSalir);
+    }
+
+    private String calificacion(ReservaDTO reserva) {
+        if (reserva.getCalificacion() == null) {
+            return "No ha calificado";
+        }
+        return reserva.getCalificacion();
     }
 
     private String numeroDehabitaciones(int[] numHabitaciones) {

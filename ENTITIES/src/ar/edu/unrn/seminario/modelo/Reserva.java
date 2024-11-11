@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Reserva {
-	private int id ; 
+	private int id;
 	private ArrayList<Habitacion> habitaciones;
 	private Usuario usuario;
 	private LocalDate fechaDeInicio;
@@ -21,9 +21,9 @@ public class Reserva {
 	private double saldoFavor;
 	private boolean pagoMinimo;
 
-	public Reserva(int id , ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate fechaDeInicio,
+	public Reserva(int id, ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate fechaDeInicio,
 			LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio> servicios, LocalDate fechaDeReserva,
-			boolean pagoMinimo){
+			boolean pagoMinimo) {
 		this.id = id;
 		this.habitaciones = habitaciones;
 		this.usuario = usuario;
@@ -39,11 +39,12 @@ public class Reserva {
 		this.saldoFavor = 0;
 		this.pagoMinimo = pagoMinimo;
 	}
-	public Reserva(int id ,ArrayList<Habitacion> habitaciones, LocalDate fechaDeInicio,LocalDate fechaDESalida ,int cantidadDePersonas, ArrayList<Servicio> servicios )
-	{
+
+	public Reserva(int id, ArrayList<Habitacion> habitaciones, LocalDate fechaDeInicio, LocalDate fechaDESalida,
+			int cantidadDePersonas, ArrayList<Servicio> servicios) {
 		this.id = id;
 		this.habitaciones = habitaciones;
-		this.usuario = null ; 
+		this.usuario = null;
 		this.fechaDeInicio = fechaDeInicio;
 		this.fechaDESalida = fechaDESalida;
 		this.cantidadDePersonas = cantidadDePersonas;
@@ -161,20 +162,28 @@ public class Reserva {
 	}
 
 	public Calificacion getCalificacion() {
+		if (calificacion == null) {
+			this.setCalificacion(new Calificacion(0, "No ha calificado", 0));
+		}
 		return calificacion;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setCalificacion(Calificacion calificacion) {
 		this.calificacion = calificacion;
 	}
+
 	public double getSaldofavor() {
 		return saldoFavor;
 	}
+
 	public boolean getPagoMinimo() {
 		return pagoMinimo;
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(calificacion, cantidadDePersonas, checkIn, checkOut, factura, fechaDESalida, fechaDeInicio,
@@ -199,5 +208,5 @@ public class Reserva {
 				&& Double.doubleToLongBits(saldoFavor) == Double.doubleToLongBits(other.saldoFavor)
 				&& Objects.equals(servicios, other.servicios) && Objects.equals(usuario, other.usuario);
 	}
-	
+
 }

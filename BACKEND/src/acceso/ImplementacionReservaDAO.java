@@ -19,6 +19,7 @@ import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
+import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Reserva;
@@ -46,6 +47,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			"FROM CaracteristicaEspecial c " +
 			"JOIN Habitacion_CaracteristicaEspecial hc ON c.nombre = hc.nombreCaracteristicaEspecial " +
 			"WHERE hc.numHabitacion = ?";
+	private static final String SELECT_CALIFICACION_BY_RESERVA = "SELECT id, reserva_id, puntaje, descripcion FROM Calificacion WHERE reserva_id = ?";
 
 	@Override
 	public void create(Reserva reserva) {
@@ -145,13 +147,6 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, reservaId);
 
 				// Crear la reserva y agregarla al conjunto
-				/*
-				 * int id , ArrayList<Habitacion> habitaciones, Usuario usuario, LocalDate
-				 * fechaDeInicio,
-				 * LocalDate fechaDESalida, int cantidadDePersonas, ArrayList<Servicio>
-				 * servicios, LocalDate fechaDeReserva,
-				 * boolean pagoMinimo
-				 */
 
 				Reserva reserva = new Reserva(reservaId, habitaciones, usuario,
 						fechaDeInicio, fechaDeSalida, cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
@@ -160,6 +155,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 						.map(Date::toLocalDate);
 				Optional<LocalDate> fechaCheckOut = Optional.ofNullable(rsReservas.getDate("checkOut"))
 						.map(Date::toLocalDate);
+				Optional<Calificacion> calificacion = findCalificacionByReservaId(reservaId, conn);
+				calificacion.ifPresent(reserva::setCalificacion);
 
 				// Establece true si el Optional tiene un valor (fecha no nula), false si está
 				// vacío (fecha nula)
@@ -293,6 +290,28 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				System.out.println("Error al cerrar los recursos");
 			}
 		}
+	}
+
+	public Optional<Calificacion> findCalificacionByReservaId(int reservaId, Connection conn) {
+		Calificacion calificacion = null;
+
+		try (java.sql.PreparedStatement stmt = conn.prepareStatement(SELECT_CALIFICACION_BY_RESERVA)) {
+			stmt.setInt(1, reservaId);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				int valor = rs.getInt("puntaje");
+				String comentario = rs.getString("descripcion");
+				int idReservaFK = rs.getInt("reserva_id");
+
+				calificacion = new Calificacion(valor, comentario, idReservaFK);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al recuperar la calificación: " + e.getMessage());
+
+		}
+
+		return Optional.ofNullable(calificacion);
 	}
 
 	private void insertServices(int reservaId, Reserva r, Connection miConeccion) {

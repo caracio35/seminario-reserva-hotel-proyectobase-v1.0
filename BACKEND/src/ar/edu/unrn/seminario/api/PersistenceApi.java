@@ -14,6 +14,7 @@ import acceso.ImplementacionHabitacionDAO;
 import acceso.ImplementacionReservaDAO;
 import acceso.ImplementacionUsuarioDAO;
 import acceso.ImplementaionServicioDAO;
+import ar.edu.unrn.seminario.dto.CalificacionDTO;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.dto.ReservaDTO;
@@ -409,11 +410,14 @@ public class PersistenceApi implements IApi {
 	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		Set<Reserva> listaReseva = reservaDAO.findAll();
-		List<ReservaDTO> reservaDTO = new ArrayList<>();
+		List<ReservaDTO> reservaDTOS = new ArrayList<>();
 		for (Reserva r : listaReseva) {
 			List<Integer> numHabitacioList = new ArrayList<>();
 			List<String> nombreServicio = new ArrayList<>();
 			List<String> nombreCaracteriticas = new ArrayList<>();
+			Calificacion calificacion = r.getCalificacion();
+			CalificacionDTO calificacionDTO = new CalificacionDTO(calificacion.getValor(),
+					calificacion.getComentario());
 			for (Habitacion h : r.getHabitacion()) {
 				numHabitacioList.add(h.getNumHabitaciones());
 			}
@@ -432,9 +436,10 @@ public class PersistenceApi implements IApi {
 			ReservaDTO reservaDTO2 = new ReservaDTO(numHabitacio, "juan", fecha1, fecha2, r.getCantidadDePersonas(),
 					servicios, r.isCheckIn(), r.isCheckOut(), 1,
 					fecha3, null, r.getPagoMinimo());
-			reservaDTO.add(reservaDTO2);
+			reservaDTO2.setCalificacion(calificacionDTO);
+			reservaDTOS.add(reservaDTO2);
 
 		}
-		return reservaDTO;
+		return reservaDTOS;
 	}
 }
