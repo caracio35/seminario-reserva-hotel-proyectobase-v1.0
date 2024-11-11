@@ -155,7 +155,7 @@ public class ListadoHabitaciones extends JFrame {
 
 				// Crear JDateChooser
 				JDateChooser dateChooser = new JDateChooser();
-				dateChooser.setDateFormatString("dd/MM/yyyy");
+				dateChooser.setDateFormatString("yyyy/MM/dd");
 				panel.add(dateChooser);
 
 				int option = JOptionPane.showConfirmDialog(null, panel,
@@ -175,7 +175,7 @@ public class ListadoHabitaciones extends JFrame {
 				}
 
 				int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-				String fechaFormateada = new SimpleDateFormat("yyyy-MM-dd").format(fecha);
+				String fechaFormateada = new SimpleDateFormat("yyyy/MM/dd").format(fecha);
 
 				int response = JOptionPane.showConfirmDialog(null,
 						"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada + "?",

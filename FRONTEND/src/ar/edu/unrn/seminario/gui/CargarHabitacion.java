@@ -99,7 +99,7 @@ public class CargarHabitacion extends JFrame {
 
 			group.add(buttonDesabilitado);
 			group.add(buttonHabilitado);
-
+			
 			JButton btnSubirInformacion = new JButton("Subir Informacion");
 			btnSubirInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -110,7 +110,6 @@ public class CargarHabitacion extends JFrame {
 					} else if (buttonDesabilitado.isSelected()) {
 						habilitado = false;
 					}
-
 					List<String> caracteristicasSeleccionadas = new ArrayList<>();
 					for (int i = 0; i < table.getRowCount(); i++) {
 						String nombreCaracteristica = (String) table.getValueAt(i, 0);
@@ -124,6 +123,7 @@ public class CargarHabitacion extends JFrame {
 
 					if (modificar == false) {
 						try {
+							
 							api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 									textFieldDescripccion.getText(),
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
