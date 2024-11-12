@@ -50,13 +50,27 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			"WHERE hc.numHabitacion = ?";
 	private static final String SELECT_CALIFICACION_BY_RESERVA = "SELECT id, reserva_id, puntaje, descripcion FROM Calificacion WHERE reserva_id = ?";
 
+	private static String sqlReserva = "SELECT r.*, u.nombre, u.apellido, u.email, u.usuario, u.contrasena, u.telefono, u.dni "
+			+
+			"FROM Reserva r " +
+			"JOIN usuarios u ON r.usuario_id = u.id " +
+			"WHERE r.id = ?";
+
+	private static String updateReservaSql = "UPDATE reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
+			"cantidadDePersonas = ?, pagoMinimo = ? WHERE id = ?";
+
+	private static String sqlReservas = "SELECT r.*, u.nombre, u.apellido, u.email, u.usuario, u.contrasena, u.telefono, u.dni "
+			+
+			"FROM Reserva r " +
+			"JOIN usuarios u ON r.usuario_id = u.id";
+
 	@Override
 	public void create(Reserva reserva) throws ConexionFallidaExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutaCreaReserva = null;
 		miConeccion = Coneccion.conectar();
 		try {
-					
+
 			pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearReserva,
 					Statement.RETURN_GENERATED_KEYS);
 
@@ -80,13 +94,12 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			}
 			insertRooms(reservaId, reserva, miConeccion);
 			insertServices(reservaId, reserva, miConeccion);
-			
 
 		} catch (SQLException e) {
 			try {
 				if (miConeccion != null) {
 					miConeccion.rollback();
-					
+
 				}
 			} catch (SQLException ex) {
 				throw new ConexionFallidaExeption();
@@ -109,8 +122,6 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		PreparedStatement pStamentUpdateReserva = null;
 		miConeccion = Coneccion.conectar();
 		try {
-			String updateReservaSql = "UPDATE reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
-					"cantidadDePersonas = ?, pagoMinimo = ? WHERE id = ?";
 			pStamentUpdateReserva = (PreparedStatement) miConeccion.prepareStatement(updateReservaSql);
 
 			pStamentUpdateReserva.setDate(1, Date.valueOf(reserva.getFechaDeInicio()));
@@ -146,41 +157,46 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		Reserva reserva = null;
 		conn = Coneccion.conectar();
 		try {
-			
-			String sqlReserva = "SELECT * FROM Reserva WHERE id = ?";
-			try (PreparedStatement stmtReserva = (PreparedStatement) conn.prepareStatement(sqlReserva)) {
-				stmtReserva.setInt(1, idReserva);
-				ResultSet rsReserva = stmtReserva.executeQuery();
+			PreparedStatement stmtReserva = (PreparedStatement) conn.prepareStatement(sqlReserva);
+			stmtReserva.setInt(1, idReserva);
+			ResultSet rsReserva = stmtReserva.executeQuery();
 
-				if (rsReserva.next()) {
-					LocalDate fechaDeInicio = rsReserva.getDate("fechaDeInicio").toLocalDate();
-					LocalDate fechaDeSalida = rsReserva.getDate("fechaDeSalida").toLocalDate();
-					LocalDate fechaDeReserva = rsReserva.getDate("fechaDeReserva").toLocalDate();
-					int cantidadDePersonas = rsReserva.getInt("cantidadDePersonas");
-					boolean pagoMinimo = rsReserva.getBoolean("pagoMinimo");
+			if (rsReserva.next()) {
+				LocalDate fechaDeInicio = rsReserva.getDate("fechaDeInicio").toLocalDate();
+				LocalDate fechaDeSalida = rsReserva.getDate("fechaDeSalida").toLocalDate();
+				LocalDate fechaDeReserva = rsReserva.getDate("fechaDeReserva").toLocalDate();
+				int cantidadDePersonas = rsReserva.getInt("cantidadDePersonas");
+				boolean pagoMinimo = rsReserva.getBoolean("pagoMinimo");
 
-					ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
-					Usuario usuario = usuarioDAO.find(rsReserva.getInt("usuario_id"));
+				// Crear usuario directamente desde el resultado del JOIN
+				Usuario usuario = new Usuario(
+						rsReserva.getString("usuario"),
+						rsReserva.getString("contrasena"),
+						rsReserva.getString("nombre"),
+						rsReserva.getString("apellido"),
+						rsReserva.getString("email"),
+						rsReserva.getInt("dni"),
+						rsReserva.getString("telefono"));
 
-					// Obtener habitaciones asociadas
-					ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, idReserva);
+				// Obtener habitaciones asociadas
+				ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, idReserva);
 
-					// Obtener servicios asociados
-					ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, idReserva);
+				// Obtener servicios asociados
+				ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, idReserva);
 
-					// Crear la instancia de Reserva utilizando los datos obtenidos
-					reserva = new Reserva(idReserva, habitaciones, usuario, fechaDeInicio, fechaDeSalida,
-							cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
+				// Crear la instancia de Reserva utilizando los datos obtenidos
+				reserva = new Reserva(idReserva, habitaciones, usuario, fechaDeInicio, fechaDeSalida,
+						cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
 
-					// Opcional: Establecer fechas de check-in y check-out
-					Optional<LocalDate> fechaCheckIn = Optional.ofNullable(rsReserva.getDate("checkIn"))
-							.map(Date::toLocalDate);
-					Optional<LocalDate> fechaCheckOut = Optional.ofNullable(rsReserva.getDate("checkOut"))
-							.map(Date::toLocalDate);
-					Optional<Calificacion> calificacion = findCalificacionByReservaId(idReserva, conn);
-					calificacion.ifPresent(reserva::setCalificacion);
-				}
+				// Opcional: Establecer fechas de check-in y check-out
+				Optional<LocalDate> fechaCheckIn = Optional.ofNullable(rsReserva.getDate("checkIn"))
+						.map(Date::toLocalDate);
+				Optional<LocalDate> fechaCheckOut = Optional.ofNullable(rsReserva.getDate("checkOut"))
+						.map(Date::toLocalDate);
+				Optional<Calificacion> calificacion = findCalificacionByReservaId(idReserva, conn);
+				calificacion.ifPresent(reserva::setCalificacion);
 			}
+
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();
 		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
@@ -203,11 +219,12 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	}
 
 	@Override
-	public Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Set<Reserva> reservas = new HashSet<>();
 		Connection conn = Coneccion.conectar();
 		try (
-				java.sql.PreparedStatement stmtReservas = conn.prepareStatement(SELECT_ALL_RESERVAS);
+				java.sql.PreparedStatement stmtReservas = conn.prepareStatement(sqlReservas);
 				ResultSet rsReservas = stmtReservas.executeQuery()) {
 
 			while (rsReservas.next()) {
@@ -218,9 +235,17 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				LocalDate fechaDeReserva = pasarSqlDate(rsReservas.getDate("fechaDeReserva"));
 				int cantidadDePersonas = rsReservas.getInt("cantidadDePersonas");
 				boolean pagoMinimo = rsReservas.getBoolean("pagoMinimo");
-				System.out.println(fechaDeReserva);
-				ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
-				Usuario usuario = usuarioDAO.find(rsReservas.getInt("usuario_id"));
+
+				// Crear usuario directamente desde el resultado del JOIN
+				Usuario usuario = new Usuario(
+						rsReservas.getString("usuario"),
+						rsReservas.getString("contrasena"),
+						rsReservas.getString("nombre"),
+						rsReservas.getString("apellido"),
+						rsReservas.getString("email"),
+						rsReservas.getInt("dni"),
+						rsReservas.getString("telefono"));
+
 				// Crear la lista de habitaciones asociadas a la reserva
 				ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, reservaId);
 
@@ -228,10 +253,10 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				ArrayList<Servicio> servicios = obtenerServiciosPorReserva(conn, reservaId);
 
 				// Crear la reserva y agregarla al conjunto
-
 				Reserva reserva = new Reserva(reservaId, habitaciones, usuario,
 						fechaDeInicio, fechaDeSalida, cantidadDePersonas, servicios, fechaDeReserva, pagoMinimo);
-				// Obtener fechas de check-in y check-out con opcioonal
+
+				// Obtener fechas de check-in y check-out con opcional
 				Optional<LocalDate> fechaCheckIn = Optional.ofNullable(rsReservas.getDate("checkIn"))
 						.map(Date::toLocalDate);
 				Optional<LocalDate> fechaCheckOut = Optional.ofNullable(rsReservas.getDate("checkOut"))
@@ -336,7 +361,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		return Optional.empty();
 	}
 
-	private void insertRooms(int reservaId, Reserva r, Connection miConeccion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	private void insertRooms(int reservaId, Reserva r, Connection miConeccion)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 
 		PreparedStatement pStamentBuscarHabitacion = null;
 		PreparedStatement pStamentConsutaInsertaHabitacion = null;
@@ -372,7 +398,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		}
 	}
 
-	public Optional<Calificacion> findCalificacionByReservaId(int reservaId, Connection conn) throws ErrorDatosNoEncontradosExeption {
+	public Optional<Calificacion> findCalificacionByReservaId(int reservaId, Connection conn)
+			throws ErrorDatosNoEncontradosExeption {
 		Calificacion calificacion = null;
 
 		try (java.sql.PreparedStatement stmt = conn.prepareStatement(SELECT_CALIFICACION_BY_RESERVA)) {
@@ -394,7 +421,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		return Optional.ofNullable(calificacion);
 	}
 
-	private void insertServices(int reservaId, Reserva r, Connection miConeccion) throws ErrorConsultaExeption, ConexionFallidaExeption {
+	private void insertServices(int reservaId, Reserva r, Connection miConeccion)
+			throws ErrorConsultaExeption, ConexionFallidaExeption {
 		PreparedStatement pStamentBuscarServicio = null;
 		PreparedStatement pStamentConsutaInsertaServicio = null;
 		ResultSet rsServicio = null;
