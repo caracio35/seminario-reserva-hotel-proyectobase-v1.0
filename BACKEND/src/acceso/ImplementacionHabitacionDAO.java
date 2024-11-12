@@ -51,7 +51,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		miConeccion = conectar();
 		try {
 
-			miConeccion.setAutoCommit(false);
 
 			pStamentConsutaCreaHabitacion = (PreparedStatement) miConeccion.prepareStatement(nuevaHabitacion);
 			pStamentConsutaCreaHabitacion.setInt(1, habitacion.getCantidadDeCamas());
@@ -64,7 +63,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 			insertarCaracteristica(habitacion, miConeccion);
 
-			miConeccion.commit();
 
 		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
 			throw new NumeroHabitacionExistenteException();
@@ -169,6 +167,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			
 			pStamentConsutataBuscarHabitacion = (PreparedStatement) miConeccion.prepareStatement(buscarHabitacion);
 			pStamentConsutataBuscarHabitacion.setInt(1, numeroHabitacionBuscada);
+			
 			ResultSet habitacionObtenida = pStamentConsutataBuscarHabitacion.executeQuery();
 			if (habitacionObtenida.next()) {
 				int cantidadCamas = habitacionObtenida.getInt("cantidadDeCamas");

@@ -278,7 +278,6 @@ public class PersistenceApi implements IApi {
 						c.getDescripcion(),
 						c.getPrecio()))
 				.collect(Collectors.toList());
-
 		return car;
 	}
 
