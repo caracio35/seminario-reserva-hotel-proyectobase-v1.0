@@ -14,9 +14,7 @@ import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ImplementacionUsuarioDAO implements UsuarioDAO {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
+
 	private final static String buscarUsuarioPorNombre = "SELECT * FROM usuarios WHERE usuario = ?";;
 	private static final String buscarUsuarioPorId = "SELECT nombre, apellido, email, usuario, contrasena, telefono, dni FROM usuarios WHERE id = ?";
 
@@ -39,7 +37,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 		PreparedStatement pStamentConsultaUsuario = null;
 		ResultSet rs = null;
 		try {
-			miConexion = conectar();
+			miConexion = Coneccion.conectar();
 			pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorNombre);
 			pStamentConsultaUsuario.setString(1, usu);
 			rs = pStamentConsultaUsuario.executeQuery();
@@ -85,24 +83,13 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 		return null;
 	}
 
-	private Connection conectar() throws ConexionFallidaExeption {
-		Connection miConnecion = null;
-		try {
-			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConnecion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
-
-		}
-	}
-
 	@Override
 	public Usuario find(int idUsuario) {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsultaUsuario = null;
 		ResultSet rs = null;
 		try {
-			miConexion = conectar();
+			miConexion = Coneccion.conectar();
 			pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorId);
 			pStamentConsultaUsuario.setInt(1, idUsuario);
 			rs = pStamentConsultaUsuario.executeQuery();

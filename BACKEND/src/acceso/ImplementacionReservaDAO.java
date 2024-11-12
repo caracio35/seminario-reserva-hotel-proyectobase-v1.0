@@ -27,9 +27,7 @@ import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ImplementacionReservaDAO implements ReservaDAO {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
+
 	private final static String crearReserva = "INSERT INTO reserva (usuario_id, fechaDeInicio, fechaDeSalida, cantidadDePersonas,"
 			+ "                      fechaDeReserva, saldoFavor, pagoMinimo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
@@ -54,7 +52,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutaCreaReserva = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			miConeccion.setAutoCommit(false);
 			pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearReserva,
 					Statement.RETURN_GENERATED_KEYS);
@@ -109,7 +107,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStamentUpdateReserva = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			String updateReservaSql = "UPDATE reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
 					"cantidadDePersonas = ?, pagoMinimo = ? WHERE id = ?";
 			pStamentUpdateReserva = (PreparedStatement) miConeccion.prepareStatement(updateReservaSql);
@@ -148,7 +146,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		Reserva reserva = null;
 
 		try {
-			conn = conectar();
+			conn = Coneccion.conectar();
 			String sqlReserva = "SELECT * FROM Reserva WHERE id = ?";
 			try (PreparedStatement stmtReserva = (PreparedStatement) conn.prepareStatement(sqlReserva)) {
 				stmtReserva.setInt(1, idReserva);
@@ -210,7 +208,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	public Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		Set<Reserva> reservas = new HashSet<>();
 
-		try (Connection conn = conectar();
+		try (Connection conn = Coneccion.conectar();
 				java.sql.PreparedStatement stmtReservas = conn.prepareStatement(SELECT_ALL_RESERVAS);
 				ResultSet rsReservas = stmtReservas.executeQuery()) {
 
@@ -432,17 +430,6 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			} catch (SQLException e) {
 				System.out.println("Error al cerrar los recursos");
 			}
-		}
-	}
-
-	private Connection conectar() throws ConexionFallidaExeption {
-		Connection miConnecion = null;
-		try {
-			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConnecion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
-
 		}
 	}
 

@@ -14,9 +14,6 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 
 public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaEspecialDAO {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
 	private final static String nuevaCaracteristica = "INSERT INTO CaracteristicaEspecial (nombre,descripcion,precio) VALUES (?,?,?) ";
 	private final static String eliminarCaracteristica = "DELETE FROM CaracteristicaEspecial WHERE nombre = ?";
 	private final static String encontrarCaracteristica = "SELECT * FROM `CaracteristicaEspecial` WHERE nombre = ?";
@@ -37,7 +34,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(nuevaCaracteristica);
 
 			pStament.setString(1, c.getNombre());
@@ -65,7 +62,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarCaracteristica);
 
 			pStament.setString(1, c.getDescripcion());
@@ -93,7 +90,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarCaracteristica);
 			pStament.setString(1, c);
 			ResultSet rs = pStament.executeQuery();
@@ -125,7 +122,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarCaracteristica);
 			pStament.setString(1, id_caracteristicas);
 			pStament.executeUpdate();
@@ -150,7 +147,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarTodasLasCaracteristicas);
 
 			ResultSet rs = pStament.executeQuery();
@@ -185,7 +182,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		PreparedStatement pStamentBuscarCar = null;
 
 		try {
-			miConexion = conectar(); // Tu método para obtener la conexión
+			miConexion = Coneccion.conectar(); // Tu método para obtener la conexión
 			pStamentBuscarCar = (PreparedStatement) miConexion.prepareStatement(buscarCaracteristicasPorHabitacion);
 			pStamentBuscarCar.setInt(1, idNumeroHabitacion);
 
@@ -214,17 +211,6 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		}
 
 		return caracteristicaSet;
-	}
-
-	private Connection conectar() throws ConexionFallidaExeption {
-		Connection miConnecion = null;
-		try {
-			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConnecion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
-
-		}
 	}
 
 }

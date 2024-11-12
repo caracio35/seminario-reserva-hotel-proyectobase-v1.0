@@ -25,9 +25,6 @@ import ar.edu.unrn.seminario.modelo.Habitacion;
 
 public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
 	private final static String nuevaHabitacion = "INSERT INTO Habitacion (cantidadDeCamas, descripcion, precio, "
 			+ "habilitado, fechaHastaCuandoEstaDesactivado, numHabitaciones) VALUES (?,?,?,?,?,?)";
 	private final static String buscarHabitacion = "SELECT * FROM Habitacion WHERE numHabitaciones = ?";
@@ -48,9 +45,8 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			throws ConexionFallidaExeption, ErrorConsultaExeption, NumeroHabitacionExistenteException {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutaCreaHabitacion = null;
-		miConeccion = conectar();
+		miConeccion = Coneccion.conectar();
 		try {
-
 
 			pStamentConsutaCreaHabitacion = (PreparedStatement) miConeccion.prepareStatement(nuevaHabitacion);
 			pStamentConsutaCreaHabitacion.setInt(1, habitacion.getCantidadDeCamas());
@@ -62,7 +58,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			pStamentConsutaCreaHabitacion.executeUpdate();
 
 			insertarCaracteristica(habitacion, miConeccion);
-
 
 		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
 			throw new NumeroHabitacionExistenteException();
@@ -114,7 +109,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	@Override
 	public void update(Habitacion habitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
-		Connection miConeccion = conectar();
+		Connection miConeccion = Coneccion.conectar();
 		try (PreparedStatement pStament = (PreparedStatement) miConeccion.prepareStatement(modificarHabitacion);
 				PreparedStatement eliminarStmt = (PreparedStatement) miConeccion
 						.prepareStatement(eliminarCaracteristicasSQL);
@@ -127,10 +122,10 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			pStament.setDouble(3, habitacion.getPrecio());
 			pStament.setBoolean(4, habitacion.isHabilitado());
 			if (habitacion.getFechaHastaCuandoEstaDesactivado() != null) {
-		            pStament.setDate(5, Date.valueOf(habitacion.getFechaHastaCuandoEstaDesactivado()));
-		      } else {
-		            pStament.setNull(5, java.sql.Types.DATE);
-		       }
+				pStament.setDate(5, Date.valueOf(habitacion.getFechaHastaCuandoEstaDesactivado()));
+			} else {
+				pStament.setNull(5, java.sql.Types.DATE);
+			}
 			pStament.setInt(6, habitacion.getNumHabitaciones()); // Para el WHERE
 			pStament.executeUpdate();
 
@@ -140,7 +135,6 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 			// Insertar las nuevas relaciones de características especiales
 			insertarCaracteristica(habitacion, miConeccion);
-
 
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();
@@ -161,13 +155,13 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		int numeroHabitacionBuscada = numHabitaciones;
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutataBuscarHabitacion = null;
-		miConeccion = conectar();
+		miConeccion = Coneccion.conectar();
 		try {
 			Set<CaracteristicaEspecial> caracteristicasLista = new HashSet<>();
-			
+
 			pStamentConsutataBuscarHabitacion = (PreparedStatement) miConeccion.prepareStatement(buscarHabitacion);
 			pStamentConsutataBuscarHabitacion.setInt(1, numeroHabitacionBuscada);
-			
+
 			ResultSet habitacionObtenida = pStamentConsutataBuscarHabitacion.executeQuery();
 			if (habitacionObtenida.next()) {
 				int cantidadCamas = habitacionObtenida.getInt("cantidadDeCamas");
@@ -175,7 +169,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				double precio = habitacionObtenida.getDouble("precio");
 				boolean habilitado = (habitacionObtenida.getInt("Habilitado") == 1);
 				int numeroHabitacion = habitacionObtenida.getInt("numHabitaciones");
-				
+
 				caracteristicasLista = obtenerCaracteristicas(numHabitaciones, miConeccion);
 				ArrayList<CaracteristicaEspecial> arrayCar = new ArrayList<>(caracteristicasLista);
 				Habitacion habitacion = new Habitacion(cantidadCamas, descripcion, precio, habilitado, numeroHabitacion,
@@ -202,7 +196,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 	public void remove(int numHabitaciones) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
-		miConeccion = conectar();
+		miConeccion = Coneccion.conectar();
 		try {
 
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarHabitacion);
@@ -229,7 +223,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsulta = null;
 		ResultSet resultadoBusquedaHab = null;
-		miConeccion = conectar();
+		miConeccion = Coneccion.conectar();
 		try {
 
 			pStamentConsulta = (PreparedStatement) miConeccion.prepareStatement(buscarTodaLasHabitaciones);
@@ -295,14 +289,4 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 		return caracteristicas;
 	}
 
-	private Connection conectar() throws ConexionFallidaExeption {
-		Connection miConnecion = null;
-		try {
-			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConnecion;
-		} catch (SQLException e) {
-			throw new ConexionFallidaExeption();
-
-		}
-	}
 }

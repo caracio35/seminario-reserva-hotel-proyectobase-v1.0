@@ -14,19 +14,17 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public class ImplementacionCalificacionDAO implements CalificacionDAO {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
 	private final static String nuevoCalificacion = "INSERT INTO calificacion (reserva_id, puntaje, descripcion) VALUES (?, ?, ?)";
 	private final static String buscarCalificacion = "SELECT puntaje , descripcion FROM Calificacion WHERE = reserva_id ?";
+
 	@Override
-	
+
 	public void create(Calificacion calificacion, int idReserva) throws ConexionFallidaExeption {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsutaCrearCalificacion = null;
-		miConexion = conectar();
+		miConexion = Coneccion.conectar();
 		try {
-			
+
 			miConexion.setAutoCommit(false);
 			pStamentConsutaCrearCalificacion = (PreparedStatement) miConexion.prepareStatement(nuevoCalificacion);
 			pStamentConsutaCrearCalificacion.setInt(1, idReserva);
@@ -34,12 +32,12 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 			pStamentConsutaCrearCalificacion.setString(3, calificacion.getComentario());
 			pStamentConsutaCrearCalificacion.executeUpdate();
 			miConexion.commit();
-			
+
 		} catch (SQLException e) {
 			try {
 				if (miConexion != null) {
 					miConexion.rollback();
-					
+
 				}
 			} catch (SQLException ex) {
 				throw new ConexionFallidaExeption();
@@ -64,39 +62,40 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 
 	@Override
 	public Calificacion find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
-	    Connection miConexion = null;
-	    PreparedStatement pStatementConsultaBuscarCalificacion = null;
-	    ResultSet resultSet = null;
-	    Calificacion calificacionObtenida = null;
+		Connection miConexion = null;
+		PreparedStatement pStatementConsultaBuscarCalificacion = null;
+		ResultSet resultSet = null;
+		Calificacion calificacionObtenida = null;
 
-	    miConexion = conectar();
-	    try {
-	        
-	        
-	        pStatementConsultaBuscarCalificacion = (PreparedStatement) miConexion.prepareStatement(buscarCalificacion);
-	        pStatementConsultaBuscarCalificacion.setInt(1, idReserva);
-	        
-	        resultSet = pStatementConsultaBuscarCalificacion.executeQuery();
-	        
-	        if (resultSet.next()) {
-	            int valor = resultSet.getInt("valor");
-	            String comentario = resultSet.getString("comentario");
-	            calificacionObtenida = new Calificacion(valor, comentario, idReserva);
-	        }
-	    } catch (SQLException e) {
+		miConexion = Coneccion.conectar();
+		try {
+
+			pStatementConsultaBuscarCalificacion = (PreparedStatement) miConexion.prepareStatement(buscarCalificacion);
+			pStatementConsultaBuscarCalificacion.setInt(1, idReserva);
+
+			resultSet = pStatementConsultaBuscarCalificacion.executeQuery();
+
+			if (resultSet.next()) {
+				int valor = resultSet.getInt("valor");
+				String comentario = resultSet.getString("comentario");
+				calificacionObtenida = new Calificacion(valor, comentario, idReserva);
+			}
+		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
-	        try {
-	            if (resultSet != null) resultSet.close();
-	            if (pStatementConsultaBuscarCalificacion != null) pStatementConsultaBuscarCalificacion.close();
-	            if (miConexion != null) miConexion.close();
-	        } catch (SQLException e) {
-	        	throw new ConexionFallidaExeption("Error al cerrar los recursos");
-	        }
-	    }
-	    return calificacionObtenida;
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (pStatementConsultaBuscarCalificacion != null)
+					pStatementConsultaBuscarCalificacion.close();
+				if (miConexion != null)
+					miConexion.close();
+			} catch (SQLException e) {
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
+			}
+		}
+		return calificacionObtenida;
 	}
-
 
 	@Override
 	public void remove(int id_calificacion) {
@@ -110,14 +109,4 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 		return null;
 	}
 
-	private Connection conectar() throws ConexionFallidaExeption {
-		Connection miConexion = null;
-		try {
-			miConexion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConexion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
-
-		}
-	}
 }

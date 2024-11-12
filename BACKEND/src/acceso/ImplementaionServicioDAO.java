@@ -14,9 +14,7 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.Servicio;
 
 public class ImplementaionServicioDAO implements ServicioDAO {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
+
 	private final static String nuevoServicio = "INSERT INTO servicio (id,nombre,precio,descripcion) VALUES (?,?,?,?) ";
 	private final static String eliminarServicio = "DELETE FROM sevicio WHERE id = ?";
 	private final static String encontrarServicio = "SELECT * FROM servicio WHERE nombre = ?";
@@ -29,7 +27,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(nuevoServicio);
 
 			pStament.setString(1, s.getNombre());
@@ -38,8 +36,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.setInt(4, s.getIdServicio());
 			pStament.execute();
 			pStament.close();
-		
-			
+
 		} catch (Exception e) {
 			System.out.println("no se subio" + e.getMessage());
 		} finally {
@@ -60,7 +57,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarServicio);
 			pStament.setInt(1, 0);
 			pStament.setString(1, c.getDescripcion());
@@ -68,8 +65,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.setString(3, c.getNombre());
 			pStament.execute();
 			pStament.close();
-			
-			
+
 		} catch (Exception e) {
 			System.out.println("no se subio" + e.getMessage());
 		} finally {
@@ -90,7 +86,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarServicio);
 			pStament.setString(1, n);
 			ResultSet rs = pStament.executeQuery();
@@ -104,7 +100,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			}
 			pStament.execute();
 			pStament.close();
-			
+
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -120,17 +116,16 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	}
 
 	@Override
-	public void remove(int id) { 
+	public void remove(int id) {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarServicio);
 			pStament.setInt(1, id);
 			pStament.executeUpdate();
 			pStament.close();
-			
-			
+
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
 		} finally {
@@ -151,7 +146,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
 		try {
-			miConeccion = conectar();
+			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarTodasLosServicios);
 
 			ResultSet rs = pStament.executeQuery();
@@ -167,8 +162,6 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			}
 			pStament.execute();
 			pStament.close();
-			
-			
 
 		} catch (SQLException e) {
 			System.out.println("excepcion propia ");
@@ -182,17 +175,6 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			}
 		}
 		return servicioList;
-	}
-
-	private Connection conectar() throws ConexionFallidaExeption {
-		Connection miConnecion = null;
-		try {
-			miConnecion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConnecion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
-
-		}
 	}
 
 }
