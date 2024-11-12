@@ -16,7 +16,6 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
-import ar.edu.unrn.seminario.modelo.Reserva;
 
 @SuppressWarnings("unused")
 public interface IApi {
@@ -75,9 +74,11 @@ public interface IApi {
 
 	void modificarReserva(); // modifica una reserva existente
 
-	void desactivarHabitacion(int numeroHabitacion, String fecha)
-			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption,
-			PrecioCeroExeption;// marca una habitacion como no habilitada
+	void desactivarHabitacion(int numeroHabitacion, String fecha) throws ConexionFallidaExeption,
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// marca una
+																											// habitacion
+																											// como no
+																											// habilitada
 	// segun
 	// su numero de
 
@@ -107,9 +108,9 @@ public interface IApi {
 	void eliminarCaracteristica(String nombreCaracteristica);
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption,
-			ErrorConsultaExeption;
+			int numHabitacion, String[] caracteristicas)
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption;
 
 	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario)
 			throws ConexionFallidaExeption;
@@ -117,8 +118,11 @@ public interface IApi {
 	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
 			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
-	List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+	List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception;
+
+	void modificarFalse();
 
 }

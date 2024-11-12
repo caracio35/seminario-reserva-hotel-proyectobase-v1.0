@@ -1,17 +1,13 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.EventQueue;
-
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class Login extends JFrame {
 
@@ -28,63 +24,54 @@ public class Login extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
-		
+
 		JLabel lblTitulo = new JLabel("Loguin Usuario");
 		lblTitulo.setBounds(100, 11, 90, 14);
 		contentPane.add(lblTitulo);
-		
+
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setBounds(30, 41, 49, 14);
 		contentPane.add(lblUsuario);
-		
+
 		textField = new JTextField();
 		textField.setBounds(30, 67, 219, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		
+
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(30, 98, 49, 14);
 		contentPane.add(lblPassword);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setBounds(30, 123, 219, 20);
 		contentPane.add(passwordField);
-		
+
 		JButton btnBotonIniciar = new JButton("Iniciar");
-		btnBotonIniciar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
+		btnBotonIniciar.addActionListener(e -> {
 		});
 		btnBotonIniciar.setBounds(101, 176, 89, 23);
 		contentPane.add(btnBotonIniciar);
-		
+
 		JButton btnBotonOlvideContraseña = new JButton("Olvide mi contraseña");
-		btnBotonOlvideContraseña.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
+		btnBotonOlvideContraseña.addActionListener(e -> {
 		});
 		btnBotonOlvideContraseña.setBounds(74, 227, 137, 23);
 		contentPane.add(btnBotonOlvideContraseña);
-		
+
 		JButton btnBotonCrearUsuario = new JButton("Crear Usuario");
 		btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
 		contentPane.add(btnBotonCrearUsuario);
-		
+
 		JButton btnBotonInvitado = new JButton("Iniciar como invitado");
-		btnBotonInvitado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int response = JOptionPane.showConfirmDialog(null, 
-                        "¿Está seguro de que desea iniciar como invitado?", 
-                        "Usted perdera los beneficios de estar registrado", 
-                        JOptionPane.YES_NO_OPTION, 
-                        JOptionPane.QUESTION_MESSAGE);
-                
-              /*  if (response == JOptionPane.YES_OPTION) {
-                    // Lógica para activar la habitación
-                    JOptionPane.showMessageDialog(null, "Habitación activada.");
-                }*/
-			}
+		btnBotonInvitado.addActionListener(e -> {
+			int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea iniciar como invitado?",
+					"Usted perdera los beneficios de estar registrado", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+
+			/*
+			 * if (response == JOptionPane.YES_OPTION) { // Lógica para activar la
+			 * habitación JOptionPane.showMessageDialog(null, "Habitación activada."); }
+			 */
 		});
 		btnBotonInvitado.setBounds(136, 306, 143, 23);
 		contentPane.add(btnBotonInvitado);

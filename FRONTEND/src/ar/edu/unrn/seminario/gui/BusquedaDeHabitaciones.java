@@ -1,9 +1,5 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -158,8 +154,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 				}
 			}
 			JOptionPane.showMessageDialog(null, "habitaciones seleccionadas" + habitacionesSeleccionadas);
-			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio,
-					fechaReservaFin, null, api,
+			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, null, api,
 					habitacionesSeleccionadas);
 			confirmacion.setVisible(true);
 		});
@@ -188,28 +183,23 @@ public class BusquedaDeHabitaciones extends JFrame {
 		JcalemderFechaSalida.setBounds(10, 249, 96, 20);
 		getContentPane().add(JcalemderFechaSalida);
 
-		JcalenderFechaIngreso.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				Date selectedDate = JcalenderFechaIngreso.getDate();
-				if (selectedDate != null) {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-					fechaReservaInicio = sdf.format(selectedDate);
+		JcalenderFechaIngreso.getDateEditor().addPropertyChangeListener("date", e -> {
+			Date selectedDate = JcalenderFechaIngreso.getDate();
+			if (selectedDate != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				fechaReservaInicio = sdf.format(selectedDate);
 
-					JcalemderFechaSalida.setMinSelectableDate(selectedDate);
-				}
+				// Asegúrate de que JcalenderFechaSalida esté correctamente inicializado
+				JcalemderFechaSalida.setMinSelectableDate(selectedDate);
 			}
 		});
 
-		JcalemderFechaSalida.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				Date selectedDate = JcalemderFechaSalida.getDate();
-				if (selectedDate != null) {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-					fechaReservaFin = sdf.format(selectedDate);
+		JcalemderFechaSalida.getDateEditor().addPropertyChangeListener("date", e -> {
+			Date selectedDate = JcalemderFechaSalida.getDate();
+			if (selectedDate != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				fechaReservaFin = sdf.format(selectedDate);
 
-				}
 			}
 		});
 
@@ -231,11 +221,9 @@ public class BusquedaDeHabitaciones extends JFrame {
 			try {
 				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
 				// aplicando filtro de precio minimo con stream
-				List<HabitacionDTO> filtrado = habitaciones.stream()
-						.filter(h -> h.getPrecio() >= precioMinimo)
+				List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
 						.filter(h -> h.getCantidadDeCamas() >= camas)
-						.sorted(Comparator.comparingDouble(HabitacionDTO::getPrecio))
-						.collect(Collectors.toList());
+						.sorted(Comparator.comparingDouble(HabitacionDTO::getPrecio)).collect(Collectors.toList());
 
 				cargarHabitacionesFiltradas(filtrado);
 			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
@@ -252,19 +240,14 @@ public class BusquedaDeHabitaciones extends JFrame {
 
 			modelo.setRowCount(0);
 
-			habitaciones.stream()
-					.sorted(Comparator.comparingInt(HabitacionDTO::getNumHabitacion))
+			habitaciones.stream().sorted(Comparator.comparingInt(HabitacionDTO::getNumHabitacion))
 					.forEach(habitacion -> {
 						String caracteristicas = habitacion.getCaracteristicasEspeciale().stream()
-								.map(CaracteristicaEspecialDTO::getNombre)
-								.collect(Collectors.joining(", "));
-						modelo.addRow(new Object[] {
-								habitacion.getCantidadDeCamas(),
-								habitacion.getDescripcion(),
-								habitacion.getPrecio(),
-								habitacion.getNumHabitacion(),
-								caracteristicas,
-								false // Checkbox for selection
+								.map(CaracteristicaEspecialDTO::getNombre).collect(Collectors.joining(", "));
+						modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
+								habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas, false // Checkbox
+																												// for
+																												// selection
 						});
 					});
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e) {
@@ -276,18 +259,11 @@ public class BusquedaDeHabitaciones extends JFrame {
 
 		modelo.setRowCount(0);
 
-		habitaciones1.stream()
-				.forEach(habitacion -> {
-					String caracteristicas = habitacion.getCaracteristicasEspeciale().stream()
-							.map(CaracteristicaEspecialDTO::getNombre)
-							.collect(Collectors.joining(", "));
-					modelo.addRow(new Object[] {
-							habitacion.getCantidadDeCamas(),
-							habitacion.getDescripcion(),
-							habitacion.getPrecio(),
-							habitacion.getNumHabitacion(),
-							caracteristicas, false
-					});
-				});
+		habitaciones1.stream().forEach(habitacion -> {
+			String caracteristicas = habitacion.getCaracteristicasEspeciale().stream()
+					.map(CaracteristicaEspecialDTO::getNombre).collect(Collectors.joining(", "));
+			modelo.addRow(new Object[] { habitacion.getCantidadDeCamas(), habitacion.getDescripcion(),
+					habitacion.getPrecio(), habitacion.getNumHabitacion(), caracteristicas, false });
+		});
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
@@ -102,68 +104,62 @@ public class CargarHabitacion extends JFrame {
 			group.add(buttonHabilitado);
 
 			JButton btnSubirInformacion = new JButton("Cargar");
-			btnSubirInformacion.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+			btnSubirInformacion.addActionListener(e -> {
 
-					boolean habilitado = false;
-					if (buttonHabilitado.isSelected()) {
-						habilitado = true;
-					} else if (buttonDesabilitado.isSelected()) {
-						habilitado = false;
+				boolean habilitado = false;
+				if (buttonHabilitado.isSelected()) {
+					habilitado = true;
+				} else if (buttonDesabilitado.isSelected()) {
+					habilitado = false;
+				}
+				List<String> caracteristicasSeleccionadas = new ArrayList<>();
+				for (int i = 0; i < table.getRowCount(); i++) {
+					String nombreCaracteristica = (String) table.getValueAt(i, 0);
+					Boolean estado = (Boolean) table.getValueAt(i, 1);
+					if (estado != null && estado) {
+						caracteristicasSeleccionadas.add(nombreCaracteristica);
 					}
-					List<String> caracteristicasSeleccionadas = new ArrayList<>();
-					for (int i = 0; i < table.getRowCount(); i++) {
-						String nombreCaracteristica = (String) table.getValueAt(i, 0);
-						Boolean estado = (Boolean) table.getValueAt(i, 1);
-						if (estado != null && estado) {
-							caracteristicasSeleccionadas.add(nombreCaracteristica);
-						}
+				}
+
+				String[] caracteristicas = caracteristicasSeleccionadas.toArray(new String[0]);
+
+				if (modificar == false) {
+					try {
+
+						api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
+								textFieldDescripccion.getText(),
+								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
+								Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
+						dispose();
+						JOptionPane.showMessageDialog(null, "habitacion agregada con exito");
+					} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption
+							| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+
+					} catch (NumberFormatException e1) {
+						JOptionPane.showMessageDialog(null,
+								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
+					} catch (ErrorConsultaExeption e1) {
+						JOptionPane.showConfirmDialog(null, e1.getMessage());
 					}
+				} else {
 
-					String[] caracteristicas = caracteristicasSeleccionadas.toArray(new String[0]);
-
-					if (modificar == false) {
+					if (modificar == true) {
 						try {
-
-							api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
+							api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
 									textFieldDescripccion.getText(),
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 									Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
+
+							JOptionPane.showMessageDialog(null, "Habitación modificada exitosamente", "Éxito",
+									JOptionPane.INFORMATION_MESSAGE);
+
 							dispose();
-							JOptionPane.showMessageDialog(null, "habitacion agregada con exito");
-						} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption
-								| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption e1) {
+
+						} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
+								| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
+								| PrecioCeroExeption | ErrorDatosNoEncontradosExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
-
-						} catch (NumberFormatException e1) {
-							JOptionPane.showMessageDialog(null,
-									"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
-						} catch (ErrorConsultaExeption e1) {
-							JOptionPane.showConfirmDialog(null, e1.getMessage());
-						}
-					} else {
-
-						if (modificar == true) {
-							try {
-								api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
-										textFieldDescripccion.getText(),
-										Double.parseDouble(textFieldPrecioRegistrado.getText()),
-										habilitado,
-										Integer.parseInt(textFieldNumeroHabitacion.getText()),
-										caracteristicas);
-
-								JOptionPane.showMessageDialog(null,
-										"Habitación modificada exitosamente",
-										"Éxito",
-										JOptionPane.INFORMATION_MESSAGE);
-
-								dispose();
-
-							} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
-									| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
-									| PrecioCeroExeption | ErrorDatosNoEncontradosExeption e1) {
-								JOptionPane.showMessageDialog(null, e1.getMessage());
-							}
 						}
 					}
 				}

@@ -1,8 +1,6 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -35,25 +33,18 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(usuarioMenu);
 
 		JMenuItem altaUsuarioMenuItem = new JMenuItem("Alta/Modificación");
-		altaUsuarioMenuItem.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				AltaUsuario alta = new AltaUsuario(api);
-				alta.setLocationRelativeTo(null);
-				alta.setVisible(true);
-			}
-
+		altaUsuarioMenuItem.addActionListener(arg0 -> {
+			AltaUsuario alta = new AltaUsuario(api);
+			alta.setLocationRelativeTo(null);
+			alta.setVisible(true);
 		});
 		usuarioMenu.add(altaUsuarioMenuItem);
 
 		JMenuItem listadoUsuarioMenuItem = new JMenuItem("Listado");
-		listadoUsuarioMenuItem.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				ListadoUsuario listado = new ListadoUsuario(api);
-				listado.setLocationRelativeTo(null);
-				listado.setVisible(true);
-			}
+		listadoUsuarioMenuItem.addActionListener(arg0 -> {
+			ListadoUsuario listado = new ListadoUsuario(api);
+			listado.setLocationRelativeTo(null);
+			listado.setVisible(true);
 
 		});
 		usuarioMenu.add(listadoUsuarioMenuItem);
@@ -62,26 +53,22 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(mnHabitaciones);
 
 		JMenuItem mntmCarcarHabitacion = new JMenuItem("Cargar Habitacion");
-		mntmCarcarHabitacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CargarHabitacion cargaH = new CargarHabitacion(api, false);
-				cargaH.setVisible(true);
-			}
+		mntmCarcarHabitacion.addActionListener(e -> {
+			CargarHabitacion cargaH = new CargarHabitacion(api, false);
+			api.modificarFalse();
+			cargaH.setVisible(true);
 		});
 		mnHabitaciones.add(mntmCarcarHabitacion);
 
 		JMenuItem mntmListadoHabitaciones = new JMenuItem("Listado Habitaciones");
-		mntmListadoHabitaciones.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ListadoHabitaciones listaHabitaciones;
+		mntmListadoHabitaciones.addActionListener(e -> {
+			ListadoHabitaciones listaHabitaciones;
 
-				try {
-					listaHabitaciones = new ListadoHabitaciones(api);
-					listaHabitaciones.setVisible(true);
-				} catch (ConexionFallidaExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
-
+			try {
+				listaHabitaciones = new ListadoHabitaciones(api);
+				listaHabitaciones.setVisible(true);
+			} catch (ConexionFallidaExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		});
 		mntmListadoHabitaciones.setSelected(true);
@@ -91,25 +78,21 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(mnReservas);
 
 		JMenuItem mntmBuscarhabitacion = new JMenuItem("buscarHabitacion");
-		mntmBuscarhabitacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones(api);
-				busqueda.setVisible(true);
-			}
+		mntmBuscarhabitacion.addActionListener(e -> {
+			BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones(api);
+			busqueda.setVisible(true);
 		});
 		mnReservas.add(mntmBuscarhabitacion);
 
 		JMenuItem mntmListadoHabitaciones_1 = new JMenuItem("Mis Reservas");
-		mntmListadoHabitaciones_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VerReservas misReservas = null;
-				try {
-					misReservas = new VerReservas(api);
-				} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
-				misReservas.setVisible(true);
+		mntmListadoHabitaciones_1.addActionListener(e -> {
+			VerReservas misReservas = null;
+			try {
+				misReservas = new VerReservas(api);
+			} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
+			misReservas.setVisible(true);
 		});
 		mntmListadoHabitaciones_1.setSelected(true);
 		mnReservas.add(mntmListadoHabitaciones_1);
@@ -118,10 +101,8 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(configuracionMenu);
 
 		JMenuItem salirMenuItem = new JMenuItem("Salir");
-		salirMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VentanaPrincipal.this.dispose();
-			}
+		salirMenuItem.addActionListener(e -> {
+			VentanaPrincipal.this.dispose();
 		});
 		configuracionMenu.add(salirMenuItem);
 		contentPane = new JPanel();

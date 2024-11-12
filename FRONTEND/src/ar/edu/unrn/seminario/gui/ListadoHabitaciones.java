@@ -2,13 +2,9 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.Color;
 import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,10 +26,8 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
-import ar.edu.unrn.seminario.exception.DuplicadaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
-import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 @SuppressWarnings("unused")
@@ -101,39 +95,34 @@ public class ListadoHabitaciones extends JFrame {
 		JButton btnActivarHabitacion = new JButton("Activar ");
 		btnActivarHabitacion.setForeground(new Color(255, 255, 255));
 		btnActivarHabitacion.setBackground(new Color(90, 155, 213));
-		btnActivarHabitacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow == -1) {
-					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
-					return;
-				}
+		btnActivarHabitacion.addActionListener(e -> {
+			int selectedRow = table.getSelectedRow();
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+				return;
+			}
 
-				int response = JOptionPane.showConfirmDialog(null,
-						"¿Está seguro de que desea activar esta habitación?",
-						"Confirmación",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+			int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea activar esta habitación?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if (response != JOptionPane.YES_OPTION) {
-					return;
-				}
+			if (response != JOptionPane.YES_OPTION) {
+				return;
+			}
 
-				try {
-					int numHabitacion = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-					api.activarHabitacion(numHabitacion);
+			try {
+				int numHabitacion = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+				api.activarHabitacion(numHabitacion);
 
-					// Actualizar la tabla
-					table.setValueAt(Boolean.TRUE, selectedRow, 3); // Activar la habitación
-					table.setValueAt("", selectedRow, 4); // Limpiar la fecha de desactivación
-					llenarTabla();
+				// Actualizar la tabla
+				table.setValueAt(Boolean.TRUE, selectedRow, 3); // Activar la habitación
+				table.setValueAt("", selectedRow, 4); // Limpiar la fecha de desactivación
+				llenarTabla();
 
-					JOptionPane.showMessageDialog(null, "Habitación activada.");
+				JOptionPane.showMessageDialog(null, "Habitación activada.");
 
-				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
-						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+					| EnterosEnCeroExeption | PrecioCeroExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		});
 		btnActivarHabitacion.setBounds(7, 66, 99, 21);
@@ -142,67 +131,58 @@ public class ListadoHabitaciones extends JFrame {
 		JButton btnDesactivar = new JButton("Desactivar ");
 		btnDesactivar.setForeground(new Color(255, 255, 255));
 		btnDesactivar.setBackground(new Color(90, 155, 213));
-		btnDesactivar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow == -1) {
-					JOptionPane.showMessageDialog(null,
-							"Por favor, seleccione una habitación de la tabla.");
-					return;
-				}
+		btnDesactivar.addActionListener(e -> {
+			int selectedRow = table.getSelectedRow();
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+				return;
+			}
 
-				// Crear el panel con JDateChooser
-				JPanel panel = new JPanel();
-				panel.add(new JLabel("Seleccione la fecha de desactivación:"));
+			// Crear el panel con JDateChooser
+			JPanel panel = new JPanel();
+			panel.add(new JLabel("Seleccione la fecha de desactivación:"));
 
-				// Crear JDateChooser
-				JDateChooser dateChooser = new JDateChooser();
-				dateChooser.setDateFormatString("yyyy/MM/dd");
-				panel.add(dateChooser);
+			// Crear JDateChooser
+			JDateChooser dateChooser = new JDateChooser();
+			dateChooser.setDateFormatString("yyyy/MM/dd");
+			panel.add(dateChooser);
 
-				int option = JOptionPane.showConfirmDialog(null, panel,
-						"Ingrese fecha de desactivación",
-						JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.PLAIN_MESSAGE);
+			int option = JOptionPane.showConfirmDialog(null, panel, "Ingrese fecha de desactivación",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-				if (option != JOptionPane.OK_OPTION) {
-					return;
-				}
+			if (option != JOptionPane.OK_OPTION) {
+				return;
+			}
 
-				java.util.Date fecha = dateChooser.getDate();
-				if (fecha == null) {
-					JOptionPane.showMessageDialog(null,
-							"Por favor, seleccione una fecha.");
-					return;
-				}
+			java.util.Date fecha = dateChooser.getDate();
+			if (fecha == null) {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.");
+				return;
+			}
 
-				int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-				String fechaFormateada = new SimpleDateFormat("yyyy/MM/dd").format(fecha);
+			int numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+			String fechaFormateada = new SimpleDateFormat("yyyy/MM/dd").format(fecha);
 
-				int response = JOptionPane.showConfirmDialog(null,
-						"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada + "?",
-						"Confirmación",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+			int response = JOptionPane.showConfirmDialog(null,
+					"¿Está seguro de que desea desactivar esta habitación hasta el " + fechaFormateada + "?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if (response != JOptionPane.YES_OPTION) {
-					return;
-				}
+			if (response != JOptionPane.YES_OPTION) {
+				return;
+			}
 
-				try {
-					// Actualizar la tabla y la base de datos
-					table.setValueAt(fechaFormateada, selectedRow, 4);
-					table.setValueAt(Boolean.FALSE, selectedRow, 3);
-					api.desactivarHabitacion(numHabitacionSelected, fechaFormateada);
-					llenarTabla();
+			try {
+				// Actualizar la tabla y la base de datos
+				table.setValueAt(fechaFormateada, selectedRow, 4);
+				table.setValueAt(Boolean.FALSE, selectedRow, 3);
+				api.desactivarHabitacion(numHabitacionSelected, fechaFormateada);
+				llenarTabla();
 
-					JOptionPane.showMessageDialog(null,
-							"Habitación desactivada hasta " + fechaFormateada + ".");
+				JOptionPane.showMessageDialog(null, "Habitación desactivada hasta " + fechaFormateada + ".");
 
-				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
-						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+					| EnterosEnCeroExeption | PrecioCeroExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		});
 		btnDesactivar.setBounds(7, 143, 99, 21);
@@ -211,28 +191,26 @@ public class ListadoHabitaciones extends JFrame {
 		JButton btnEditarHabitacion = new JButton("Editar");
 		btnEditarHabitacion.setForeground(new Color(255, 255, 255));
 		btnEditarHabitacion.setBackground(new Color(90, 155, 213));
-		btnEditarHabitacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Lógica para editar la habitación
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow != -1) {
-					int columnaSeleccionada = 0;
-					// Obtener el valor de la celda en la fila y columna seleccionada
-					Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
-					int numero = ((Number) valor).intValue();
-					try {
-						api.habitacionAModificar(numero);
-						CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true);
-						modificarHabitacion.setVisible(true);
-					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
-							| EnterosEnCeroExeption | PrecioCeroExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+		btnEditarHabitacion.addActionListener(e -> {
+			// Lógica para editar la habitación
+			int selectedRow = table.getSelectedRow();
+			if (selectedRow != -1) {
+				int columnaSeleccionada = 0;
+				// Obtener el valor de la celda en la fila y columna seleccionada
+				Object valor = table.getValueAt(selectedRow, columnaSeleccionada);
+				int numero = ((Number) valor).intValue();
+				try {
+					api.habitacionAModificar(numero);
+					CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true);
+					modificarHabitacion.setVisible(true);
+				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
-
+			} else {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
 			}
+
 		});
 		btnEditarHabitacion.setBounds(874, 66, 99, 21);
 		getContentPane().add(btnEditarHabitacion);
@@ -240,36 +218,30 @@ public class ListadoHabitaciones extends JFrame {
 		JButton btnEliminarHabitacion = new JButton("Eliminar ");
 		btnEliminarHabitacion.setForeground(new Color(255, 255, 255));
 		btnEliminarHabitacion.setBackground(new Color(90, 155, 213));
-		btnEliminarHabitacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow == -1) {
-					JOptionPane.showMessageDialog(null,
-							"Por favor, seleccione una habitación de la tabla.");
-					return;
-				}
+		btnEliminarHabitacion.addActionListener(e -> {
+			int selectedRow = table.getSelectedRow();
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitación de la tabla.");
+				return;
+			}
 
-				int response = JOptionPane.showConfirmDialog(null,
-						"¿Está seguro de que desea eliminar esta habitación?",
-						"Confirmación",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+			int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar esta habitación?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if (response != JOptionPane.YES_OPTION) {
-					return;
-				}
+			if (response != JOptionPane.YES_OPTION) {
+				return;
+			}
 
-				try {
-					// Obtener y eliminar la habitación
-					numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-					((DefaultTableModel) table.getModel()).removeRow(selectedRow);
-					api.eliminarHabitacion(numHabitacionSelected);
+			try {
+				// Obtener y eliminar la habitación
+				numHabitacionSelected = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+				((DefaultTableModel) table.getModel()).removeRow(selectedRow);
+				api.eliminarHabitacion(numHabitacionSelected);
 
-					JOptionPane.showMessageDialog(null, "Habitación eliminada.");
+				JOptionPane.showMessageDialog(null, "Habitación eliminada.");
 
-				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		});
 		btnEliminarHabitacion.setBounds(874, 143, 99, 21);
@@ -278,14 +250,12 @@ public class ListadoHabitaciones extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setForeground(new Color(255, 255, 255));
 		btnSalir.setBackground(new Color(231, 76, 60));
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea salir?", "Confirmación",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		btnSalir.addActionListener(e -> {
+			int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea salir?", "Confirmación",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if (response == JOptionPane.YES_OPTION) {
-					dispose();
-				}
+			if (response == JOptionPane.YES_OPTION) {
+				dispose();
 			}
 		});
 		btnSalir.setBounds(883, 232, 85, 21);
@@ -295,7 +265,6 @@ public class ListadoHabitaciones extends JFrame {
 		textField.addKeyListener(new KeyAdapter() {
 			private int numeroHabitacion;
 
-			@Override
 			public void keyReleased(KeyEvent e) {
 
 				search();
@@ -340,20 +309,18 @@ public class ListadoHabitaciones extends JFrame {
 		try {
 			habitaciones = api.obtenerTodasLasHabitaciones();
 			model.setRowCount(0);
-			habitaciones.stream()
-					.sorted(Comparator.comparingInt(h -> h.getNumHabitacion()))
-					.forEach(habitacionDTO -> {
-						Object[] fila = new Object[5];
-						fila[0] = habitacionDTO.getNumHabitacion();
-						fila[2] = habitacionDTO.getCantidadDeCamas();
-						fila[3] = habitacionDTO.isHabilitado();
-						if (!habitacionDTO.isHabilitado()) {
-							fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
-									? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
-									: "Indefinido";
-						}
-						model.addRow(fila);
-					});
+			habitaciones.stream().sorted(Comparator.comparingInt(h -> h.getNumHabitacion())).forEach(habitacionDTO -> {
+				Object[] fila = new Object[5];
+				fila[0] = habitacionDTO.getNumHabitacion();
+				fila[2] = habitacionDTO.getCantidadDeCamas();
+				fila[3] = habitacionDTO.isHabilitado();
+				if (!habitacionDTO.isHabilitado()) {
+					fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
+							? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
+							: "Indefinido";
+				}
+				model.addRow(fila);
+			});
 			table.setModel(model);
 
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e) {
@@ -365,20 +332,18 @@ public class ListadoHabitaciones extends JFrame {
 	public void cargarHabitacionesFiltradas(List<HabitacionDTO> habitaciones1) {
 
 		model.setRowCount(0);
-		habitaciones1.stream()
-				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion()))
-				.forEach(habitacionDTO -> {
-					Object[] fila = new Object[5];
-					fila[0] = habitacionDTO.getNumHabitacion();
-					fila[2] = habitacionDTO.getCantidadDeCamas();
-					fila[3] = habitacionDTO.isHabilitado();
-					if (!habitacionDTO.isHabilitado()) {
-						fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
-								? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
-								: "Indefinido";
-					}
-					model.addRow(fila);
-				});
+		habitaciones1.stream().sorted(Comparator.comparingInt(h -> h.getNumHabitacion())).forEach(habitacionDTO -> {
+			Object[] fila = new Object[5];
+			fila[0] = habitacionDTO.getNumHabitacion();
+			fila[2] = habitacionDTO.getCantidadDeCamas();
+			fila[3] = habitacionDTO.isHabilitado();
+			if (!habitacionDTO.isHabilitado()) {
+				fila[4] = habitacionDTO.getFechaHastaCuandoEstaDesactivado() != null
+						? habitacionDTO.getFechaHastaCuandoEstaDesactivado()
+						: "Indefinido";
+			}
+			model.addRow(fila);
+		});
 		table.setModel(model);
 	}
 }

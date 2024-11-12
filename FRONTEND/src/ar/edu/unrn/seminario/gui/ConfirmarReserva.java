@@ -1,27 +1,26 @@
 package ar.edu.unrn.seminario.gui;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.awt.event.ActionEvent;
-import com.toedter.calendar.JDateChooser;
-import java.util.ArrayList;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
@@ -30,9 +29,6 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
-import java.util.Random;
 
 @SuppressWarnings("unused")
 public class ConfirmarReserva extends JFrame {
@@ -150,10 +146,8 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(btnRealizarPago);
 
 			JButton btnCancelar = new JButton("Cancelar");
-			btnCancelar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					dispose();
-				}
+			btnCancelar.addActionListener(e -> {
+				dispose();
 			});
 			btnCancelar.setBounds(270, 407, 85, 21);
 			panel.add(btnCancelar);
@@ -162,8 +156,8 @@ public class ConfirmarReserva extends JFrame {
 			scrollPane.setBounds(167, 36, 315, 288);
 			panel.add(scrollPane);
 
-			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-					"Numero de Habitacion" });
+			modelo = new DefaultTableModel(new Object[][] {},
+					new String[] { "Camas", "Descripcion", "Precio", "Numero de Habitacion" });
 			tabla_Habitaciones = new JTable(modelo);
 			scrollPane.setViewportView(tabla_Habitaciones);
 			try {
@@ -206,7 +200,7 @@ public class ConfirmarReserva extends JFrame {
 			textFieldUsuario.setBounds(10, 36, 137, 20);
 			panel.add(textFieldUsuario);
 			textFieldUsuario.setColumns(10);
-			textFieldUsuario.setText("María");
+			textFieldUsuario.setText("mariag");
 			textFieldUsuario.setEditable(false);
 
 			JLabel lblNewLabel = new JLabel("Usuario");
@@ -240,17 +234,15 @@ public class ConfirmarReserva extends JFrame {
 
 	private void llenarTabla() {
 		modelo.setRowCount(0);
-		habitaciones.stream()
-				.sorted(Comparator.comparingInt(h -> h.getNumHabitacion()))
-				.forEach(habitacionDTO -> {
-					Object[] fila = new Object[4];
-					fila[0] = habitacionDTO.getCantidadDeCamas();
-					fila[1] = habitacionDTO.getDescripcion();
-					fila[2] = habitacionDTO.getPrecio();
-					fila[3] = habitacionDTO.getNumHabitacion();
+		habitaciones.stream().sorted(Comparator.comparingInt(h -> h.getNumHabitacion())).forEach(habitacionDTO -> {
+			Object[] fila = new Object[4];
+			fila[0] = habitacionDTO.getCantidadDeCamas();
+			fila[1] = habitacionDTO.getDescripcion();
+			fila[2] = habitacionDTO.getPrecio();
+			fila[3] = habitacionDTO.getNumHabitacion();
 
-					modelo.addRow(fila);
-				});
+			modelo.addRow(fila);
+		});
 		tabla_Habitaciones.setModel(modelo);
 	}
 
@@ -291,8 +283,7 @@ public class ConfirmarReserva extends JFrame {
 		String[] serviciosObtenido = { "Desayuno" };
 		try {
 			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),
-					texFilFechaSalida.getText(),
-					fechaReserva, cantidadPersonas, serviciosObtenido, true);
+					texFilFechaSalida.getText(), fechaReserva, cantidadPersonas, serviciosObtenido, true);
 			dispose();
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
 				| PrecioCeroExeption e) {

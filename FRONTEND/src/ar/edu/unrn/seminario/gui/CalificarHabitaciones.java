@@ -1,8 +1,5 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -76,10 +73,8 @@ public class CalificarHabitaciones extends JFrame {
 		comboBox.addItem(3);
 		comboBox.addItem(4);
 		comboBox.addItem(5);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				comboBox.getSelectedIndex();
-			}
+		btnNewButton_1.addActionListener(e -> {
+			comboBox.getSelectedIndex();
 		});
 
 	}

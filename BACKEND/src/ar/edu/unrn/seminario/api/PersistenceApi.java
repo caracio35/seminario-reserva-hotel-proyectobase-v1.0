@@ -220,24 +220,15 @@ public class PersistenceApi implements IApi {
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		Set<Habitacion> ListaHabitaciones = habitacion.findAll();
 		List<HabitacionDTO> listaHabitacionesDTO = ListaHabitaciones.stream()
-				.map(h -> new HabitacionDTO(
-						h.getCantidadDeCamas(),
-						h.getDescripcion(),
-						h.getPrecio(),
-						h.isHabilitado(),
-						h.getNumHabitaciones(),
-						mapearCaracteriticasDTO(h),
-						tranformaFechaString(h)))
+				.map(h -> new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(), h.isHabilitado(),
+						h.getNumHabitaciones(), mapearCaracteriticasDTO(h), tranformaFechaString(h)))
 				.collect(Collectors.toList());
 		return listaHabitacionesDTO;
 	}
 
 	private List<CaracteristicaEspecialDTO> mapearCaracteriticasDTO(Habitacion h) {
 		List<CaracteristicaEspecialDTO> car = h.getCaracteristicasEspeciale().stream()
-				.map(c -> new CaracteristicaEspecialDTO(
-						c.getNombre(),
-						c.getDescripcion(),
-						c.getPrecio()))
+				.map(c -> new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(), c.getPrecio()))
 				.collect(Collectors.toList());
 		return car;
 	}
@@ -266,10 +257,7 @@ public class PersistenceApi implements IApi {
 		Set<CaracteristicaEspecial> caracteristicas = i.findAll();
 
 		List<CaracteristicaEspecialDTO> car = caracteristicas.stream()
-				.map(c -> new CaracteristicaEspecialDTO(
-						c.getNombre(),
-						c.getDescripcion(),
-						c.getPrecio()))
+				.map(c -> new CaracteristicaEspecialDTO(c.getNombre(), c.getDescripcion(), c.getPrecio()))
 				.collect(Collectors.toList());
 		return car;
 	}
@@ -282,9 +270,9 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption,
-			ErrorConsultaExeption {
+			int numHabitacion, String[] caracteristicas)
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
@@ -313,16 +301,15 @@ public class PersistenceApi implements IApi {
 		HabitacionDAO hDao = new ImplementacionHabitacionDAO();
 		Habitacion h = hDao.find(numeroHabitacion);
 		HabitacionDTO hDTO = new HabitacionDTO(h.getCantidadDeCamas(), h.getDescripcion(), h.getPrecio(),
-				h.isHabilitado(), h.getNumHabitaciones(), mapearCaracteriticasDTO(h),
-				tranformaFechaString(h));
+				h.isHabilitado(), h.getNumHabitaciones(), mapearCaracteriticasDTO(h), tranformaFechaString(h));
 		return hDTO;
 	}
 
 	@Override
 	public void modificarHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
-			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption,
-			ErrorDatosNoEncontradosExeption {
+			int numHabitacion, String[] caracteristicas)
+			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, DuplicadaExeption, ErrorDatosNoEncontradosExeption {
 
 		ImplementacionHabitacionDAO habitacion = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicaDAO = new ImplementacionCaracteristicasEspecialDAO();
@@ -398,45 +385,29 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		Set<Reserva> listaReseva = reservaDAO.findAll();
-		List<ReservaDTO> reservasDTOS = listaReseva.stream()
-				.map(r -> {
-					DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		List<ReservaDTO> reservasDTOS = listaReseva.stream().map(r -> {
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-					int[] numHabitaciones = r.getHabitacion().stream()
-							.mapToInt(Habitacion::getNumHabitaciones)
-							.toArray();
+			int[] numHabitaciones = r.getHabitacion().stream().mapToInt(Habitacion::getNumHabitaciones).toArray();
 
-					String[] servicios = r.getServicios().stream()
-							.map(Servicio::getNombre)
-							.toArray(String[]::new);
+			String[] servicios = r.getServicios().stream().map(Servicio::getNombre).toArray(String[]::new);
 
-					Calificacion calificacion = r.getCalificacion();
-					CalificacionDTO calificacionDTO = new CalificacionDTO(
-							calificacion.getValor(),
-							calificacion.getComentario());
+			Calificacion calificacion = r.getCalificacion();
+			CalificacionDTO calificacionDTO = new CalificacionDTO(calificacion.getValor(),
+					calificacion.getComentario());
 
-					ReservaDTO reservaDTO = new ReservaDTO(
-							numHabitaciones,
-							r.getUsuario().getNombre(),
-							r.getFechaDeInicio().format(formato),
-							r.getFechaDESalida().format(formato),
-							r.getCantidadDePersonas(),
-							servicios,
-							r.isCheckIn(),
-							r.isCheckOut(),
-							1,
-							r.getFechaDeReserva().format(formato),
-							null,
-							r.getPagoMinimo(),
-							r.getId());
+			ReservaDTO reservaDTO = new ReservaDTO(numHabitaciones, r.getUsuario().getNombre(),
+					r.getFechaDeInicio().format(formato), r.getFechaDESalida().format(formato),
+					r.getCantidadDePersonas(), servicios, r.isCheckIn(), r.isCheckOut(), 1,
+					r.getFechaDeReserva().format(formato), null, r.getPagoMinimo(), r.getId());
 
-					reservaDTO.setCalificacion(calificacionDTO);
-					return reservaDTO;
-				})
-				.collect(Collectors.toList());
+			reservaDTO.setCalificacion(calificacionDTO);
+			return reservaDTO;
+		}).collect(Collectors.toList());
 		return reservasDTOS;
 	}
 
@@ -457,5 +428,11 @@ public class PersistenceApi implements IApi {
 
 		// Persist the changes
 		reservaDAO.update(reserva);
+	}
+
+	@Override
+	public void modificarFalse() {
+		this.habitacionAModificar = 0;
+
 	}
 }
