@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
@@ -112,14 +113,15 @@ public class CargarHabitacion extends JFrame {
 				} else if (buttonDesabilitado.isSelected()) {
 					habilitado = false;
 				}
+
 				List<String> caracteristicasSeleccionadas = new ArrayList<>();
-				for (int i = 0; i < table.getRowCount(); i++) {
+				IntStream.range(0, table.getRowCount()).forEach(i -> {
 					String nombreCaracteristica = (String) table.getValueAt(i, 0);
 					Boolean estado = (Boolean) table.getValueAt(i, 1);
 					if (estado != null && estado) {
 						caracteristicasSeleccionadas.add(nombreCaracteristica);
 					}
-				}
+				});
 
 				String[] caracteristicas = caracteristicasSeleccionadas.toArray(new String[0]);
 
