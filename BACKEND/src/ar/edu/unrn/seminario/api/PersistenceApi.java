@@ -420,7 +420,7 @@ public class PersistenceApi implements IApi {
 
 					ReservaDTO reservaDTO = new ReservaDTO(
 							numHabitaciones,
-							"juan",
+							r.getUsuario().getNombre(),
 							r.getFechaDeInicio().format(formato),
 							r.getFechaDESalida().format(formato),
 							r.getCantidadDePersonas(),

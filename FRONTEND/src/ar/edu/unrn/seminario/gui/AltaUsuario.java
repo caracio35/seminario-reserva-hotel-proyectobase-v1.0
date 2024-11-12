@@ -67,29 +67,29 @@ public class AltaUsuario extends JFrame {
 		contrasenaTextField.setColumns(10);
 
 		JButton aceptarButton = new JButton("Aceptar");
-		aceptarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		aceptarButton.addActionListener(e -> {
+			RolDTO rol = roles.get(rolComboBox.getSelectedIndex());
 
-				RolDTO rol = roles.get(rolComboBox.getSelectedIndex());
+			api.registrarUsuario(usuarioTextField.getText(),
+					contrasenaTextField.getText(),
+					nombreTextField.getText(),
+					emailTextField.getText(),
+					rol.getCodigo());
 
-				api.registrarUsuario(usuarioTextField.getText(), contrasenaTextField.getText(),
-						nombreTextField.getText(), emailTextField.getText(), rol.getCodigo());
-				JOptionPane.showMessageDialog(null, "Usuario registrado con exito!", "Info",
-						JOptionPane.INFORMATION_MESSAGE);
-				setVisible(false);
-				dispose();
-
-			}
+			JOptionPane.showMessageDialog(null,
+					"Usuario registrado con exito!",
+					"Info",
+					JOptionPane.INFORMATION_MESSAGE);
+			setVisible(false);
+			dispose();
 		});
 		aceptarButton.setBounds(218, 215, 97, 25);
 		contentPane.add(aceptarButton);
 
 		JButton cancelarButton = new JButton("Cancelar");
-		cancelarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				dispose();
-			}
+		cancelarButton.addActionListener((e) -> {
+			setVisible(false);
+			dispose();
 		});
 		cancelarButton.setBounds(323, 215, 97, 25);
 		contentPane.add(cancelarButton);

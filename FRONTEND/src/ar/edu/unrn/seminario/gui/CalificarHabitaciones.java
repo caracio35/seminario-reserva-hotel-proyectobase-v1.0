@@ -47,10 +47,8 @@ public class CalificarHabitaciones extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		JButton btnNewButton = new JButton("Cancelar ");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
+		btnNewButton.addActionListener((e) -> {
+			dispose();
 		});
 		btnNewButton.setBounds(232, 243, 89, 23);
 		contentPane.add(btnNewButton);
