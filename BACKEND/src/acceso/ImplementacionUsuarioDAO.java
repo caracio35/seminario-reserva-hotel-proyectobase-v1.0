@@ -10,6 +10,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.UsuarioDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
@@ -30,13 +31,13 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario find(String usuario) {
+	public Usuario find(String usuario) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		String usu = usuario;
 		Connection miConexion = null;
 		PreparedStatement pStamentConsultaUsuario = null;
 		ResultSet rs = null;
+		miConexion = Coneccion.conectar();
 		try {
-			miConexion = Coneccion.conectar();
 			pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorNombre);
 			pStamentConsultaUsuario.setString(1, usu);
 			rs = pStamentConsultaUsuario.executeQuery();
@@ -56,13 +57,13 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 			pStamentConsultaUsuario.execute();
 			pStamentConsultaUsuario.close();
 		} catch (SQLException e) {
-			System.out.println("faloooooooosda");
+			throw new ErrorDatosNoEncontradosExeption("Usuario no encontrado");
 		} finally {
 			if (miConexion != null) {
 				try {
 					miConexion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 
@@ -82,12 +83,12 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario find(int idUsuario) {
+	public Usuario find(int idUsuario) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsultaUsuario = null;
 		ResultSet rs = null;
+		miConexion = Coneccion.conectar();
 		try {
-			miConexion = Coneccion.conectar();
 			pStamentConsultaUsuario = (PreparedStatement) miConexion.prepareStatement(buscarUsuarioPorId);
 			pStamentConsultaUsuario.setInt(1, idUsuario);
 			rs = pStamentConsultaUsuario.executeQuery();
@@ -104,7 +105,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				return new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al buscar usuario por ID");
+			throw new ErrorDatosNoEncontradosExeption("Usuario no encontrado");
 		} finally {
 			try {
 				if (rs != null)
@@ -114,7 +115,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				if (miConexion != null)
 					miConexion.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar la conexión");
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 		return null;

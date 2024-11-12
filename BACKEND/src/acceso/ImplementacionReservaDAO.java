@@ -18,6 +18,8 @@ import ar.edu.unrn.seminario.api.ReservaDAO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
@@ -49,12 +51,12 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	private static final String SELECT_CALIFICACION_BY_RESERVA = "SELECT id, reserva_id, puntaje, descripcion FROM Calificacion WHERE reserva_id = ?";
 
 	@Override
-	public void create(Reserva reserva) {
+	public void create(Reserva reserva) throws ConexionFallidaExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStamentConsutaCreaReserva = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
-			miConeccion.setAutoCommit(false);
+					
 			pStamentConsutaCreaReserva = (PreparedStatement) miConeccion.prepareStatement(crearReserva,
 					Statement.RETURN_GENERATED_KEYS);
 
@@ -78,19 +80,17 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			}
 			insertRooms(reservaId, reserva, miConeccion);
 			insertServices(reservaId, reserva, miConeccion);
-			miConeccion.commit();
+			
 
 		} catch (SQLException e) {
 			try {
 				if (miConeccion != null) {
 					miConeccion.rollback();
-					System.out.println("hizo rolsasfd");
+					
 				}
 			} catch (SQLException ex) {
-				System.out.println("Error al hacer rollback");
-				ex.printStackTrace();
+				throw new ConexionFallidaExeption();
 			}
-			e.printStackTrace();
 		} finally {
 			try {
 				if (pStamentConsutaCreaReserva != null)
@@ -98,17 +98,17 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (miConeccion != null)
 					miConeccion.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar la conexión");
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 	}
 
 	@Override
-	public void update(Reserva reserva) {
+	public void update(Reserva reserva) throws ConexionFallidaExeption, ErrorConsultaExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStamentUpdateReserva = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
 			String updateReservaSql = "UPDATE reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
 					"cantidadDePersonas = ?, pagoMinimo = ? WHERE id = ?";
 			pStamentUpdateReserva = (PreparedStatement) miConeccion.prepareStatement(updateReservaSql);
@@ -127,8 +127,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				System.out.println("No se pudo encontrar la reserva para actualizar.");
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al actualizar la reserva: " + e.getMessage());
-			e.printStackTrace();
+			throw new ErrorConsultaExeption();
 		} finally {
 			try {
 				if (pStamentUpdateReserva != null)
@@ -136,18 +135,18 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (miConeccion != null)
 					miConeccion.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar la conexión después de la actualización.");
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 	}
 
 	@Override
-	public Optional<Reserva> find(int idReserva) {
+	public Optional<Reserva> find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection conn = null;
 		Reserva reserva = null;
-
+		conn = Coneccion.conectar();
 		try {
-			conn = Coneccion.conectar();
+			
 			String sqlReserva = "SELECT * FROM Reserva WHERE id = ?";
 			try (PreparedStatement stmtReserva = (PreparedStatement) conn.prepareStatement(sqlReserva)) {
 				stmtReserva.setInt(1, idReserva);
@@ -183,8 +182,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al encontrar la reserva con ID " + idReserva + ": " + e.getMessage());
-			e.printStackTrace();
+			throw new ErrorDatosNoEncontradosExeption();
 		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
 			System.out.println("Error de consistencia en los datos de la reserva: " + e.getMessage());
 		} finally {
@@ -192,7 +190,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar la conexión después de buscar la reserva.");
+				throw new ConexionFallidaExeption("Error al cerrar los datos");
 			}
 		}
 
@@ -205,10 +203,10 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	}
 
 	@Override
-	public Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+	public Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Set<Reserva> reservas = new HashSet<>();
-
-		try (Connection conn = Coneccion.conectar();
+		Connection conn = Coneccion.conectar();
+		try (
 				java.sql.PreparedStatement stmtReservas = conn.prepareStatement(SELECT_ALL_RESERVAS);
 				ResultSet rsReservas = stmtReservas.executeQuery()) {
 
@@ -249,8 +247,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Error al obtener todas las reservas: " + e.getMessage());
-			e.printStackTrace();
+			throw new ErrorDatosNoEncontradosExeption();
 		}
 
 		return reservas;
@@ -339,7 +336,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		return Optional.empty();
 	}
 
-	private void insertRooms(int reservaId, Reserva r, Connection miConeccion) {
+	private void insertRooms(int reservaId, Reserva r, Connection miConeccion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 
 		PreparedStatement pStamentBuscarHabitacion = null;
 		PreparedStatement pStamentConsutaInsertaHabitacion = null;
@@ -360,7 +357,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			try {
 				if (rsHabitacion != null)
@@ -370,12 +367,12 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (pStamentConsutaInsertaHabitacion != null)
 					pStamentConsutaInsertaHabitacion.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar los recursos");
+				throw new ConexionFallidaExeption("Error al cerrar los Recursos");
 			}
 		}
 	}
 
-	public Optional<Calificacion> findCalificacionByReservaId(int reservaId, Connection conn) {
+	public Optional<Calificacion> findCalificacionByReservaId(int reservaId, Connection conn) throws ErrorDatosNoEncontradosExeption {
 		Calificacion calificacion = null;
 
 		try (java.sql.PreparedStatement stmt = conn.prepareStatement(SELECT_CALIFICACION_BY_RESERVA)) {
@@ -390,14 +387,14 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				calificacion = new Calificacion(valor, comentario, idReservaFK);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al recuperar la calificación: " + e.getMessage());
+			throw new ErrorDatosNoEncontradosExeption("Problemas al buscar la calificacion");
 
 		}
 
 		return Optional.ofNullable(calificacion);
 	}
 
-	private void insertServices(int reservaId, Reserva r, Connection miConeccion) {
+	private void insertServices(int reservaId, Reserva r, Connection miConeccion) throws ErrorConsultaExeption, ConexionFallidaExeption {
 		PreparedStatement pStamentBuscarServicio = null;
 		PreparedStatement pStamentConsutaInsertaServicio = null;
 		ResultSet rsServicio = null;
@@ -418,7 +415,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ErrorConsultaExeption("Error al cargar servicios");
 		} finally {
 			try {
 				if (rsServicio != null)
@@ -428,7 +425,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (pStamentConsutaInsertaServicio != null)
 					pStamentConsutaInsertaServicio.close();
 			} catch (SQLException e) {
-				System.out.println("Error al cerrar los recursos");
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 	}

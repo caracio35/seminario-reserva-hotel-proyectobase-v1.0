@@ -376,7 +376,7 @@ public class PersistenceApi implements IApi {
 		return habitacion;
 	}
 
-	private Servicio buscarServicio(String nombre) {
+	private Servicio buscarServicio(String nombre) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementaionServicioDAO servicioDAO = new ImplementaionServicioDAO();
 		Servicio servicio = servicioDAO.find(nombre);
 		return servicio;
@@ -398,7 +398,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		Set<Reserva> listaReseva = reservaDAO.findAll();
 		List<ReservaDTO> reservasDTOS = listaReseva.stream()

@@ -22,7 +22,9 @@ import com.toedter.calendar.JDateChooser;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ReservaDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 import javax.swing.JCheckBox;
@@ -72,7 +74,9 @@ public class VerReservas extends JFrame {
         table = new JTable(model);
         scrollPane.setViewportView(table);
 
-        List<ReservaDTO> reservas = api.obtenerReserva();
+        List<ReservaDTO> reservas;
+		try {
+			reservas = api.obtenerReserva();
 
         for (ReservaDTO reserva : reservas) {
             Object[] rowData = new Object[8]; // Changed from 7 to 8 to accommodate the new column
@@ -87,6 +91,10 @@ public class VerReservas extends JFrame {
 
             model.addRow(rowData);
         }
+		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
+				| PrecioCeroExeption e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 
         JButton btnMostrarDetalles = new JButton("Mostrar Detalles");
         btnMostrarDetalles.setBounds(10, 200, 150, 25);

@@ -206,7 +206,7 @@ public class ConfirmarReserva extends JFrame {
 			textFieldUsuario.setBounds(10, 36, 137, 20);
 			panel.add(textFieldUsuario);
 			textFieldUsuario.setColumns(10);
-			textFieldUsuario.setText("mariag");
+			textFieldUsuario.setText("María");
 			textFieldUsuario.setEditable(false);
 
 			JLabel lblNewLabel = new JLabel("Usuario");

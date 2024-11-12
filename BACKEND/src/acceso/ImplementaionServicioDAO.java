@@ -11,6 +11,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.ServicioDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Servicio;
 
 @SuppressWarnings("unused")
@@ -23,12 +24,12 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	private final static String modificarServicio = "UPDATE servicio SET nombre = ? ,precio = ?, descripcion = ? WHERE id = ?";
 
 	@Override
-	public void create(Servicio servicio) {
+	public void create(Servicio servicio) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Servicio s = servicio;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
 			pStament = (PreparedStatement) miConeccion.prepareStatement(nuevoServicio);
 
 			pStament.setString(1, s.getNombre());
@@ -39,13 +40,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.close();
 
 		} catch (Exception e) {
-			System.out.println("no se subio" + e.getMessage());
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -53,12 +54,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	}
 
 	@Override
-	public void update(Servicio servicio) {
+	public void update(Servicio servicio) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Servicio c = servicio;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+
 			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarServicio);
 			pStament.setInt(1, 0);
 			pStament.setString(1, c.getDescripcion());
@@ -68,13 +70,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.close();
 
 		} catch (Exception e) {
-			System.out.println("no se subio" + e.getMessage());
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -82,12 +84,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	}
 
 	@Override
-	public Servicio find(String nombre) {
+	public Servicio find(String nombre) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		String n = nombre;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarServicio);
 			pStament.setString(1, n);
 			ResultSet rs = pStament.executeQuery();
@@ -103,13 +106,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.close();
 
 		} catch (SQLException e) {
-			System.out.println("excepcion propia ");
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -117,24 +120,25 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	}
 
 	@Override
-	public void remove(int id) {
+	public void remove(int id) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarServicio);
 			pStament.setInt(1, id);
 			pStament.executeUpdate();
 			pStament.close();
 
 		} catch (SQLException e) {
-			System.out.println("excepcion propia ");
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -142,12 +146,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 	}
 
 	@Override
-	public Set<Servicio> findAll() {
+	public Set<Servicio> findAll() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Set<Servicio> servicioList = new HashSet<>();
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarTodasLosServicios);
 
 			ResultSet rs = pStament.executeQuery();
@@ -165,13 +170,13 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			pStament.close();
 
 		} catch (SQLException e) {
-			System.out.println("excepcion propia ");
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}

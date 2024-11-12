@@ -26,13 +26,11 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 		miConexion = Coneccion.conectar();
 		try {
 
-			miConexion.setAutoCommit(false);
 			pStamentConsutaCrearCalificacion = (PreparedStatement) miConexion.prepareStatement(nuevoCalificacion);
 			pStamentConsutaCrearCalificacion.setInt(1, idReserva);
 			pStamentConsutaCrearCalificacion.setInt(2, calificacion.getValor());
 			pStamentConsutaCrearCalificacion.setString(3, calificacion.getComentario());
 			pStamentConsutaCrearCalificacion.executeUpdate();
-			miConexion.commit();
 
 		} catch (SQLException e) {
 			try {

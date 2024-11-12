@@ -71,7 +71,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				System.out.println("Error al hacer rollback");
 				throw new ConexionFallidaExeption();
 			}
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				if (pStamentConsutaCreaHabitacion != null)
@@ -79,7 +79,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				if (miConeccion != null)
 					miConeccion.close();
 			} catch (SQLException e) {
-				throw new ConexionFallidaExeption();
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 	}
@@ -144,7 +144,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					throw new ConexionFallidaExeption();
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -186,7 +186,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					throw new ConexionFallidaExeption();
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -211,7 +211,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					throw new ConexionFallidaExeption();
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}

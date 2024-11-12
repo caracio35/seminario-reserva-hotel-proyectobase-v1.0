@@ -50,7 +50,7 @@ public class ImplementacionFacturaDAO implements FacturaDAO {
 				if (miConeccion != null)
 					miConeccion.close();
 			} catch (SQLException e) {
-				throw new ConexionFallidaExeption();
+				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
 		}
 

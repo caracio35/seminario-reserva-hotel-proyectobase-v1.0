@@ -117,7 +117,7 @@ public interface IApi {
 	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
 			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
-	List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
+	List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception;
 
