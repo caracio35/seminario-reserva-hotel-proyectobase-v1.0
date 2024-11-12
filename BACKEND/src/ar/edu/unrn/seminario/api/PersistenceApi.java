@@ -401,36 +401,42 @@ public class PersistenceApi implements IApi {
 	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		Set<Reserva> listaReseva = reservaDAO.findAll();
-		List<ReservaDTO> reservasDTOS = new ArrayList<>();
-		for (Reserva r : listaReseva) {
-			List<Integer> numHabitacioList = new ArrayList<>();
-			List<String> nombreServicio = new ArrayList<>();
-			List<String> nombreCaracteriticas = new ArrayList<>();
-			Calificacion calificacion = r.getCalificacion();
-			CalificacionDTO calificacionDTO = new CalificacionDTO(calificacion.getValor(),
-					calificacion.getComentario());
-			for (Habitacion h : r.getHabitacion()) {
-				numHabitacioList.add(h.getNumHabitaciones());
-			}
-			for (Servicio s : r.getServicios()) {
-				nombreServicio.add(s.getNombre());
-			}
-			int[] numHabitacio = numHabitacioList.stream().mapToInt(Integer::intValue).toArray();
-			String[] servicios = nombreServicio.stream().toArray(String[]::new);
-			LocalDate fechaInicio = r.getFechaDeInicio();
-			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			String fecha1 = fechaInicio.format(formato);
-			LocalDate fechaFin = r.getFechaDESalida();
-			String fecha2 = fechaFin.format(formato);
-			LocalDate fechaReserva = r.getFechaDeReserva();
-			String fecha3 = fechaReserva.format(formato);
-			ReservaDTO reservaDTO = new ReservaDTO(numHabitacio, "juan", fecha1, fecha2, r.getCantidadDePersonas(),
-					servicios, r.isCheckIn(), r.isCheckOut(), 1,
-					fecha3, null, r.getPagoMinimo(), r.getId());
-			reservaDTO.setCalificacion(calificacionDTO);
-			reservasDTOS.add(reservaDTO);
+		List<ReservaDTO> reservasDTOS = listaReseva.stream()
+				.map(r -> {
+					DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		}
+					int[] numHabitaciones = r.getHabitacion().stream()
+							.mapToInt(Habitacion::getNumHabitaciones)
+							.toArray();
+
+					String[] servicios = r.getServicios().stream()
+							.map(Servicio::getNombre)
+							.toArray(String[]::new);
+
+					Calificacion calificacion = r.getCalificacion();
+					CalificacionDTO calificacionDTO = new CalificacionDTO(
+							calificacion.getValor(),
+							calificacion.getComentario());
+
+					ReservaDTO reservaDTO = new ReservaDTO(
+							numHabitaciones,
+							"juan",
+							r.getFechaDeInicio().format(formato),
+							r.getFechaDESalida().format(formato),
+							r.getCantidadDePersonas(),
+							servicios,
+							r.isCheckIn(),
+							r.isCheckOut(),
+							1,
+							r.getFechaDeReserva().format(formato),
+							null,
+							r.getPagoMinimo(),
+							r.getId());
+
+					reservaDTO.setCalificacion(calificacionDTO);
+					return reservaDTO;
+				})
+				.collect(Collectors.toList());
 		return reservasDTOS;
 	}
 
