@@ -153,7 +153,16 @@ public class BusquedaDeHabitaciones extends JFrame {
 					habitacionesSeleccionadas.add(numeroHabitacion);
 				}
 			}
-			JOptionPane.showMessageDialog(null, "habitaciones seleccionadas" + habitacionesSeleccionadas);
+
+			if (habitacionesSeleccionadas.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitacion.");
+				return;
+			}
+			if (fechaReservaInicio == null || fechaReservaFin == null) {
+				JOptionPane.showMessageDialog(null, "Por favor, seleccione un periodo.");
+				return;
+			}
+
 			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, null, api,
 					habitacionesSeleccionadas);
 			confirmacion.setVisible(true);
