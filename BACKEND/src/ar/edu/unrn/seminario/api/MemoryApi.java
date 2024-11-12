@@ -516,8 +516,8 @@ public class MemoryApi implements IApi {
 		if (habitacionOptenida != null) {
 
 			habitaciones.remove(habitacionOptenida);
-			Habitacion nuevaHabitacion = new Habitacion(cantidadCamas, descripcion, precio, estado,
-					numeroHabitacion, caracteristica);
+			Habitacion nuevaHabitacion = new Habitacion(cantidadCamas, descripcion, precio, estado, numeroHabitacion,
+					caracteristica);
 			habitaciones.add(nuevaHabitacion);
 
 		}
@@ -610,6 +610,12 @@ public class MemoryApi implements IApi {
 	public void updateCalificacionReserva(int reservaId, int ratingValue) {
 
 		throw new UnsupportedOperationException("Unimplemented method 'updateCalificacionReserva'");
+	}
+
+	@Override
+	public void modificarFalse() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
