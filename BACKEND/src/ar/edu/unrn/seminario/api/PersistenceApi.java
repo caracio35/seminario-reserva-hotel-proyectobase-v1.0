@@ -277,7 +277,6 @@ public class PersistenceApi implements IApi {
 						c.getNombre(),
 						c.getDescripcion(),
 						c.getPrecio()))
-				.sorted(Comparator.comparing(c -> c.getNombre()))
 				.collect(Collectors.toList());
 
 		return car;

@@ -74,7 +74,7 @@ public class CargarHabitacion extends JFrame {
 			if (modificar == false) {
 				textFieldNumeroHabitacion.setEditable(true);
 			} else {
-				textFieldNumeroHabitacion.setEditable(true);
+				textFieldNumeroHabitacion.setEditable(false);
 			}
 			textFieldCamas.setBounds(10, 215, 150, 21);
 			panel.add(textFieldCamas);
@@ -92,7 +92,7 @@ public class CargarHabitacion extends JFrame {
 			buttonDesabilitado.setBounds(314, 37, 109, 23);
 			panel.add(buttonDesabilitado);
 
-			// setear el boton en true por defecto
+			
 			buttonHabilitado.setSelected(true);
 			buttonHabilitado.setBounds(203, 39, 109, 23);
 			panel.add(buttonHabilitado);
@@ -100,7 +100,7 @@ public class CargarHabitacion extends JFrame {
 			group.add(buttonDesabilitado);
 			group.add(buttonHabilitado);
 			
-			JButton btnSubirInformacion = new JButton("Subir Informacion");
+			JButton btnSubirInformacion = new JButton("Cargar");
 			btnSubirInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -142,7 +142,7 @@ public class CargarHabitacion extends JFrame {
 							JOptionPane.showConfirmDialog(null, e1.getMessage());
 						}
 					} else {
-						// Dentro del ActionListener del botón btnSubirInformacion
+						
 						if (modificar == true) {
 							try {
 								api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
@@ -152,23 +152,15 @@ public class CargarHabitacion extends JFrame {
 										Integer.parseInt(textFieldNumeroHabitacion.getText()),
 										caracteristicas);
 
-								// Mostrar mensaje de éxito
+								
 								JOptionPane.showMessageDialog(null,
 										"Habitación modificada exitosamente",
 										"Éxito",
 										JOptionPane.INFORMATION_MESSAGE);
 
-								// Cerrar la ventana actual
+								
 								dispose();
 
-								// Actualizar la lista de habitaciones
-								// Opción 1: Actualizar la ventana principal
-								((ListadoHabitaciones) getParent()).llenarTabla();
-
-								// Opción 2: Si no tienes acceso directo a ListadoHabitaciones
-								// puedes crear una nueva instancia
-								// ListadoHabitaciones listado = new ListadoHabitaciones(api);
-								// listado.setVisible(true);
 
 							} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
 									| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
@@ -179,19 +171,6 @@ public class CargarHabitacion extends JFrame {
 					}
 				}
 
-				private List<CaracteristicaEspecialDTO> obtenerListaCaracteristicas() {
-					List<CaracteristicaEspecialDTO> caracteristicas = new ArrayList<>();
-					List<String> nombresCaracteristicas = new ArrayList<>();
-					for (int i = 0; i < table.getRowCount(); i++) {
-						String nombreCaracteristica = (String) table.getValueAt(i, 0);
-						Boolean estado = (Boolean) table.getValueAt(i, 1);
-						if (estado != null && estado) {
-							nombresCaracteristicas.add(nombreCaracteristica);
-						}
-					}
-					caracteristicas = api.obtenerCaracteristica(nombresCaracteristicas);
-					return caracteristicas;
-				}
 			}
 
 			);
@@ -231,18 +210,13 @@ public class CargarHabitacion extends JFrame {
 			scrollPane.setBounds(203, 69, 239, 207);
 			panel.add(scrollPane);
 
-			table = new JTable(new DefaultTableModel(new Object[][] {}, new String[] { "Habitación", "Seleccionar" }) {
+			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
 				public boolean isCellEditable(int row, int column) {
-					return column == 1; // Permitir editar solo la columna de los checkboxes
+					return column != 0;
 				}
-
-				public Class<?> getColumnClass(int columnIndex) {
-					if (columnIndex == 1) {
-						return Boolean.class; // Hacer que la segunda columna sea de tipo Boolean
-					}
-					return String.class; // La primera columna es de tipo String para el nombre de la habitación
-				}
-			});
+			};
+			table = new JTable(modelo);
+			scrollPane.setViewportView(table); // Establecer la vista de la tabla correctamente
 			this.cargarCaracteristicaEspecial();
 			table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
@@ -300,7 +274,6 @@ public class CargarHabitacion extends JFrame {
 			modelo.addRow(fila);
 		}
 	}
-
 	private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
@@ -310,5 +283,4 @@ public class CargarHabitacion extends JFrame {
 			return this;
 		}
 	}
-
 }
