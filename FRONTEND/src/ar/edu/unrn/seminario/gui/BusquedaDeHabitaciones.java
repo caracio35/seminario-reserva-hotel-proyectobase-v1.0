@@ -31,6 +31,7 @@ import ar.edu.unrn.seminario.dto.HabitacionDTO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 
+@SuppressWarnings("unused")
 public class BusquedaDeHabitaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -56,7 +57,6 @@ public class BusquedaDeHabitaciones extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("serial")
 	public BusquedaDeHabitaciones(IApi api) {
 		this.api = api;
 

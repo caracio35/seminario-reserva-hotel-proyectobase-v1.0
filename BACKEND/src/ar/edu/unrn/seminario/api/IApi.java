@@ -18,6 +18,7 @@ import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.Reserva;
 
+@SuppressWarnings("unused")
 public interface IApi {
 
 	HabitacionDTO dameLaHabitacion();

@@ -79,7 +79,6 @@ public class VentanaPrincipal extends JFrame {
 					listaHabitaciones = new ListadoHabitaciones(api);
 					listaHabitaciones.setVisible(true);
 				} catch (ConexionFallidaExeption e1) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 
@@ -107,8 +106,7 @@ public class VentanaPrincipal extends JFrame {
 				try {
 					misReservas = new VerReservas(api);
 				} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				misReservas.setVisible(true);
 			}

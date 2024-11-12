@@ -23,6 +23,7 @@ import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 
+@SuppressWarnings("unused")
 public class ImplementacionHabitacionDAO implements HabitacionDAO {
 
 	private final static String nuevaHabitacion = "INSERT INTO Habitacion (cantidadDeCamas, descripcion, precio, "

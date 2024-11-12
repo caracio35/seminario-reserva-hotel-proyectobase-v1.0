@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class ConfirmarReserva extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -52,6 +53,7 @@ public class ConfirmarReserva extends JFrame {
 	private List<HabitacionDTO> habitaciones;
 	private JTextField textFieldCantidaPersonas;
 
+	@SuppressWarnings("unchecked")
 	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario, IApi api,
 			java.util.List<Integer> habitacionesSeleccionadas) {
 
@@ -60,7 +62,6 @@ public class ConfirmarReserva extends JFrame {
 			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
 
-			
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 528, 499);
 			contentPane = new JPanel();
@@ -89,6 +90,7 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(textFieldDNIPasaporte);
 			textFieldDNIPasaporte.setColumns(10);
 
+			@SuppressWarnings("rawtypes")
 			JComboBox comboBoxMetodoPago = new JComboBox();
 			// dos metodos de pago en el combobox mercado pago y tarjeta de credito
 			comboBoxMetodoPago.setBounds(10, 217, 137, 21);
@@ -161,21 +163,21 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-					"Numero de Habitacion"});
+					"Numero de Habitacion" });
 			tabla_Habitaciones = new JTable(modelo);
 			scrollPane.setViewportView(tabla_Habitaciones);
 			try {
-				
-			for (Integer numHabitacion : habitacionesSeleccionadas) {
-				habitaciones.add(api.buscarHabitacionDTOPorNumero(numHabitacion));
-				
-			}
-			llenarTabla();
-			} catch(ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+
+				for (Integer numHabitacion : habitacionesSeleccionadas) {
+					habitaciones.add(api.buscarHabitacionDTOPorNumero(numHabitacion));
+
+				}
+				llenarTabla();
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
+					| EnterosEnCeroExeption | PrecioCeroExeption e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
-			
-			
+
 			JLabel lblNombre = new JLabel("Nombre");
 			lblNombre.setBounds(10, 60, 45, 13);
 			panel.add(lblNombre);
@@ -224,11 +226,11 @@ public class ConfirmarReserva extends JFrame {
 			texFilFechaSalida.setColumns(10);
 			texFilFechaSalida.setText(fechaFin);
 			texFilFechaSalida.setEditable(false);
-			
+
 			JLabel lblNewLabel_1 = new JLabel("Personas");
 			lblNewLabel_1.setBounds(9, 346, 46, 14);
 			panel.add(lblNewLabel_1);
-			
+
 			textFieldCantidaPersonas = new JTextField();
 			textFieldCantidaPersonas.setBounds(10, 367, 137, 20);
 			panel.add(textFieldCantidaPersonas);
@@ -246,51 +248,59 @@ public class ConfirmarReserva extends JFrame {
 					fila[1] = habitacionDTO.getDescripcion();
 					fila[2] = habitacionDTO.getPrecio();
 					fila[3] = habitacionDTO.getNumHabitacion();
-					
+
 					modelo.addRow(fila);
 				});
 		tabla_Habitaciones.setModel(modelo);
 	}
+
 	private int[] obtenerNumerosDeHabitacionDesdeTabla() {
-	    int rowCount = modelo.getRowCount();
-	    int[] numerosHabitacion = new int[rowCount];
+		int rowCount = modelo.getRowCount();
+		int[] numerosHabitacion = new int[rowCount];
 
-	    for (int i = 0; i < rowCount; i++) {
-	        numerosHabitacion[i] = (int) modelo.getValueAt(i, 3);
-	    }
+		for (int i = 0; i < rowCount; i++) {
+			numerosHabitacion[i] = (int) modelo.getValueAt(i, 3);
+		}
 
-	    return numerosHabitacion;
+		return numerosHabitacion;
 	}
+
 	private String[] obtenerServiciosDesdeTabla() {
-	    int rowCount = modelo.getRowCount();
-	    String[] servicios = new String[rowCount];
+		int rowCount = modelo.getRowCount();
+		String[] servicios = new String[rowCount];
 
-	    for (int i = 0; i < rowCount; i++) {
-	        // Obtener el servicio de la columna correspondiente (aquí usamos columna 1 para "Descripción")
-	        servicios[i] = (String) modelo.getValueAt(i, 1);
-	    }
+		for (int i = 0; i < rowCount; i++) {
+			// Obtener el servicio de la columna correspondiente (aquí usamos columna 1 para
+			// "Descripción")
+			servicios[i] = (String) modelo.getValueAt(i, 1);
+		}
 
-	    return servicios;
+		return servicios;
 	}
-	//int[] habitacion, String usuario, String fechaInicio, String fechaFin,
-	//String fechaReserva, int cantidadPersonas, String[] servicio, boolean pagoMinimo
+
+	// int[] habitacion, String usuario, String fechaInicio, String fechaFin,
+	// String fechaReserva, int cantidadPersonas, String[] servicio, boolean
+	// pagoMinimo
 	private void generarReserva() {
-		
+
 		LocalDateTime fechaActual = LocalDateTime.now();
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-	    String fechaReserva = fechaActual.format(formato);
-	    int[] numerosHabitacion = obtenerNumerosDeHabitacionDesdeTabla();
-	    int cantidadPersonas = Integer.parseInt(textFieldCantidaPersonas.getText());
-	    String [] serviciosObtenido = {"Desayuno"};
+		String fechaReserva = fechaActual.format(formato);
+		int[] numerosHabitacion = obtenerNumerosDeHabitacionDesdeTabla();
+		int cantidadPersonas = Integer.parseInt(textFieldCantidaPersonas.getText());
+		String[] serviciosObtenido = { "Desayuno" };
 		try {
-			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),texFilFechaSalida.getText(),
-					fechaReserva, cantidadPersonas,serviciosObtenido, true);
+			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),
+					texFilFechaSalida.getText(),
+					fechaReserva, cantidadPersonas, serviciosObtenido, true);
 			dispose();
-		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
+		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
+				| PrecioCeroExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-		
+
 	}
+
 	private void reservarHabitacion(Object roomId) {
 		// Implementa la lógica para reservar una habitación individual
 		System.out.println("Habitación " + roomId + " reservada.");

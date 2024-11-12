@@ -26,6 +26,7 @@ import ar.edu.unrn.seminario.modelo.Reserva;
 import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
+@SuppressWarnings("unused")
 public class ImplementacionReservaDAO implements ReservaDAO {
 
 	private final static String crearReserva = "INSERT INTO reserva (usuario_id, fechaDeInicio, fechaDeSalida, cantidadDePersonas,"
@@ -200,7 +201,6 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 	@Override
 	public void remove(String nombre) {
-		// TODO Auto-generated method stub
 
 	}
 

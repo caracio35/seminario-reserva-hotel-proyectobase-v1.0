@@ -29,8 +29,10 @@ import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
+@SuppressWarnings("unused")
 public class MemoryApi implements IApi {
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private ArrayList<Rol> roles = new ArrayList();
 	private ArrayList<Usuario> usuarios = new ArrayList<>();
 	private Set<Habitacion> habitaciones = new HashSet<>();
@@ -110,13 +112,12 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public UsuarioDTO obtenerUsuario(String username) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void eliminarUsuario(String username) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -141,31 +142,30 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void guardarRol(Integer codigo, String descripcion, boolean estado) {
-		// TODO Auto-generated method stub
+
 		Rol rol = new Rol(codigo, descripcion);
 		this.roles.add(rol);
 	}
 
 	@Override
 	public RolDTO obtenerRolPorCodigo(Integer codigo) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void activarRol(Integer codigo) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void desactivarRol(Integer codigo) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void activarUsuario(String usuario) {
+
 		Usuario user = this.buscarUsuario(usuario);
 
 	}
@@ -290,7 +290,6 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void modificarReserva() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -543,7 +542,6 @@ public class MemoryApi implements IApi {
 
 	@Override
 	public void eliminarCaracteristica(String nombreCaracteristica) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -551,31 +549,29 @@ public class MemoryApi implements IApi {
 	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas) throws NumeroHabitacionExistenteException, CampoVacioExeption,
 			EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public HabitacionDTO dameLaHabitacion() {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'dameLaHabitacion'");
 	}
 
 	@Override
 	public boolean modificamosHabitacion() {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'modificamosHabitacion'");
 	}
 
 	@Override
 	public void habitacionAModificar(int numeroHabitacion) throws ConexionFallidaExeption {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'habitacionAModificar'");
 	}
 
@@ -583,7 +579,7 @@ public class MemoryApi implements IApi {
 	public void modificarHabitacion(int numeroHabitacion, String string, double d, boolean habilitado, int i,
 			String[] strings) throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption,
 			PrecioCeroExeption, ConexionFallidaExeption, DuplicadaExeption {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'modificarHabitacion'");
 	}
 
@@ -594,25 +590,25 @@ public class MemoryApi implements IApi {
 	@Override
 	public void desactivarHabitacion(int numeroHabitacion, String fecha)
 			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'desactivarHabitacion'");
 	}
 
 	@Override
 	public void activarHabitacion(int numHabitacion) {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'activarHabitacion'");
 	}
 
 	@Override
 	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'obtenerReserva'");
 	}
 
 	@Override
 	public void updateCalificacionReserva(int reservaId, int ratingValue) {
-		// TODO Auto-generated method stub
+
 		throw new UnsupportedOperationException("Unimplemented method 'updateCalificacionReserva'");
 	}
 

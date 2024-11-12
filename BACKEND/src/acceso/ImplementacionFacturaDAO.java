@@ -13,6 +13,7 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.modelo.Factura;
 
+@SuppressWarnings("unused")
 public class ImplementacionFacturaDAO implements FacturaDAO {
 
 	private final static String crearFactura = "INSERT INTO Habitacion (reserva_id , fecha , codigo , monto , descripcion) VALUES (?,?,?,?,?)";
@@ -57,25 +58,23 @@ public class ImplementacionFacturaDAO implements FacturaDAO {
 
 	@Override
 	public void update(Factura factura) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Factura find(String nombre) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void remove(String nombre) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Set<Factura> findAll() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

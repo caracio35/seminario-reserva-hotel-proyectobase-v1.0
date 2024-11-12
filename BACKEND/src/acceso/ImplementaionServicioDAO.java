@@ -13,6 +13,7 @@ import ar.edu.unrn.seminario.api.ServicioDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.Servicio;
 
+@SuppressWarnings("unused")
 public class ImplementaionServicioDAO implements ServicioDAO {
 
 	private final static String nuevoServicio = "INSERT INTO servicio (id,nombre,precio,descripcion) VALUES (?,?,?,?) ";

@@ -13,6 +13,7 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
+@SuppressWarnings("unused")
 public class ImplementacionCalificacionDAO implements CalificacionDAO {
 	private final static String nuevoCalificacion = "INSERT INTO calificacion (reserva_id, puntaje, descripcion) VALUES (?, ?, ?)";
 	private final static String buscarCalificacion = "SELECT puntaje , descripcion FROM Calificacion WHERE = reserva_id ?";
@@ -56,7 +57,6 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 
 	@Override
 	public void update(Calificacion calificacion) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -99,13 +99,12 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 
 	@Override
 	public void remove(int id_calificacion) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Set<Calificacion> findAll() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

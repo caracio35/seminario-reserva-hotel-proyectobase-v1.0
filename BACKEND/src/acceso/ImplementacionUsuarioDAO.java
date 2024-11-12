@@ -13,6 +13,7 @@ import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
+@SuppressWarnings("unused")
 public class ImplementacionUsuarioDAO implements UsuarioDAO {
 
 	private final static String buscarUsuarioPorNombre = "SELECT * FROM usuarios WHERE usuario = ?";;
@@ -20,13 +21,11 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public void create(Usuario usuario) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void update(Usuario usuario) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -73,13 +72,12 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public void remove(int id_usuario) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Set<Usuario> findAll() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

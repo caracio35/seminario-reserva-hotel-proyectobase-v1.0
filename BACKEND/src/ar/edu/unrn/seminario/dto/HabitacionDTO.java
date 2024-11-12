@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 
+@SuppressWarnings("unused")
 public class HabitacionDTO {
 
 	private int cantidadDeCamas;
@@ -16,7 +17,7 @@ public class HabitacionDTO {
 	private List<CaracteristicaEspecialDTO> caracteristicasEspeciales;
 
 	public HabitacionDTO(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
-			int numHabitaciones,List<CaracteristicaEspecialDTO> caracteristicasEspeciales, 
+			int numHabitaciones, List<CaracteristicaEspecialDTO> caracteristicasEspeciales,
 			String fechaHastaCuandoEstaDesactivado) {
 
 		this.cantidadDeCamas = cantidadDeCamas;

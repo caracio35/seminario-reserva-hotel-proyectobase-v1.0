@@ -13,6 +13,7 @@ import ar.edu.unrn.seminario.api.CaracteristicaEspecialDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 
+@SuppressWarnings("unused")
 public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaEspecialDAO {
 	private final static String nuevaCaracteristica = "INSERT INTO CaracteristicaEspecial (nombre,descripcion,precio) VALUES (?,?,?) ";
 	private final static String eliminarCaracteristica = "DELETE FROM CaracteristicaEspecial WHERE nombre = ?";

@@ -13,13 +13,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("unused")
 public class CalificarHabitaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+
 	private JTable table;
 	private JTextField textFieldIdReserva;
 
+	@SuppressWarnings("unchecked")
 	public CalificarHabitaciones() {
 
 		setTitle("Calificar Habitaciones");
@@ -66,6 +69,7 @@ public class CalificarHabitaciones extends JFrame {
 		contentPane.add(textFieldIdReserva);
 		textFieldIdReserva.setColumns(10);
 
+		@SuppressWarnings("rawtypes")
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(10, 32, 89, 21);
 		contentPane.add(comboBox);

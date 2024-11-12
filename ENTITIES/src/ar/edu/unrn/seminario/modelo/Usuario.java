@@ -1,23 +1,25 @@
 package ar.edu.unrn.seminario.modelo;
 
+@SuppressWarnings("unused")
 public class Usuario {
 	private String usuario;
 	private String contrasena;
 	private String nombre;
-	private String apelliido ; 
+	private String apelliido;
 	private String email;
-	private int dni ;
+	private int dni;
 	private String telefono;
 
-	public Usuario(String usuario, String contrasena, String nombre, String apellido , String email, int dni , String telefono) {
-		
+	public Usuario(String usuario, String contrasena, String nombre, String apellido, String email, int dni,
+			String telefono) {
+
 		this.usuario = usuario;
 		this.contrasena = contrasena;
 		this.nombre = nombre;
-		this.apelliido = apellido; 
+		this.apelliido = apellido;
 		this.email = email;
-		this.dni = dni ; 
-		this.telefono = telefono ; 
+		this.dni = dni;
+		this.telefono = telefono;
 	}
 
 	public String getUsuario() {

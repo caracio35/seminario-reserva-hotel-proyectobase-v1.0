@@ -10,6 +10,7 @@ import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
+@SuppressWarnings("unused")
 public class Habitacion {
 	private int cantidadDeCamas;
 	private String descripcion;
@@ -44,7 +45,7 @@ public class Habitacion {
 	}
 
 	public Habitacion() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public double obtenerPrecioTotal() {

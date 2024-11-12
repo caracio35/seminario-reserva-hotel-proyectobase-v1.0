@@ -15,11 +15,14 @@ public class ReservaDTO {
 	private String[] calificacion;
 	private double saldoFavor;
 	private boolean pagoMinimo;
+	private int id;
 
 	public ReservaDTO(int[] habitaciones, String usuario, String fechaDeInicio,
 			String fechaDESalida, int cantidadDePersonas, String[] servicios, boolean checkIn,
 			boolean checkOut, int factura, String fechaDeReserva, String[] calificacion,
-			boolean pagoMinimo) {
+			boolean pagoMinimo, int id) {
+		this.id = id;
+		this.habitaciones = habitaciones;
 		this.habitaciones = habitaciones;
 		this.usuario = usuario;
 		this.fechaDeInicio = fechaDeInicio;
@@ -128,4 +131,11 @@ public class ReservaDTO {
 		this.calificacion = new String[] { calificacionDTO.toString() };
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

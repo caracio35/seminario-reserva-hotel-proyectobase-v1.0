@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.RolDTO;
 
+@SuppressWarnings("rawtypes")
 public class AltaUsuario extends JFrame {
 
 	private JPanel contentPane;
@@ -24,6 +25,7 @@ public class AltaUsuario extends JFrame {
 	private JTextField contrasenaTextField;
 	private JTextField nombreTextField;
 	private JTextField emailTextField;
+
 	private JComboBox rolComboBox;
 
 	private List<RolDTO> roles = new ArrayList<>();
@@ -31,6 +33,7 @@ public class AltaUsuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("unchecked")
 	public AltaUsuario(IApi api) {
 
 		// Obtengo los roles
@@ -69,11 +72,12 @@ public class AltaUsuario extends JFrame {
 
 				RolDTO rol = roles.get(rolComboBox.getSelectedIndex());
 
-					api.registrarUsuario(usuarioTextField.getText(), contrasenaTextField.getText(),
-							nombreTextField.getText(), emailTextField.getText(), rol.getCodigo());
-					JOptionPane.showMessageDialog(null, "Usuario registrado con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-					setVisible(false);
-					dispose();
+				api.registrarUsuario(usuarioTextField.getText(), contrasenaTextField.getText(),
+						nombreTextField.getText(), emailTextField.getText(), rol.getCodigo());
+				JOptionPane.showMessageDialog(null, "Usuario registrado con exito!", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				setVisible(false);
+				dispose();
 
 			}
 		});

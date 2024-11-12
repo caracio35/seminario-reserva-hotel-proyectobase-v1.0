@@ -36,6 +36,7 @@ import ar.edu.unrn.seminario.modelo.Reserva;
 import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
+@SuppressWarnings("unused")
 public class PersistenceApi implements IApi {
 	private int habitacionAModificar = 0;
 	private Habitacion habitacion;
@@ -80,73 +81,66 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public UsuarioDTO obtenerUsuario(String username) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void eliminarUsuario(String username) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public List<RolDTO> obtenerRoles() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public List<RolDTO> obtenerRolesActivos() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void guardarRol(Integer codigo, String descripcion, boolean estado) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public RolDTO obtenerRolPorCodigo(Integer codigo) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void activarRol(Integer codigo) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void desactivarRol(Integer codigo) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void activarUsuario(String username) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void desactivarUsuario(String username) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -160,7 +154,6 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -168,6 +161,7 @@ public class PersistenceApi implements IApi {
 	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String cometario)
 			throws ConexionFallidaExeption {
 		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
+
 		Calificacion calificion = new Calificacion(calificacion.getValor(), cometario, idReserva);
 		calificacionDAO.create(calificacion, idReserva);
 
@@ -175,7 +169,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public boolean autenticarContraseña(String username, String password) {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
@@ -205,7 +199,6 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void modificarReserva() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -283,7 +276,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -363,7 +356,6 @@ public class PersistenceApi implements IApi {
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
 			ConexionFallidaExeption, DuplicadaExeption {
 
-		// TODO Auto-generated method stub
 		// Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar
 	}
 
@@ -409,7 +401,7 @@ public class PersistenceApi implements IApi {
 	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		Set<Reserva> listaReseva = reservaDAO.findAll();
-		List<ReservaDTO> reservaDTOS = new ArrayList<>();
+		List<ReservaDTO> reservasDTOS = new ArrayList<>();
 		for (Reserva r : listaReseva) {
 			List<Integer> numHabitacioList = new ArrayList<>();
 			List<String> nombreServicio = new ArrayList<>();
@@ -432,14 +424,14 @@ public class PersistenceApi implements IApi {
 			String fecha2 = fechaFin.format(formato);
 			LocalDate fechaReserva = r.getFechaDeReserva();
 			String fecha3 = fechaReserva.format(formato);
-			ReservaDTO reservaDTO2 = new ReservaDTO(numHabitacio, "juan", fecha1, fecha2, r.getCantidadDePersonas(),
+			ReservaDTO reservaDTO = new ReservaDTO(numHabitacio, "juan", fecha1, fecha2, r.getCantidadDePersonas(),
 					servicios, r.isCheckIn(), r.isCheckOut(), 1,
-					fecha3, null, r.getPagoMinimo());
-			reservaDTO2.setCalificacion(calificacionDTO);
-			reservaDTOS.add(reservaDTO2);
+					fecha3, null, r.getPagoMinimo(), r.getId());
+			reservaDTO.setCalificacion(calificacionDTO);
+			reservasDTOS.add(reservaDTO);
 
 		}
-		return reservaDTOS;
+		return reservasDTOS;
 	}
 
 	public void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception {

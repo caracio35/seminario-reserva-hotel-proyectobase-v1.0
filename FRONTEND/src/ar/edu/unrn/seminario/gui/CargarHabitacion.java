@@ -32,6 +32,7 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
+@SuppressWarnings("unused")
 public class CargarHabitacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -48,6 +49,7 @@ public class CargarHabitacion extends JFrame {
 	private ButtonGroup group = new ButtonGroup();
 	private JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
 	private JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
+
 	private boolean modificar;
 
 	public CargarHabitacion(IApi api, boolean modificar) {
@@ -92,14 +94,13 @@ public class CargarHabitacion extends JFrame {
 			buttonDesabilitado.setBounds(314, 37, 109, 23);
 			panel.add(buttonDesabilitado);
 
-			
 			buttonHabilitado.setSelected(true);
 			buttonHabilitado.setBounds(203, 39, 109, 23);
 			panel.add(buttonHabilitado);
 
 			group.add(buttonDesabilitado);
 			group.add(buttonHabilitado);
-			
+
 			JButton btnSubirInformacion = new JButton("Cargar");
 			btnSubirInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -123,7 +124,7 @@ public class CargarHabitacion extends JFrame {
 
 					if (modificar == false) {
 						try {
-							
+
 							api.darDeAltaHabitacion(Integer.parseInt(textFieldCamas.getText()),
 									textFieldDescripccion.getText(),
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
@@ -138,11 +139,10 @@ public class CargarHabitacion extends JFrame {
 							JOptionPane.showMessageDialog(null,
 									"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
 						} catch (ErrorConsultaExeption e1) {
-							// TODO Auto-generated catch block
 							JOptionPane.showConfirmDialog(null, e1.getMessage());
 						}
 					} else {
-						
+
 						if (modificar == true) {
 							try {
 								api.modificarHabitacion(Integer.parseInt(textFieldCamas.getText()),
@@ -152,15 +152,12 @@ public class CargarHabitacion extends JFrame {
 										Integer.parseInt(textFieldNumeroHabitacion.getText()),
 										caracteristicas);
 
-								
 								JOptionPane.showMessageDialog(null,
 										"Habitación modificada exitosamente",
 										"Éxito",
 										JOptionPane.INFORMATION_MESSAGE);
 
-								
 								dispose();
-
 
 							} catch (NumberFormatException | ConexionFallidaExeption | DuplicadaExeption
 									| NumeroHabitacionExistenteException | CampoVacioExeption | EnterosEnCeroExeption
@@ -274,6 +271,7 @@ public class CargarHabitacion extends JFrame {
 			modelo.addRow(fila);
 		}
 	}
+
 	private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {

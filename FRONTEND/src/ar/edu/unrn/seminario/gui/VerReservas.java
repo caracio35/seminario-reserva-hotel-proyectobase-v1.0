@@ -50,13 +50,14 @@ public class VerReservas extends JFrame {
         DefaultTableModel model = new DefaultTableModel(
                 new Object[][] {},
                 new String[] {
-                        "Num Habitaciones", "Check-in", "ingreso", "Check-out", "salida", "Mi Calificacion", "Servicios"
+                        "ID Reserva", "Num Habitaciones", "Check-in", "ingreso", "Check-out", "salida",
+                        "Mi Calificacion", "Servicios"
                 }) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 switch (columnIndex) {
-                    case 1: // Check-in
-                    case 3: // Check-out
+                    case 2: // Check-in
+                    case 4: // Check-out
                         return Boolean.class;
                     default:
                         return Object.class;
@@ -74,17 +75,16 @@ public class VerReservas extends JFrame {
         List<ReservaDTO> reservas = api.obtenerReserva();
 
         for (ReservaDTO reserva : reservas) {
-            Object[] rowData = new Object[7];
-            rowData[0] = numeroDehabitaciones(reserva.getHabitacion()); // Número de habitaciones
-            rowData[1] = reserva.isCheckIn(); // Check-in (Booleano)
-            rowData[2] = reserva.getFechaDeInicio(); // Ingreso (fecha u otro valor)
-            rowData[3] = reserva.isCheckOut(); // Check-out (Booleano)
-            rowData[4] = reserva.getFechaDeSalida(); // Salida (fecha u otro valor)
-            rowData[5] = calificacion(reserva); // Mi Calificación
-            rowData[6] = String.join(", ", reserva.getServicios()); // Servicios (suponiendo que es una lista de
-                                                                    // servicios)
+            Object[] rowData = new Object[8]; // Changed from 7 to 8 to accommodate the new column
+            rowData[0] = reserva.getId(); // Add the ID
+            rowData[1] = numeroDehabitaciones(reserva.getHabitacion());
+            rowData[2] = reserva.isCheckIn();
+            rowData[3] = reserva.getFechaDeInicio();
+            rowData[4] = reserva.isCheckOut();
+            rowData[5] = reserva.getFechaDeSalida();
+            rowData[6] = calificacion(reserva);
+            rowData[7] = String.join(", ", reserva.getServicios());
 
-            // Agregar la fila al modelo
             model.addRow(rowData);
         }
 

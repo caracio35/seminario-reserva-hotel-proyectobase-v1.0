@@ -36,6 +36,7 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
+@SuppressWarnings("unused")
 public class ListadoHabitaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -73,6 +74,7 @@ public class ListadoHabitaciones extends JFrame {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] { Object.class, Boolean.class, Object.class, Boolean.class,
 					Object.class };
 
