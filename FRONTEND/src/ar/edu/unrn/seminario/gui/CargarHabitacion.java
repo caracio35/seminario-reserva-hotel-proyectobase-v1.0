@@ -140,7 +140,7 @@ public class CargarHabitacion extends JFrame {
 
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
-								"Revisar los campos Numero de habitacion Precio o Cant camas no puede ser campo vacio o no estar definido y tampoco puede ser una letra ");
+								"Los campos no pueden estar vacios");
 					} catch (ErrorConsultaExeption e1) {
 						JOptionPane.showConfirmDialog(null, e1.getMessage());
 					}
