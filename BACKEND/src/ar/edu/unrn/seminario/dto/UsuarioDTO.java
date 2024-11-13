@@ -1,39 +1,38 @@
 package ar.edu.unrn.seminario.dto;
 
 public class UsuarioDTO {
-	private String username;
-	private String password;
+	private String usuario;
+	private String contrasena;
 	private String nombre;
+	private String apelliido;
 	private String email;
-	private String rol;
-	private boolean activo;
-	private String estado;
+	private int dni;
+	private String telefono;
 
-	public UsuarioDTO(String username, String password, String nombre, String email, String rol, boolean activo,
-			String estado) {
-		this.username = username;
-		this.password = password;
+	public UsuarioDTO( String usuario, String password, String nombre , String apelliido , String email, int dni ,String numeroTelefono ) {
+		this.usuario = usuario;
+		this.contrasena = password;
 		this.nombre = nombre;
+		this.apelliido = apelliido;
 		this.email = email;
-		this.rol = rol;
-		this.activo = activo;
-		this.estado = estado;
+		this.dni = dni; 
+		this.telefono = numeroTelefono; 
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
-	public String getPassword() {
-		return password;
+	public String contrasenia() {
+		return contrasena;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setContrasenia(String contrasenia) {
+		this.contrasena = contrasenia;
 	}
 
 	public String getNombre() {
@@ -52,28 +51,24 @@ public class UsuarioDTO {
 		this.email = email;
 	}
 
-	public String getRol() {
-		return rol;
+	public int getDni() {
+		return dni;
 	}
 
-	public void setRol(String rol) {
-		this.rol = rol;
+	public void setDni(int dni) {
+		this.dni = dni;
 	}
 
-	public boolean isActivo() {
-		return activo;
+	public String getTelefono() {
+	return telefono;	
 	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
-
-	public String getEstado() {
-		return estado;
+	public String getApellido() {
+		return apelliido;
 	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public void setApellido(String apellido) {
+		this.apelliido = apellido ; 
 	}
-
 }

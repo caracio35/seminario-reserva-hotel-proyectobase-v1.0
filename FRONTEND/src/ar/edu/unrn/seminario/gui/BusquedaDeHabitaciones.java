@@ -163,7 +163,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 				return;
 			}
 
-			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, null, api,
+			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, api,
 					habitacionesSeleccionadas);
 			confirmacion.setVisible(true);
 		});

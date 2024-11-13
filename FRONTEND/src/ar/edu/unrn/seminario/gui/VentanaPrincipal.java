@@ -20,7 +20,7 @@ public class VentanaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 
-	// andres gei
+	
 	public VentanaPrincipal(IApi api) {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

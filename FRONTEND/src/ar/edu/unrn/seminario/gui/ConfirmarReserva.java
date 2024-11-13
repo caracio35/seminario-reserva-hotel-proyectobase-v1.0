@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.HabitacionDTO;
+import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
@@ -48,16 +49,26 @@ public class ConfirmarReserva extends JFrame {
 	private java.util.List<Integer> habitacionesSeleccionadas;
 	private List<HabitacionDTO> habitaciones;
 	private JTextField textFieldCantidaPersonas;
-
+	private Boolean pago ; 
 	@SuppressWarnings("unchecked")
-	public ConfirmarReserva(String fechaInicio, String fechaFin, String usuario, IApi api,
+	public ConfirmarReserva(String fechaInicio, String fechaFin, IApi api,
 			java.util.List<Integer> habitacionesSeleccionadas) {
 
 		{
 			this.api = api;
 			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
-
+			
+			UsuarioDTO usuario = null;
+			try {
+				usuario = api.obtenerUsuario("juanp");
+			} catch (ConexionFallidaExeption e) {
+			
+				e.printStackTrace();
+			} catch (ErrorDatosNoEncontradosExeption e) {
+				e.printStackTrace();
+			}
+			
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 528, 499);
 			contentPane = new JPanel();
@@ -73,16 +84,22 @@ public class ConfirmarReserva extends JFrame {
 
 			textFieldNombre = new JTextField();
 			textFieldNombre.setBounds(10, 75, 137, 19);
+			textFieldNombre.setText(usuario.getNombre());
+			textFieldNombre.setEditable(false);
 			panel.add(textFieldNombre);
 			textFieldNombre.setColumns(10);
 
 			textFieldApellido = new JTextField();
 			textFieldApellido.setBounds(10, 122, 137, 19);
+			textFieldApellido.setText(usuario.getApellido());
+			textFieldApellido.setEditable(false);
 			panel.add(textFieldApellido);
 			textFieldApellido.setColumns(10);
 
 			textFieldDNIPasaporte = new JTextField();
 			textFieldDNIPasaporte.setBounds(10, 167, 137, 19);
+			textFieldDNIPasaporte.setText(String.valueOf(usuario.getDni()));
+			textFieldDNIPasaporte.setEditable(false);
 			panel.add(textFieldDNIPasaporte);
 			textFieldDNIPasaporte.setColumns(10);
 
@@ -108,7 +125,12 @@ public class ConfirmarReserva extends JFrame {
 			btnRealizarPago.addActionListener(e -> {
 				String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
 				Random random = new Random();
-
+				
+				if (rdbtnPrecioMinimo.isSelected()) {
+				    this.pago = true;
+				} else if (rdbtnPagoTotal.isSelected()) {  // Cambiado a rdbtnPagoTotal
+				    this.pago = false;
+				}
 				if ("Tarjeta de Credito".equals(metodoPago)) {
 					// 30% de probabilidad de falla por monto insuficiente
 					if (random.nextInt(100) < 30) {
@@ -116,7 +138,7 @@ public class ConfirmarReserva extends JFrame {
 								"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
 					} else {
 						JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
-						generarReserva();
+						generarReserva(pago);
 					}
 				} else if ("MercadoPago".equals(metodoPago)) {
 					// Mostrar un JOptionPane con QR
@@ -135,7 +157,7 @@ public class ConfirmarReserva extends JFrame {
 						} else {
 							JOptionPane.showMessageDialog(contentPane, "Pago con MercadoPago exitoso!");
 							// Lógica para generar la reserva
-							generarReserva();
+							generarReserva(pago);
 						}
 						((Timer) evt.getSource()).stop();
 					}).start();
@@ -200,7 +222,7 @@ public class ConfirmarReserva extends JFrame {
 			textFieldUsuario.setBounds(10, 36, 137, 20);
 			panel.add(textFieldUsuario);
 			textFieldUsuario.setColumns(10);
-			textFieldUsuario.setText("mariag");
+			textFieldUsuario.setText(usuario.getUsuario());
 			textFieldUsuario.setEditable(false);
 
 			JLabel lblNewLabel = new JLabel("Usuario");
@@ -262,18 +284,14 @@ public class ConfirmarReserva extends JFrame {
 		String[] servicios = new String[rowCount];
 
 		for (int i = 0; i < rowCount; i++) {
-			// Obtener el servicio de la columna correspondiente (aquí usamos columna 1 para
-			// "Descripción")
 			servicios[i] = (String) modelo.getValueAt(i, 1);
 		}
 
 		return servicios;
 	}
 
-	// int[] habitacion, String usuario, String fechaInicio, String fechaFin,
-	// String fechaReserva, int cantidadPersonas, String[] servicio, boolean
-	// pagoMinimo
-	private void generarReserva() {
+	
+	private void generarReserva( Boolean pago) {
 
 		LocalDateTime fechaActual = LocalDateTime.now();
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -283,7 +301,7 @@ public class ConfirmarReserva extends JFrame {
 		String[] serviciosObtenido = { "Desayuno" };
 		try {
 			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),
-					texFilFechaSalida.getText(), fechaReserva, cantidadPersonas, serviciosObtenido, true);
+					texFilFechaSalida.getText(), fechaReserva, cantidadPersonas, serviciosObtenido, pago);
 			dispose();
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
 				| PrecioCeroExeption e) {
@@ -293,7 +311,7 @@ public class ConfirmarReserva extends JFrame {
 	}
 
 	private void reservarHabitacion(Object roomId) {
-		// Implementa la lógica para reservar una habitación individual
+		
 		System.out.println("Habitación " + roomId + " reservada.");
 	}
 }

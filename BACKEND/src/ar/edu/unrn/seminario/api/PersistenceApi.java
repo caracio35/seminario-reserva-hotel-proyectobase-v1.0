@@ -85,9 +85,13 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public UsuarioDTO obtenerUsuario(String username) {
-
-		return null;
+	public UsuarioDTO obtenerUsuario(String usuario) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
+		Usuario usuarioEnti = usuarioDAO.find(usuario);
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioEnti.getUsuario(), usuarioEnti.getContrasenia(), usuarioEnti.getNombre(),
+				usuarioEnti.getApellido(), usuarioEnti.getEmail(), usuarioEnti.getDni(), usuarioEnti.getTelefono());
+		
+		return usuarioDTO ;
 	}
 
 	@Override
@@ -158,12 +162,13 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String cometario)
+	public void generarCalificacionHabitacion(int idReserva, int calificacion, String cometario)
 			throws ConexionFallidaExeption {
 		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
 
-		Calificacion calificion = new Calificacion(calificacion.getValor(), cometario, idReserva);
-		calificacionDAO.create(calificacion, idReserva);
+		Calificacion calificion = new Calificacion(calificacion, cometario, idReserva);
+		
+		calificacionDAO.create(calificion);
 
 	}
 
@@ -196,7 +201,6 @@ public class PersistenceApi implements IApi {
 				convertiFecha(fechaFin), cantidadPersonas, servicioObten, convertiFecha(fechaReserva), pagoMinimo);
 		reservaDAO.create(reserva2);
 	}
-
 	@Override
 	public void modificarReserva() {
 

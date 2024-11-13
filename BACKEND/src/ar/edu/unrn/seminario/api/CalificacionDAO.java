@@ -7,7 +7,7 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public interface CalificacionDAO {
-	void create(Calificacion calificacion, int idReserva) throws ConexionFallidaExeption;
+	void create(Calificacion calificacion) throws ConexionFallidaExeption;
 
 	void update(Calificacion calificacion);
 

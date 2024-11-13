@@ -36,8 +36,9 @@ public class Reserva {
 		this.factura = null;
 		this.fechaDeReserva = fechaDeReserva;
 		this.calificacion = null;
-		this.saldoFavor = 0;
 		this.pagoMinimo = pagoMinimo;
+		this.saldoFavor = 0;
+		
 	}
 
 	public Reserva(int id, ArrayList<Habitacion> habitaciones, LocalDate fechaDeInicio, LocalDate fechaDESalida,

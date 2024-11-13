@@ -206,31 +206,12 @@ public class VerReservas extends JFrame {
         btnCalificar.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String[] ratings = { "1", "2", "3", "4", "5" };
-                String rating = (String) JOptionPane.showInputDialog(null,
-                        "Selecciona una calificación:", "Calificar Reserva",
-                        JOptionPane.QUESTION_MESSAGE, null, ratings, "1");
-                if (rating != null) {
-
-                    // Assuming the ID is stored in column 0
-                    // In your action listener for the "Calificar" button:
-                    try {
-                        int ratingValue = Integer.parseInt(rating);
-                        int reservaId = Integer.parseInt((String) table.getValueAt(selectedRow, 0)); // Parse the ID as
-                                                                                                     // Integer
-                        api.updateCalificacionReserva(reservaId, ratingValue);
-
-                        table.setValueAt(ratingValue, selectedRow, 5); // Updates the rating in the table
-
-                        System.out.println(
-                                "Calificación de la reserva en fila " + selectedRow + " cambiada a " + ratingValue);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Error al actualizar la calificación: " + ex.getMessage());
-
-                    }
-                }
+                // Obtener el ID de la reserva de la columna correspondiente (por ejemplo, la columna 0)
+                int reservaId = (int) table.getValueAt(selectedRow, 0);
+                CalificarHabitaciones calificar = new CalificarHabitaciones(api,reservaId);
+                calificar.setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva.");
+                JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva para calificar.");
             }
         });
         contentPane.add(btnCalificar);

@@ -20,14 +20,14 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 
 	@Override
 
-	public void create(Calificacion calificacion, int idReserva) throws ConexionFallidaExeption {
+	public void create(Calificacion calificacion) throws ConexionFallidaExeption {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsutaCrearCalificacion = null;
 		miConexion = Coneccion.conectar();
 		try {
 
 			pStamentConsutaCrearCalificacion = (PreparedStatement) miConexion.prepareStatement(nuevoCalificacion);
-			pStamentConsutaCrearCalificacion.setInt(1, idReserva);
+			pStamentConsutaCrearCalificacion.setInt(1, calificacion.getIdReservaFK());
 			pStamentConsutaCrearCalificacion.setInt(2, calificacion.getValor());
 			pStamentConsutaCrearCalificacion.setString(3, calificacion.getComentario());
 			pStamentConsutaCrearCalificacion.executeUpdate();

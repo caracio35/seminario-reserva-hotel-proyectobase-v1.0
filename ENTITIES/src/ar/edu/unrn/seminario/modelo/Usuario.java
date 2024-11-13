@@ -30,12 +30,12 @@ public class Usuario {
 		this.usuario = usuario;
 	}
 
-	public String getContrasena() {
+	public String getContrasenia() {
 		return contrasena;
 	}
 
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
+	public void setContrasenia(String contrasenia) {
+		this.contrasena = contrasenia;
 	}
 
 	public String getNombre() {
@@ -54,6 +54,26 @@ public class Usuario {
 		this.email = email;
 	}
 
+	public int getDni() {
+		return dni;
+	}
+
+	public void setDni(int dni) {
+		this.dni = dni;
+	}
+
+	public String getTelefono() {
+	return telefono;	
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+	public String getApellido() {
+		return apelliido;
+	}
+	public void setApellido(String apellido) {
+		this.apelliido = apellido ; 
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

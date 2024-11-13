@@ -31,7 +31,7 @@ public interface IApi {
 
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
-	UsuarioDTO obtenerUsuario(String username);
+	UsuarioDTO obtenerUsuario(String username) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void eliminarUsuario(String username);
 
@@ -91,7 +91,7 @@ public interface IApi {
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas);
 
-	public void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
+	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, List<CaracteristicaEspecialDTO> caracteristicas)
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
 			ConexionFallidaExeption, DuplicadaExeption;
@@ -112,7 +112,7 @@ public interface IApi {
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
 			ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption;
 
-	void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario)
+	void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario)
 			throws ConexionFallidaExeption;
 
 	void activarHabitacion(int numHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,

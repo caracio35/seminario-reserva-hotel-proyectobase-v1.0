@@ -62,7 +62,7 @@ public class ListadoUsuario extends JFrame {
 		List<UsuarioDTO> usuarios = api.obtenerUsuarios();
 		// Agrega los usuarios en el model
 		for (UsuarioDTO u : usuarios) {
-			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.getEstado(), u.getRol() });
+			modelo.addRow(new Object[] { u.getUsuario(), u.getNombre(), u.getEmail(), u.getDni(), u.getTelefono() });
 		}
 
 		table.setModel(modelo);
@@ -139,7 +139,7 @@ public class ListadoUsuario extends JFrame {
 
 		// Agrega los usuarios en el model
 		for (UsuarioDTO u : usuarios) {
-			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.getEstado(), u.getRol() });
+			modelo.addRow(new Object[] {  u.getUsuario(), u.getNombre(), u.getEmail(), u.getDni(), u.getTelefono() });
 		}
 
 	}
