@@ -19,7 +19,7 @@ public class Main {
 					frame.setVisible(true);
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Problema en el funcionamiento de la ventana " + e.getStackTrace() + e.getMessage());
 				}
 			}
 		});

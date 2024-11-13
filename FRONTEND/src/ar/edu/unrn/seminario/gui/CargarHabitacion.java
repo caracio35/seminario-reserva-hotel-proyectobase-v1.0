@@ -217,7 +217,7 @@ public class CargarHabitacion extends JFrame {
 			table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 			cargarHabitacionParaModificar();
 		} catch (Exception e) {
-			System.out.println("aca " + e.getStackTrace() + e.getMessage());
+			System.out.println("Problema en el funcionamiento de la ventana " + e.getStackTrace() + e.getMessage());
 		}
 	}
 
