@@ -47,7 +47,7 @@ public class CalificarHabitaciones extends JFrame {
 		lblNewLabel_2.setBounds(10, 64, 113, 14);
 		contentPane.add(lblNewLabel_2);
 
-		JButton btnNewButton = new JButton("Cancelar ");
+		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.addActionListener((e) -> {
 			dispose();
 		});
@@ -70,7 +70,6 @@ public class CalificarHabitaciones extends JFrame {
 		comboBox.addItem(5);
 		btnNewButton_1.addActionListener(e -> {
 			 
-			
 		    int calificacionSeleccionada = (int) comboBox.getSelectedItem();
 		   
 		    String comentario = TextFieldComentario.getText();

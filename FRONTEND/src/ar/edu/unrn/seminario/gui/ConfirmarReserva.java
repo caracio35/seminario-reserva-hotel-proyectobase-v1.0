@@ -48,7 +48,6 @@ public class ConfirmarReserva extends JFrame {
 	IApi api;
 	private java.util.List<Integer> habitacionesSeleccionadas;
 	private List<HabitacionDTO> habitaciones;
-	private JTextField textFieldCantidaPersonas;
 	private Boolean pago ; 
 	@SuppressWarnings("unchecked")
 	public ConfirmarReserva(String fechaInicio, String fechaFin, IApi api,
@@ -70,7 +69,7 @@ public class ConfirmarReserva extends JFrame {
 			}
 			
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setBounds(100, 100, 528, 499);
+			setBounds(100, 100, 528, 526);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -78,7 +77,7 @@ public class ConfirmarReserva extends JFrame {
 			contentPane.setLayout(null);
 
 			JPanel panel = new JPanel();
-			panel.setBounds(10, 10, 492, 439);
+			panel.setBounds(10, 10, 492, 466);
 			contentPane.add(panel);
 			panel.setLayout(null);
 
@@ -113,17 +112,31 @@ public class ConfirmarReserva extends JFrame {
 
 			JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
 			buttonGroup.add(rdbtnPrecioMinimo);
-			rdbtnPrecioMinimo.setBounds(10, 407, 103, 21);
+			rdbtnPrecioMinimo.setBounds(320, 367, 128, 21);
 			panel.add(rdbtnPrecioMinimo);
 
 			JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
 			buttonGroup.add(rdbtnPagoTotal);
-			rdbtnPagoTotal.setBounds(119, 407, 103, 21);
+			rdbtnPagoTotal.setBounds(190, 367, 128, 21);
 			panel.add(rdbtnPagoTotal);
+			
+			JComboBox<Integer> comboBoxCantidadPersonas = new JComboBox<>();
+			comboBoxCantidadPersonas.setBounds(10, 366, 137, 22);
+			panel.add(comboBoxCantidadPersonas);
+			comboBoxCantidadPersonas.addItem(1);
+			comboBoxCantidadPersonas.addItem(2);
+			comboBoxCantidadPersonas.addItem(3);
+			comboBoxCantidadPersonas.addItem(4);
+			comboBoxCantidadPersonas.addItem(5);
+			comboBoxCantidadPersonas.addItem(6);
+			comboBoxCantidadPersonas.addItem(7);
+			
 
 			JButton btnRealizarPago = new JButton("Realizar Pago");
 			btnRealizarPago.addActionListener(e -> {
 				String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
+				int cantidadPersonas = (int) comboBoxCantidadPersonas.getSelectedItem();
+				
 				Random random = new Random();
 				
 				if (rdbtnPrecioMinimo.isSelected()) {
@@ -138,7 +151,7 @@ public class ConfirmarReserva extends JFrame {
 								"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
 					} else {
 						JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
-						generarReserva(pago);
+						generarReserva(pago, cantidadPersonas);
 					}
 				} else if ("MercadoPago".equals(metodoPago)) {
 					// Mostrar un JOptionPane con QR
@@ -157,25 +170,25 @@ public class ConfirmarReserva extends JFrame {
 						} else {
 							JOptionPane.showMessageDialog(contentPane, "Pago con MercadoPago exitoso!");
 							// Lógica para generar la reserva
-							generarReserva(pago);
+							generarReserva(pago, cantidadPersonas);
 						}
 						((Timer) evt.getSource()).stop();
 					}).start();
 				}
 			});
 
-			btnRealizarPago.setBounds(365, 407, 117, 21);
+			btnRealizarPago.setBounds(365, 434, 117, 21);
 			panel.add(btnRealizarPago);
 
-			JButton btnCancelar = new JButton("Cancelar");
+			JButton btnCancelar = new JButton("Salir");
 			btnCancelar.addActionListener(e -> {
 				dispose();
 			});
-			btnCancelar.setBounds(270, 407, 85, 21);
+			btnCancelar.setBounds(238, 434, 117, 21);
 			panel.add(btnCancelar);
 
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(167, 36, 315, 288);
+			scrollPane.setBounds(167, 36, 315, 317);
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {},
@@ -244,13 +257,11 @@ public class ConfirmarReserva extends JFrame {
 			texFilFechaSalida.setEditable(false);
 
 			JLabel lblNewLabel_1 = new JLabel("Personas");
-			lblNewLabel_1.setBounds(9, 346, 46, 14);
+			lblNewLabel_1.setBounds(9, 346, 128, 14);
 			panel.add(lblNewLabel_1);
-
-			textFieldCantidaPersonas = new JTextField();
-			textFieldCantidaPersonas.setBounds(10, 367, 137, 20);
-			panel.add(textFieldCantidaPersonas);
-			textFieldCantidaPersonas.setColumns(10);
+			
+		
+			
 		}
 	}
 
@@ -291,13 +302,13 @@ public class ConfirmarReserva extends JFrame {
 	}
 
 	
-	private void generarReserva( Boolean pago) {
+	private void generarReserva( Boolean pago  , int personas) {
 
 		LocalDateTime fechaActual = LocalDateTime.now();
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String fechaReserva = fechaActual.format(formato);
 		int[] numerosHabitacion = obtenerNumerosDeHabitacionDesdeTabla();
-		int cantidadPersonas = Integer.parseInt(textFieldCantidaPersonas.getText());
+		int cantidadPersonas = personas ; 
 		String[] serviciosObtenido = { "Desayuno" };
 		try {
 			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),

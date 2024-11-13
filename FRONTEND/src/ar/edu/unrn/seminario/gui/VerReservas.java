@@ -38,15 +38,16 @@ public class VerReservas extends JFrame {
     private JTable table;
 
     public VerReservas(IApi api) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+    	setTitle("Reservas");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 752, 300);
+        setBounds(100, 100, 1097, 447);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 35, 718, 147);
+        scrollPane.setBounds(182, 35, 889, 325);
         contentPane.add(scrollPane);
 
         // Definición del modelo de la tabla con tipos de columnas
@@ -99,118 +100,38 @@ public class VerReservas extends JFrame {
         }
 
         JButton btnMostrarDetalles = new JButton("Mostrar Detalles");
-        btnMostrarDetalles.setBounds(10, 200, 150, 25);
+        btnMostrarDetalles.setBounds(0, 37, 150, 25);
         btnMostrarDetalles.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                System.out.println("Ver detalles para la reserva en fila: " + selectedRow);
-            } else {
-                System.out.println("Por favor, selecciona una reserva.");
-            }
+        	
+        	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+        	
         });
         contentPane.add(btnMostrarDetalles);
 
         JButton btnCancelarReserva = new JButton("Cancelar Reserva");
-        btnCancelarReserva.setBounds(398, 200, 150, 25);
+        btnCancelarReserva.setBounds(0, 188, 150, 25);
         btnCancelarReserva.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                int confirm = JOptionPane.showConfirmDialog(null,
-                        "¿Estás seguro de que deseas cancelar la reserva?",
-                        "Confirmar Cancelación", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    System.out.println("Reserva en fila " + selectedRow + " cancelada.");
-                    ((DefaultTableModel) table.getModel()).removeRow(selectedRow);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva.");
-            }
+        	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
         });
         contentPane.add(btnCancelarReserva);
 
         // Botón "Modificar Fechas"
         JButton btnModificarFechas = new JButton("Modificar Fechas");
-        btnModificarFechas.setBounds(207, 200, 150, 25);
+        btnModificarFechas.setBounds(0, 115, 150, 25);
         btnModificarFechas.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow == -1) {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva.");
-                return;
-            }
-
-            // Crear los componentes de fecha
-            JDateChooser dateChooserDesde = new JDateChooser();
-            JDateChooser dateChooserHasta = new JDateChooser();
-            dateChooserDesde.setDateFormatString("yyyy-MM-dd");
-            dateChooserHasta.setDateFormatString("yyyy-MM-dd");
-
-            // Configurar el panel con GridBagLayout
-            JPanel panel = new JPanel(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(10, 10, 10, 10);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-
-            // Añadir la etiqueta de "Fecha de Entrada"
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            panel.add(new javax.swing.JLabel("Fecha de Entrada:"), gbc);
-
-            gbc.gridx = 1;
-            panel.add(dateChooserDesde, gbc);
-
-            // Añadir la etiqueta de "Fecha de Salida"
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-            panel.add(new javax.swing.JLabel("Fecha de Salida:"), gbc);
-
-            gbc.gridx = 1;
-            panel.add(dateChooserHasta, gbc);
-
-            // Mostrar el panel en un JOptionPane
-            int result = JOptionPane.showConfirmDialog(null, panel,
-                    "Selecciona las nuevas fechas", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-            if (result != JOptionPane.OK_OPTION) {
-                return;
-            }
-
-            Date nuevaDesde = dateChooserDesde.getDate();
-            Date nuevaHasta = dateChooserHasta.getDate();
-
-            if (nuevaDesde == null || nuevaHasta == null) {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona ambas fechas.");
-                return;
-            }
-
-            if (!nuevaDesde.before(nuevaHasta)) {
-                JOptionPane.showMessageDialog(null, "La fecha de entrada debe ser anterior a la fecha de salida.");
-                return;
-            }
-
-            int confirm = JOptionPane.showConfirmDialog(null,
-                    "¿Estás seguro de que deseas modificar las fechas?",
-                    "Confirmar Modificación", JOptionPane.YES_NO_OPTION);
-
-            if (confirm != JOptionPane.YES_OPTION) {
-                return;
-            }
-
-            // Actualizar la tabla con las nuevas fechas
-            table.setValueAt(new java.sql.Date(nuevaDesde.getTime()), selectedRow, 2);
-            table.setValueAt(new java.sql.Date(nuevaHasta.getTime()), selectedRow, 4);
-            System.out.println("Fechas modificadas para la reserva en fila: " + selectedRow);
+        	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
         });
         contentPane.add(btnModificarFechas);
 
         // Botón "Calificar"
         JButton btnCalificar = new JButton("Calificar");
-        btnCalificar.setBounds(578, 200, 150, 25);
+        btnCalificar.setBounds(0, 270, 150, 25);
         btnCalificar.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                // Obtener el ID de la reserva de la columna correspondiente (por ejemplo, la
-                // columna 0)
+            	
                 int reservaId = (int) table.getValueAt(selectedRow, 0);
+                
                 CalificarHabitaciones calificar = new CalificarHabitaciones(api, reservaId);
                 calificar.setVisible(true);
             } else {
@@ -219,8 +140,8 @@ public class VerReservas extends JFrame {
         });
         contentPane.add(btnCalificar);
 
-        JButton btnSalir = new JButton("SALIR");
-        btnSalir.setBounds(578, 240, 150, 25);
+        JButton btnSalir = new JButton("Salir");
+        btnSalir.setBounds(921, 371, 150, 25);
         btnSalir.addActionListener(e -> dispose());
         contentPane.add(btnSalir);
     }

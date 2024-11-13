@@ -169,11 +169,11 @@ public class CargarHabitacion extends JFrame {
 			}
 
 			);
-			btnSubirInformacion.setBounds(160, 311, 144, 21);
+			btnSubirInformacion.setBounds(328, 331, 115, 21);
 			panel.add(btnSubirInformacion);
 
 			JButton btnCargarImagen = new JButton("Cargar Imagen");
-			btnCargarImagen.setBounds(10, 268, 116, 21);
+			btnCargarImagen.setBounds(10, 268, 150, 21);
 			panel.add(btnCargarImagen);
 
 			JLabel lblNumeroHabitacion = new JLabel("Numero Habitacion");
@@ -199,10 +199,10 @@ public class CargarHabitacion extends JFrame {
 					dispose();
 				}
 			});
-			btnSalircancelar.setBounds(314, 311, 144, 21);
+			btnSalircancelar.setBounds(203, 331, 115, 21);
 			panel.add(btnSalircancelar);
 
-			scrollPane.setBounds(203, 69, 239, 207);
+			scrollPane.setBounds(203, 69, 239, 251);
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
