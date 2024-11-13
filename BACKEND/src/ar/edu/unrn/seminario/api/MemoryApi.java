@@ -104,9 +104,10 @@ public class MemoryApi implements IApi {
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
-		for (Usuario u : this.usuarios) {
-			dtos.add(new UsuarioDTO(u.getUsuario(), u.getContrasena(), u.getNombre(), u.getEmail(), null, false, null));
-		}
+		// for (Usuario u : this.usuarios) {
+		// dtos.add(new UsuarioDTO(u.getUsuario(), u.getContrasena(), u.getNombre(),
+		// u.getEmail(), null, false, null));
+		// }
 		return dtos;
 	}
 
@@ -616,6 +617,13 @@ public class MemoryApi implements IApi {
 	public void modificarFalse() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario)
+			throws ConexionFallidaExeption {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'generarCalificacionHabitacion'");
 	}
 
 }

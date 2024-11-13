@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,26 +76,27 @@ public class VerReservas extends JFrame {
         scrollPane.setViewportView(table);
 
         List<ReservaDTO> reservas;
-		try {
-			reservas = api.obtenerReserva();
-
-        for (ReservaDTO reserva : reservas) {
-            Object[] rowData = new Object[8]; // Changed from 7 to 8 to accommodate the new column
-            rowData[0] = reserva.getId(); // Add the ID
-            rowData[1] = numeroDehabitaciones(reserva.getHabitacion());
-            rowData[2] = reserva.isCheckIn();
-            rowData[3] = reserva.getFechaDeInicio();
-            rowData[4] = reserva.isCheckOut();
-            rowData[5] = reserva.getFechaDeSalida();
-            rowData[6] = calificacion(reserva);
-            rowData[7] = String.join(", ", reserva.getServicios());
-
-            model.addRow(rowData);
+        try {
+            reservas = api.obtenerReserva();
+            reservas.stream()
+                    .sorted(Comparator.comparingInt(ReservaDTO::getId))
+                    .forEach(reserva -> {
+                        Object[] rowData = {
+                                reserva.getId(),
+                                numeroDehabitaciones(reserva.getHabitacion()),
+                                reserva.isCheckIn(),
+                                reserva.getFechaDeInicio(),
+                                reserva.isCheckOut(),
+                                reserva.getFechaDeSalida(),
+                                calificacion(reserva),
+                                String.join(", ", reserva.getServicios())
+                        };
+                        model.addRow(rowData);
+                    });
+        } catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
+                | PrecioCeroExeption e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
-				| PrecioCeroExeption e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}
 
         JButton btnMostrarDetalles = new JButton("Mostrar Detalles");
         btnMostrarDetalles.setBounds(10, 200, 150, 25);
@@ -206,9 +208,10 @@ public class VerReservas extends JFrame {
         btnCalificar.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                // Obtener el ID de la reserva de la columna correspondiente (por ejemplo, la columna 0)
+                // Obtener el ID de la reserva de la columna correspondiente (por ejemplo, la
+                // columna 0)
                 int reservaId = (int) table.getValueAt(selectedRow, 0);
-                CalificarHabitaciones calificar = new CalificarHabitaciones(api,reservaId);
+                CalificarHabitaciones calificar = new CalificarHabitaciones(api, reservaId);
                 calificar.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva para calificar.");
