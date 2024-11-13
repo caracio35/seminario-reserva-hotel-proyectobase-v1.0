@@ -80,8 +80,7 @@ public class CalificarHabitaciones extends JFrame {
 				JOptionPane.showMessageDialog(contentPane, "Reserva calificada");
 				dispose();
 			} catch (ConexionFallidaExeption e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showConfirmDialog(null, e1.getMessage());
 			}
 		});
 	}
