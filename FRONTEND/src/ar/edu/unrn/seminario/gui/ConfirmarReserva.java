@@ -116,6 +116,7 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(rdbtnPrecioMinimo);
 
 			JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
+			rdbtnPagoTotal.setSelected(true);
 			buttonGroup.add(rdbtnPagoTotal);
 			rdbtnPagoTotal.setBounds(190, 367, 128, 21);
 			panel.add(rdbtnPagoTotal);
