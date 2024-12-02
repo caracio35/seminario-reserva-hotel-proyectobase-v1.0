@@ -53,7 +53,7 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-	void crearCaracteristicaEspecial(String nombre, String descripcion, double precio); // crea una nueva
+	void crearCaracteristicaEspecial(String nombre, String descripcion, double precio) throws ConexionFallidaExeption, DuplicadaExeption; // crea una nueva
 																						// caracteristica especial y
 																						// la agrega a la lista de
 																						// caracteristicas especiale
@@ -66,7 +66,7 @@ public interface IApi {
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
 			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption,
-			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;// Genera una
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ErrorConsultaExeption;// Genera una
 	// reserva para
 	// una o mas
 	// habitaciones durante un periodo
@@ -87,7 +87,7 @@ public interface IApi {
 	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption; // habitacion
 																															// habilitadas
 
-	List<CaracteristicaEspecialDTO> obtenerCaracteristica();
+	List<CaracteristicaEspecialDTO> obtenerCaracteristica() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas);
 
@@ -105,12 +105,12 @@ public interface IApi {
 
 	void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	void eliminarCaracteristica(String nombreCaracteristica);
+	void eliminarCaracteristica(String nombreCaracteristica) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas)
 			throws NumeroHabitacionExistenteException, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
-			ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption;
+			ConexionFallidaExeption, DuplicadaExeption, ErrorConsultaExeption, ErrorDatosNoEncontradosExeption;
 
 	void generarCalificacionHabitacion(int idReserva, int calificacion, String comentario)
 			throws ConexionFallidaExeption;

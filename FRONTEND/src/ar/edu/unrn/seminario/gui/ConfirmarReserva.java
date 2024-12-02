@@ -28,6 +28,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
@@ -63,9 +64,9 @@ public class ConfirmarReserva extends JFrame {
 				usuario = api.obtenerUsuario("juanp");
 			} catch (ConexionFallidaExeption e) {
 			
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, e.getMessage());
 			} catch (ErrorDatosNoEncontradosExeption e) {
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 			
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -318,6 +319,8 @@ public class ConfirmarReserva extends JFrame {
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
 				| PrecioCeroExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
+		}catch (ErrorConsultaExeption e1) {
+			JOptionPane.showConfirmDialog(null, e1.getMessage());
 		}
 
 	}

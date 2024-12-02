@@ -135,7 +135,7 @@ public class CargarHabitacion extends JFrame {
 						dispose();
 						JOptionPane.showMessageDialog(null, "habitacion agregada con exito");
 					} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption
-							| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption e1) {
+							| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption | ErrorDatosNoEncontradosExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 
 					} catch (NumberFormatException e1) {

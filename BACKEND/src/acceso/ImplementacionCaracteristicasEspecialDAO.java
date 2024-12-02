@@ -11,6 +11,9 @@ import com.mysql.jdbc.PreparedStatement;
 
 import ar.edu.unrn.seminario.api.CaracteristicaEspecialDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.DuplicadaExeption;
+import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 
 @SuppressWarnings("unused")
@@ -30,12 +33,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	@Override
-	public void create(CaracteristicaEspecial caracteristicas) {
+	public void create(CaracteristicaEspecial caracteristicas) throws ConexionFallidaExeption, DuplicadaExeption {
 		CaracteristicaEspecial c = caracteristicas;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(nuevaCaracteristica);
 
 			pStament.setString(1, c.getNombre());
@@ -43,14 +47,24 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.setDouble(3, c.getPrecio());
 			pStament.execute();
 			pStament.close();
-		} catch (Exception e) {
-			System.out.println("no se subio" + e.getMessage());
-		} finally {
+		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) { //VERIFICAR ESTOOOOO!!!!!!!
+			throw new DuplicadaExeption("Ya existe esta caracteristica");
+		} catch (SQLException e) {
+			try {
+				if (miConeccion != null) {
+					miConeccion.rollback();
+
+				}
+			} catch (SQLException ex) {
+				throw new ConexionFallidaExeption();
+			}
+		}finally {
+		
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -58,12 +72,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	@Override
-	public void update(CaracteristicaEspecial caracteristicas) {
+	public void update(CaracteristicaEspecial caracteristicas) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		CaracteristicaEspecial c = caracteristicas;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(modificarCaracteristica);
 
 			pStament.setString(1, c.getDescripcion());
@@ -71,14 +86,14 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.setString(3, c.getNombre());
 			pStament.execute();
 			pStament.close();
-		} catch (Exception e) {
-			System.out.println("no se subio" + e.getMessage());
+		} catch (SQLException e) {
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -86,12 +101,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	@Override
-	public CaracteristicaEspecial find(String caracteristicas) {
+	public CaracteristicaEspecial find(String caracteristicas) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		String c = caracteristicas;
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarCaracteristica);
 			pStament.setString(1, c);
 			ResultSet rs = pStament.executeQuery();
@@ -105,13 +121,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.execute();
 			pStament.close();
 		} catch (SQLException e) {
-			System.out.println("excepcion propia ");
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -119,23 +135,24 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	@Override
-	public void remove(String id_caracteristicas) {
+	public void remove(String id_caracteristicas) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(eliminarCaracteristica);
 			pStament.setString(1, id_caracteristicas);
 			pStament.executeUpdate();
 			pStament.close();
 		} catch (SQLException e) {
-			System.out.println("excepcion propia ");
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
@@ -143,12 +160,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 	}
 
 	@Override
-	public Set<CaracteristicaEspecial> findAll() {
+	public Set<CaracteristicaEspecial> findAll() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Set<CaracteristicaEspecial> caracteristicasList = new HashSet<>();
 		Connection miConeccion = null;
 		PreparedStatement pStament = null;
+		miConeccion = Coneccion.conectar();
 		try {
-			miConeccion = Coneccion.conectar();
+			
 			pStament = (PreparedStatement) miConeccion.prepareStatement(encontrarTodasLasCaracteristicas);
 
 			ResultSet rs = pStament.executeQuery();
@@ -164,26 +182,26 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			pStament.execute();
 			pStament.close();
 		} catch (SQLException e) {
-			System.out.println("excepcion propia ");
+			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
 				try {
 					miConeccion.close();
 				} catch (SQLException e) {
-					System.out.println("error de conexion");
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
 		return caracteristicasList;
 	}
 
-	public Set<CaracteristicaEspecial> obtenerCaracteristicasPorHabitacion(int idNumeroHabitacion) {
+	public Set<CaracteristicaEspecial> obtenerCaracteristicasPorHabitacion(int idNumeroHabitacion) throws ConexionFallidaExeption, ErrorConsultaExeption {
 		Set<CaracteristicaEspecial> caracteristicaSet = new HashSet<>();
 		Connection miConexion = null;
 		PreparedStatement pStamentBuscarCar = null;
-
+		miConexion = Coneccion.conectar();
 		try {
-			miConexion = Coneccion.conectar(); // Tu método para obtener la conexión
+			
 			pStamentBuscarCar = (PreparedStatement) miConexion.prepareStatement(buscarCaracteristicasPorHabitacion);
 			pStamentBuscarCar.setInt(1, idNumeroHabitacion);
 
@@ -199,14 +217,13 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			}
 			pStamentBuscarCar.close();
 		} catch (SQLException e) {
-			System.out.println("Ocurrió un error al obtener las características de la habitación: " + e.getMessage());
-			e.printStackTrace();
+			throw new ErrorConsultaExeption();
 		} finally {
 			if (miConexion != null) {
 				try {
 					miConexion.close();
 				} catch (SQLException e) {
-					System.out.println("Error al cerrar la conexión: " + e.getMessage());
+					throw new ConexionFallidaExeption("Error al cerrar los recursos");
 				}
 			}
 		}
