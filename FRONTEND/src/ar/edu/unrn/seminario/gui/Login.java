@@ -58,13 +58,18 @@ public class Login extends JFrame {
 				boolean iniciado = api.iniciarSesion(textFieldUsuario.getText(), passwordField.getText());
 				if (iniciado) {
 					JOptionPane.showMessageDialog(null, "Usuario iniciado");
+					VentanaPrincipal v1 = new VentanaPrincipal(api);
+					v1.setVisible(true);
+					Login.this.dispose();
+					
 				}
-			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
-				// TODO Auto-generated catch block
+	
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) { //SOLUCIONAR PROBLEMA QUE NO ENTRA EN "ERRODATOSNOENCONTRADOS"
+				
 				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 			JOptionPane.showMessageDialog(null,
-					"usuario: " + textFieldUsuario.getText() + "\npassword: " + passwordField.getText());
+					"usuario: " + textFieldUsuario.getText() + "\npassword: " + passwordField.getText()); //ESTO ES NECESARIO?
 		});
 		btnBotonIniciar.setBounds(101, 176, 89, 23);
 		contentPane.add(btnBotonIniciar);

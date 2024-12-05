@@ -16,9 +16,9 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 @SuppressWarnings("unused")
 public class ImplementacionUsuarioDAO implements UsuarioDAO {
 
-	private final static String buscarUsuarioPorNombre = "SELECT * FROM usuarios WHERE usuario = ?";;
-	private static final String buscarUsuarioPorId = "SELECT nombre, apellido, email, usuario, contrasena, telefono, dni FROM usuarios WHERE id = ?";
-	private static final String buscarUsuarioPorNombreConContrasenia = "SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?";
+	private final static String buscarUsuarioPorNombre = "SELECT * FROM Usuarios WHERE usuario = ?";;
+	private static final String buscarUsuarioPorId = "SELECT nombre, apellido, email, usuario, contrasena, telefono, dni FROM Usuarios WHERE id = ?";
+	private static final String buscarUsuarioPorNombreConContrasenia = "SELECT * FROM Usuarios WHERE usuario = ? AND contrasena = ?";
 
 	@Override
 	public void create(Usuario usuario) {

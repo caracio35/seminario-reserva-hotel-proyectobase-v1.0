@@ -17,11 +17,11 @@ import ar.edu.unrn.seminario.modelo.Servicio;
 @SuppressWarnings("unused")
 public class ImplementaionServicioDAO implements ServicioDAO {
 
-	private final static String nuevoServicio = "INSERT INTO servicio (id,nombre,precio,descripcion) VALUES (?,?,?,?) ";
-	private final static String eliminarServicio = "DELETE FROM sevicio WHERE id = ?";
-	private final static String encontrarServicio = "SELECT * FROM servicio WHERE nombre = ?";
-	private final static String encontrarTodasLosServicios = "SELECT * FROM servicios";
-	private final static String modificarServicio = "UPDATE servicio SET nombre = ? ,precio = ?, descripcion = ? WHERE id = ?";
+	private final static String nuevoServicio = "INSERT INTO Servicio (id,nombre,precio,descripcion) VALUES (?,?,?,?) ";
+	private final static String eliminarServicio = "DELETE FROM Sevicio WHERE id = ?";
+	private final static String encontrarServicio = "SELECT * FROM Servicio WHERE nombre = ?";
+	private final static String encontrarTodasLosServicios = "SELECT * FROM Servicio";
+	private final static String modificarServicio = "UPDATE Servicio SET nombre = ? ,precio = ?, descripcion = ? WHERE id = ?";
 
 	@Override
 	public void create(Servicio servicio) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {

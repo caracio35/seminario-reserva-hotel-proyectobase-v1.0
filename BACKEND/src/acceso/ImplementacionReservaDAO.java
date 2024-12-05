@@ -30,7 +30,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 @SuppressWarnings("unused")
 public class ImplementacionReservaDAO implements ReservaDAO {
 
-	private final static String crearReserva = "INSERT INTO reserva (usuario_id, fechaDeInicio, fechaDeSalida, cantidadDePersonas,"
+	private final static String crearReserva = "INSERT INTO Reserva (usuario_id, fechaDeInicio, fechaDeSalida, cantidadDePersonas,"
 			+ "                      fechaDeReserva, saldoFavor, pagoMinimo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 	private static final String SELECT_ALL_RESERVAS = "SELECT * FROM Reserva";
@@ -52,16 +52,16 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	private static String sqlReserva = "SELECT r.*, u.nombre, u.apellido, u.email, u.usuario, u.contrasena, u.telefono, u.dni "
 			+
 			"FROM Reserva r " +
-			"JOIN usuarios u ON r.usuario_id = u.id " +
+			"JOIN Usuarios u ON r.usuario_id = u.id " +
 			"WHERE r.id = ?";
 
-	private static String updateReservaSql = "UPDATE reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
+	private static String updateReservaSql = "UPDATE Reserva SET fechaDeInicio = ?, fechaDeSalida = ?, " +
 			"cantidadDePersonas = ?, pagoMinimo = ? WHERE id = ?";
 
 	private static String sqlReservas = "SELECT r.*, u.nombre, u.apellido, u.email, u.usuario, u.contrasena, u.telefono, u.dni "
 			+
 			"FROM Reserva r " +
-			"JOIN usuarios u ON r.usuario_id = u.id";
+			"JOIN Usuarios u ON r.usuario_id = u.id";
 
 	@Override
 	public void create(Reserva reserva) throws ConexionFallidaExeption {
