@@ -9,14 +9,20 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
+
 public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField textFieldUsuario;
 	private JPasswordField passwordField;
+	private IApi api;
 
-	public Login() {
+	public Login(IApi api) {
+		this.api = api;
 		setTitle("Login Usuario");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 293, 379);
@@ -33,10 +39,10 @@ public class Login extends JFrame {
 		lblUsuario.setBounds(30, 41, 49, 14);
 		contentPane.add(lblUsuario);
 
-		textField = new JTextField();
-		textField.setBounds(30, 67, 219, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldUsuario = new JTextField();
+		textFieldUsuario.setBounds(30, 67, 219, 20);
+		contentPane.add(textFieldUsuario);
+		textFieldUsuario.setColumns(10);
 
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(30, 98, 49, 14);
@@ -48,6 +54,17 @@ public class Login extends JFrame {
 
 		JButton btnBotonIniciar = new JButton("Iniciar");
 		btnBotonIniciar.addActionListener(e -> {
+			try {
+				boolean iniciado = api.iniciarSesion(textFieldUsuario.getText(), passwordField.getText());
+				if (iniciado) {
+					JOptionPane.showMessageDialog(null, "Usuario iniciado");
+				}
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+			JOptionPane.showMessageDialog(null,
+					"usuario: " + textFieldUsuario.getText() + "\npassword: " + passwordField.getText());
 		});
 		btnBotonIniciar.setBounds(101, 176, 89, 23);
 		contentPane.add(btnBotonIniciar);
@@ -67,6 +84,11 @@ public class Login extends JFrame {
 			int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea iniciar como invitado?",
 					"Usted perdera los beneficios de estar registrado", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
+			if (response == 0) {
+				JOptionPane.showMessageDialog(null, "Usuario iniciado como invitado");
+			} else {
+				JOptionPane.showMessageDialog(null, "Usuario no iniciado como invitado");
+			}
 
 			/*
 			 * if (response == JOptionPane.YES_OPTION) { // Lógica para activar la

@@ -1,7 +1,6 @@
 package acceso;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
@@ -11,7 +10,7 @@ import com.mysql.jdbc.PreparedStatement;
 import ar.edu.unrn.seminario.api.UsuarioDAO;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
-import ar.edu.unrn.seminario.modelo.Servicio;
+import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 @SuppressWarnings("unused")
@@ -19,6 +18,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 
 	private final static String buscarUsuarioPorNombre = "SELECT * FROM usuarios WHERE usuario = ?";;
 	private static final String buscarUsuarioPorId = "SELECT nombre, apellido, email, usuario, contrasena, telefono, dni FROM usuarios WHERE id = ?";
+	private static final String buscarUsuarioPorNombreConContrasenia = "SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?";
 
 	@Override
 	public void create(Usuario usuario) {
@@ -49,15 +49,18 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				String usuario1 = rs.getString("usuario");
 				String contrasenia = rs.getString("contrasena");
 				String telefono = rs.getString("telefono");
+				int rol = rs.getInt("rol");
 				int dni = rs.getInt("dni");
-
-				Usuario usu2 = new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
+				Rol rol1 = obtenerRolPorId(rol, miConexion);
+				Usuario usu2 = new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono, rol1);
 				return usu2;
 			}
 			pStamentConsultaUsuario.execute();
 			pStamentConsultaUsuario.close();
 		} catch (SQLException e) {
+
 			throw new ErrorDatosNoEncontradosExeption("Usuario no encontrado");
+
 		} finally {
 			if (miConexion != null) {
 				try {
@@ -67,6 +70,80 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				}
 			}
 
+		}
+		return null;
+	}
+
+	public static Usuario authenticate(String usuario, String contrasenia)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		Connection miConexion = null;
+		java.sql.PreparedStatement pStamentConsultaUsuario = null;
+		ResultSet rs = null;
+		miConexion = Coneccion.conectar();
+
+		try {
+			String query = buscarUsuarioPorNombreConContrasenia;
+			pStamentConsultaUsuario = miConexion.prepareStatement(query);
+			pStamentConsultaUsuario.setString(1, usuario);
+			pStamentConsultaUsuario.setString(2, contrasenia);
+			rs = pStamentConsultaUsuario.executeQuery();
+
+			if (rs.next()) {
+				String nombres = rs.getString("nombre");
+				String apellido = rs.getString("apellido");
+				String email = rs.getString("email");
+				String usuario1 = rs.getString("usuario");
+				String telefono = rs.getString("telefono");
+				int rolId = rs.getInt("rol");
+				System.err.println("rolId: " + rolId);
+				int dni = rs.getInt("dni");
+
+				Rol rol = obtenerRolPorId(rolId, miConexion);
+				Usuario usu2 = new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono, rol);
+				return usu2;
+			}
+		} catch (SQLException e) {
+			throw new ErrorDatosNoEncontradosExeption("Usuario o contraseña incorrectos");
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					throw new ConexionFallidaExeption("Error al cerrar el ResultSet");
+				}
+			}
+			if (pStamentConsultaUsuario != null) {
+				try {
+					pStamentConsultaUsuario.close();
+				} catch (SQLException e) {
+					throw new ConexionFallidaExeption("Error al cerrar los recursos de declaración");
+				}
+			}
+			if (miConexion != null) {
+				try {
+					miConexion.close();
+				} catch (SQLException e) {
+					throw new ConexionFallidaExeption("Error al cerrar la conexión");
+				}
+			}
+		}
+		return null;
+	}
+
+	private static Rol obtenerRolPorId(int rolId, Connection miConexion) throws SQLException {
+		String query = "SELECT nombre, activo FROM rol WHERE id_rol = ?";
+		try (PreparedStatement pStmt = (PreparedStatement) miConexion.prepareStatement(query)) {
+			pStmt.setInt(1, rolId);
+			try (ResultSet rs = pStmt.executeQuery()) {
+				if (rs.next()) {
+					String nombre = rs.getString("nombre");
+					boolean activo = rs.getBoolean("activo");
+					Rol rol = new Rol(rolId, nombre);
+
+					rol.setActivo(activo);
+					return rol;
+				}
+			}
 		}
 		return null;
 	}
@@ -100,9 +177,10 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				String usuario1 = rs.getString("usuario");
 				String contrasenia = rs.getString("contrasena");
 				String telefono = rs.getString("telefono");
+				int rol = rs.getInt("rol");
 				int dni = rs.getInt("dni");
-
-				return new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono);
+				Rol rol1 = obtenerRolPorId(rol, miConexion);
+				return new Usuario(usuario1, contrasenia, nombres, apellido, email, dni, telefono, rol1);
 			}
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption("Usuario no encontrado");

@@ -2,18 +2,17 @@ package acceso;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+
 import ar.edu.unrn.seminario.api.ReservaDAO;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
@@ -176,7 +175,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 						rsReserva.getString("apellido"),
 						rsReserva.getString("email"),
 						rsReserva.getInt("dni"),
-						rsReserva.getString("telefono"));
+						rsReserva.getString("telefono"),
+						null);
 
 				// Obtener habitaciones asociadas
 				ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, idReserva);
@@ -244,7 +244,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 						rsReservas.getString("apellido"),
 						rsReservas.getString("email"),
 						rsReservas.getInt("dni"),
-						rsReservas.getString("telefono"));
+						rsReservas.getString("telefono"),
+						null);
 
 				// Crear la lista de habitaciones asociadas a la reserva
 				ArrayList<Habitacion> habitaciones = obtenerHabitacionesPorReserva(conn, reservaId);

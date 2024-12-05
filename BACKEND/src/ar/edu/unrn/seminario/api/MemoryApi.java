@@ -95,7 +95,7 @@ public class MemoryApi implements IApi {
 	public void registrarUsuario(String usuario, String contrasena, String nombre, String apellido, String email,
 			int dni, String telefono) {
 
-		Usuario usuario1 = new Usuario(usuario, contrasena, nombre, apellido, email, dni, telefono);
+		Usuario usuario1 = new Usuario(usuario, contrasena, nombre, apellido, email, dni, telefono, null);
 		this.usuarios.add(usuario1);
 		this.usuarios1.put(usuario, contrasena);
 
@@ -112,7 +112,7 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public UsuarioDTO obtenerUsuario(String username) {
+	public UsuarioDTO obtenerUsuario(int username) {
 
 		return null;
 	}
@@ -624,6 +624,12 @@ public class MemoryApi implements IApi {
 			throws ConexionFallidaExeption {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'generarCalificacionHabitacion'");
+	}
+
+	@Override
+	public boolean iniciarSesion(String text, String text2) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'iniciarSesion'");
 	}
 
 }

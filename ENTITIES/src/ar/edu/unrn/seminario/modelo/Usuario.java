@@ -9,9 +9,10 @@ public class Usuario {
 	private String email;
 	private int dni;
 	private String telefono;
+	private Rol rol;
 
 	public Usuario(String usuario, String contrasena, String nombre, String apellido, String email, int dni,
-			String telefono) {
+			String telefono, Rol rol) {
 
 		this.usuario = usuario;
 		this.contrasena = contrasena;
@@ -20,6 +21,7 @@ public class Usuario {
 		this.email = email;
 		this.dni = dni;
 		this.telefono = telefono;
+		this.rol = rol;
 	}
 
 	public String getUsuario() {
@@ -63,17 +65,21 @@ public class Usuario {
 	}
 
 	public String getTelefono() {
-	return telefono;	
+		return telefono;
 	}
+
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+
 	public String getApellido() {
 		return apelliido;
 	}
+
 	public void setApellido(String apellido) {
-		this.apelliido = apellido ; 
+		this.apelliido = apellido;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -49,7 +49,8 @@ public class ConfirmarReserva extends JFrame {
 	IApi api;
 	private java.util.List<Integer> habitacionesSeleccionadas;
 	private List<HabitacionDTO> habitaciones;
-	private Boolean pago ; 
+	private Boolean pago;
+
 	@SuppressWarnings("unchecked")
 	public ConfirmarReserva(String fechaInicio, String fechaFin, IApi api,
 			java.util.List<Integer> habitacionesSeleccionadas) {
@@ -58,17 +59,17 @@ public class ConfirmarReserva extends JFrame {
 			this.api = api;
 			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
-			
+
 			UsuarioDTO usuario = null;
 			try {
-				usuario = api.obtenerUsuario("juanp");
+				usuario = api.obtenerUsuario(2);
 			} catch (ConexionFallidaExeption e) {
-			
+
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			} catch (ErrorDatosNoEncontradosExeption e) {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
-			
+
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 528, 526);
 			contentPane = new JPanel();
@@ -121,7 +122,7 @@ public class ConfirmarReserva extends JFrame {
 			buttonGroup.add(rdbtnPagoTotal);
 			rdbtnPagoTotal.setBounds(190, 367, 128, 21);
 			panel.add(rdbtnPagoTotal);
-			
+
 			JComboBox<Integer> comboBoxCantidadPersonas = new JComboBox<>();
 			comboBoxCantidadPersonas.setBounds(10, 366, 137, 22);
 			panel.add(comboBoxCantidadPersonas);
@@ -132,19 +133,18 @@ public class ConfirmarReserva extends JFrame {
 			comboBoxCantidadPersonas.addItem(5);
 			comboBoxCantidadPersonas.addItem(6);
 			comboBoxCantidadPersonas.addItem(7);
-			
 
 			JButton btnRealizarPago = new JButton("Realizar Pago");
 			btnRealizarPago.addActionListener(e -> {
 				String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
 				int cantidadPersonas = (int) comboBoxCantidadPersonas.getSelectedItem();
-				
+
 				Random random = new Random();
-				
+
 				if (rdbtnPrecioMinimo.isSelected()) {
-				    this.pago = true;
-				} else if (rdbtnPagoTotal.isSelected()) {  // Cambiado a rdbtnPagoTotal
-				    this.pago = false;
+					this.pago = true;
+				} else if (rdbtnPagoTotal.isSelected()) { // Cambiado a rdbtnPagoTotal
+					this.pago = false;
 				}
 				if ("Tarjeta de Credito".equals(metodoPago)) {
 					// 30% de probabilidad de falla por monto insuficiente
@@ -261,9 +261,7 @@ public class ConfirmarReserva extends JFrame {
 			JLabel lblNewLabel_1 = new JLabel("Personas");
 			lblNewLabel_1.setBounds(9, 346, 128, 14);
 			panel.add(lblNewLabel_1);
-			
-		
-			
+
 		}
 	}
 
@@ -303,14 +301,13 @@ public class ConfirmarReserva extends JFrame {
 		return servicios;
 	}
 
-	
-	private void generarReserva( Boolean pago  , int personas) {
+	private void generarReserva(Boolean pago, int personas) {
 
 		LocalDateTime fechaActual = LocalDateTime.now();
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String fechaReserva = fechaActual.format(formato);
 		int[] numerosHabitacion = obtenerNumerosDeHabitacionDesdeTabla();
-		int cantidadPersonas = personas ; 
+		int cantidadPersonas = personas;
 		String[] serviciosObtenido = { "Desayuno" };
 		try {
 			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),
@@ -319,14 +316,14 @@ public class ConfirmarReserva extends JFrame {
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
 				| PrecioCeroExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-		}catch (ErrorConsultaExeption e1) {
+		} catch (ErrorConsultaExeption e1) {
 			JOptionPane.showConfirmDialog(null, e1.getMessage());
 		}
 
 	}
 
 	private void reservarHabitacion(Object roomId) {
-		
+
 		System.out.println("Habitación " + roomId + " reservada.");
 	}
 }

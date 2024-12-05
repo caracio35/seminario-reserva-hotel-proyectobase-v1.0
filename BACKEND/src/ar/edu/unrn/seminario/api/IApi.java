@@ -15,7 +15,6 @@ import ar.edu.unrn.seminario.exception.ErrorConsultaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.NumeroHabitacionExistenteException;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
-import ar.edu.unrn.seminario.modelo.Calificacion;
 
 @SuppressWarnings("unused")
 public interface IApi {
@@ -31,7 +30,7 @@ public interface IApi {
 
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
-	UsuarioDTO obtenerUsuario(String username) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+	UsuarioDTO obtenerUsuario(int idUsuario) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void eliminarUsuario(String username);
 
@@ -53,10 +52,11 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-	void crearCaracteristicaEspecial(String nombre, String descripcion, double precio) throws ConexionFallidaExeption, DuplicadaExeption; // crea una nueva
-																						// caracteristica especial y
-																						// la agrega a la lista de
-																						// caracteristicas especiale
+	void crearCaracteristicaEspecial(String nombre, String descripcion, double precio)
+			throws ConexionFallidaExeption, DuplicadaExeption; // crea una nueva
+	// caracteristica especial y
+	// la agrega a la lista de
+	// caracteristicas especiale
 
 	void cargarCaracteristica(CaracteristicaEspecialDTO caracteristicaDTO);// carga una o mas caracteristica especiales
 																			// a una habitación especifica
@@ -66,7 +66,8 @@ public interface IApi {
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
 			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption,
-			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ErrorConsultaExeption;// Genera una
+			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ErrorConsultaExeption;// Genera una
 	// reserva para
 	// una o mas
 	// habitaciones durante un periodo
@@ -87,7 +88,8 @@ public interface IApi {
 	List<HabitacionDTO> obtenerHabitacionesHabilitada() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption; // habitacion
 																															// habilitadas
 
-	List<CaracteristicaEspecialDTO> obtenerCaracteristica() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+	List<CaracteristicaEspecialDTO> obtenerCaracteristica()
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	List<CaracteristicaEspecialDTO> obtenerCaracteristica(List<String> caracteristicas);
 
@@ -105,7 +107,8 @@ public interface IApi {
 
 	void eliminarHabitacion(int numeroHabitacion) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	void eliminarCaracteristica(String nombreCaracteristica) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+	void eliminarCaracteristica(String nombreCaracteristica)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	void darDeAltaHabitacion(int cantidadDeCamas, String descripcion, double precio, boolean habilitado,
 			int numHabitacion, String[] caracteristicas)
@@ -124,5 +127,7 @@ public interface IApi {
 	void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception;
 
 	void modificarFalse();
+
+	boolean iniciarSesion(String text, String text2) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 }
