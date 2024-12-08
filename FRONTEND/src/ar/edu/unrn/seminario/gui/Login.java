@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
@@ -61,15 +63,18 @@ public class Login extends JFrame {
 					VentanaPrincipal v1 = new VentanaPrincipal(api);
 					v1.setVisible(true);
 					Login.this.dispose();
+				
 					
 				}
-	
-			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) { //SOLUCIONAR PROBLEMA QUE NO ENTRA EN "ERRODATOSNOENCONTRADOS"
+				else {
+					throw new ErrorDatosNoEncontradosExeption("Usuario o contraseña incorrectos");}
+				
+				
+			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) { 
 				
 				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
-			JOptionPane.showMessageDialog(null,
-					"usuario: " + textFieldUsuario.getText() + "\npassword: " + passwordField.getText()); //ESTO ES NECESARIO?
+	
 		});
 		btnBotonIniciar.setBounds(101, 176, 89, 23);
 		contentPane.add(btnBotonIniciar);
@@ -81,6 +86,14 @@ public class Login extends JFrame {
 		contentPane.add(btnBotonOlvideContraseña);
 
 		JButton btnBotonCrearUsuario = new JButton("Crear Usuario");
+		btnBotonCrearUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "FALTA CREAR EL DAO PARA BUSCAR ROL");
+				/*AltaUsuario aU = new AltaUsuario(api);
+				aU.setVisible(true);
+				Login.this.dispose();*/
+			}
+		});
 		btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
 		contentPane.add(btnBotonCrearUsuario);
 
@@ -91,6 +104,9 @@ public class Login extends JFrame {
 					JOptionPane.QUESTION_MESSAGE);
 			if (response == 0) {
 				JOptionPane.showMessageDialog(null, "Usuario iniciado como invitado");
+				VentanaPrincipal v1 = new VentanaPrincipal(api);
+				v1.setVisible(true);
+				Login.this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Usuario no iniciado como invitado");
 			}

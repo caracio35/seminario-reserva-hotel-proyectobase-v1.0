@@ -37,7 +37,7 @@ public class AltaUsuario extends JFrame {
 	public AltaUsuario(IApi api) {
 
 		// Obtengo los roles
-		this.roles = api.obtenerRoles();
+		this.roles = api.obtenerRoles();  //DEBERIA BUSCAR 1 SOLO USUARIO (USER)
 
 		setTitle("Alta Usuario");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
