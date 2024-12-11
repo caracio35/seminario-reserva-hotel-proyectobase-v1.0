@@ -2,6 +2,8 @@ package ar.edu.unrn.seminario.api;
 
 import java.util.Set;
 
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Rol;
 
 public interface RolDAO {
@@ -13,4 +15,6 @@ public interface RolDAO {
 	void remove(String nombre);
 	
 	Set<Rol> findAll();
+	
+	Rol find(int id_rol) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 }

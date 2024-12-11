@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+
 public class Coneccion {
 	private static Connection conn = null;
     private static Properties prop = null;
@@ -23,7 +25,7 @@ public class Coneccion {
         return prop;
     }
 
-    public static void connect() {
+    public static void connect() throws ConexionFallidaExeption {
         try {
             prop = getProperties();
             conn = DriverManager.getConnection(
@@ -31,32 +33,28 @@ public class Coneccion {
                     prop.getProperty("username"),
                     prop.getProperty("password")
             );
-            System.out.println("Conexión exitosa a la base de datos.");
         } catch (SQLException sqlEx) {
-            System.err.println(
-                    "No se pudo conectar a " + prop.getProperty("connection") + ". " + sqlEx.getMessage()
-            );
+        	throw new ConexionFallidaExeption("no se conecto");
+        
         }
     }
 
-    public static void disconnect() {
+    public static void disconnect() throws ConexionFallidaExeption {
         if (conn != null) {
             try {
                 conn.close();
                 conn = null;
-                System.out.println("Conexión cerrada.");
             } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            	throw new ConexionFallidaExeption("error al cerrar los recursos");            }
         }
     }
 
-    public static void reconnect() {
+    public static void reconnect() throws ConexionFallidaExeption {
         disconnect();
         connect();
     }
 
-    public static Connection conectar() {
+    public static Connection conectar() throws ConexionFallidaExeption {
         if (conn == null) {
             connect();
         }

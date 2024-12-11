@@ -91,7 +91,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				String usuario1 = rs.getString("usuario");
 				String telefono = rs.getString("telefono");
 				int rolId = rs.getInt("rol");
-				System.err.println("rolId: " + rolId); //ES NECESARIO IMPRIMIR EL ROL?
+			//	System.err.println("rolId: " + rolId); //ES NECESARIO IMPRIMIR EL ROL?
 				int dni = rs.getInt("dni");
 
 				Rol rol = obtenerRolPorId(rolId, miConexion);

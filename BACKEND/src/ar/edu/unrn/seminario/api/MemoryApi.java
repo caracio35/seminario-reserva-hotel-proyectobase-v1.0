@@ -149,7 +149,7 @@ public class MemoryApi implements IApi {
 	}
 
 	@Override
-	public RolDTO obtenerRolPorCodigo(Integer codigo) {
+	public RolDTO obtenerRolPorCodigo(int codigo) {
 
 		return null;
 	}
@@ -178,10 +178,10 @@ public class MemoryApi implements IApi {
 	}
 
 	private Rol buscarRol(Integer codigo) {
-		for (Rol rol : roles) {
+		/*for (Rol rol : roles) {
 			if (rol.getCodigo().equals(codigo))
 				return rol;
-		}
+		}*/
 		return null;
 	}
 
