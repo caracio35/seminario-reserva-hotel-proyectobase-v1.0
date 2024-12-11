@@ -77,7 +77,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				if (pStamentConsutaCreaHabitacion != null)
 					pStamentConsutaCreaHabitacion.close();
 				if (miConeccion != null)
-					miConeccion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
@@ -141,11 +141,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 	}
@@ -183,11 +179,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 		return null;
@@ -208,11 +200,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 	}
@@ -260,7 +248,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 				if (pStamentConsulta != null)
 					pStamentConsulta.close();
 				if (miConeccion != null)
-					miConeccion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("error al cerrar los recursos");
 			}

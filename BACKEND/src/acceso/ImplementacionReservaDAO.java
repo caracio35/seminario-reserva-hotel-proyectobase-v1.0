@@ -108,7 +108,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (pStamentConsutaCreaReserva != null)
 					pStamentConsutaCreaReserva.close();
 				if (miConeccion != null)
-					miConeccion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
@@ -143,7 +143,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				if (pStamentUpdateReserva != null)
 					pStamentUpdateReserva.close();
 				if (miConeccion != null)
-					miConeccion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
@@ -202,12 +202,8 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
 			System.out.println("Error de consistencia en los datos de la reserva: " + e.getMessage());
 		} finally {
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException e) {
-				throw new ConexionFallidaExeption("Error al cerrar los datos");
-			}
+			if (conn != null)
+				Coneccion.disconnect();
 		}
 
 		return Optional.ofNullable(reserva);
@@ -271,7 +267,6 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				reserva.setCheckOut(fechaCheckOut.isPresent());
 				reservas.add(reserva);
 			}
-
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();
 		}

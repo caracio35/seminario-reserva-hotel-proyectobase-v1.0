@@ -2,23 +2,65 @@ package acceso;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
-import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class Coneccion {
-	private final static String conexion = "jdbc:mysql://localhost:3306/Comarca Hoteles?useSSL=false";
-	private final static String usuario = "root";
-	private final static String clave = "";
+	private static Connection conn = null;
+    private static Properties prop = null;
 
-	static Connection conectar() throws ConexionFallidaExeption {
-		Connection miConexion = null;
-		try {
-			miConexion = DriverManager.getConnection(conexion, usuario, clave);
-			return miConexion;
-		} catch (Exception e) {
-			throw new ConexionFallidaExeption("no se conecto");
+    private static Properties getProperties() throws RuntimeException {
+        Properties prop = new Properties();
+        try {
+            ResourceBundle infoDataBase = ResourceBundle.getBundle("database");
+            prop.setProperty("connection", infoDataBase.getString("db.url"));
+            prop.setProperty("username", infoDataBase.getString("db.user"));
+            prop.setProperty("password", infoDataBase.getString("db.password"));
+        } catch (Exception e1) {
+            throw new RuntimeException("Error al leer la configuración desde el archivo de propiedades.");
+        }
+        return prop;
+    }
 
-		}
-	}
+    public static void connect() {
+        try {
+            prop = getProperties();
+            conn = DriverManager.getConnection(
+                    prop.getProperty("connection"),
+                    prop.getProperty("username"),
+                    prop.getProperty("password")
+            );
+            System.out.println("Conexión exitosa a la base de datos.");
+        } catch (SQLException sqlEx) {
+            System.err.println(
+                    "No se pudo conectar a " + prop.getProperty("connection") + ". " + sqlEx.getMessage()
+            );
+        }
+    }
+
+    public static void disconnect() {
+        if (conn != null) {
+            try {
+                conn.close();
+                conn = null;
+                System.out.println("Conexión cerrada.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void reconnect() {
+        disconnect();
+        connect();
+    }
+
+    public static Connection conectar() {
+        if (conn == null) {
+            connect();
+        }
+        return conn;
+    }
 
 }

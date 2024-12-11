@@ -13,110 +13,102 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField textFieldUsuario;
-	private JPasswordField passwordField;
-	private IApi api;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField textFieldUsuario;
+    private JPasswordField passwordField;
+    private IApi api;
+    private Locale idiomaSeleccionado;
+    private ResourceBundle recursos;
 
-	public Login(IApi api) {
-		this.api = api;
-		setTitle("Login Usuario");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 293, 379);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(null);
-		setContentPane(contentPane);
+    public Login(IApi api, Locale idioma) {
+        this.api = api;
+        this.idiomaSeleccionado = idioma;
+        this.recursos = ResourceBundle.getBundle("labels", idioma);
 
-		JLabel lblTitulo = new JLabel("Loguin Usuario");
-		lblTitulo.setBounds(100, 11, 90, 14);
-		contentPane.add(lblTitulo);
+        setTitle(recursos.getString("login.titulo"));
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 293, 379);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
 
-		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setBounds(30, 41, 49, 14);
-		contentPane.add(lblUsuario);
+        JLabel lblTitulo = new JLabel(recursos.getString("login.titulo"));
+        lblTitulo.setBounds(100, 11, 90, 14);
+        contentPane.add(lblTitulo);
 
-		textFieldUsuario = new JTextField();
-		textFieldUsuario.setBounds(30, 67, 219, 20);
-		contentPane.add(textFieldUsuario);
-		textFieldUsuario.setColumns(10);
+        JLabel lblUsuario = new JLabel(recursos.getString("login.usuario"));
+        lblUsuario.setBounds(30, 41, 49, 14);
+        contentPane.add(lblUsuario);
 
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(30, 98, 49, 14);
-		contentPane.add(lblPassword);
+        textFieldUsuario = new JTextField();
+        textFieldUsuario.setBounds(30, 67, 219, 20);
+        contentPane.add(textFieldUsuario);
+        textFieldUsuario.setColumns(10);
 
-		passwordField = new JPasswordField();
-		passwordField.setBounds(30, 123, 219, 20);
-		contentPane.add(passwordField);
+        JLabel lblPassword = new JLabel(recursos.getString("login.password"));
+        lblPassword.setBounds(30, 98, 49, 14);
+        contentPane.add(lblPassword);
 
-		JButton btnBotonIniciar = new JButton("Iniciar");
-		btnBotonIniciar.addActionListener(e -> {
-			try {
-				boolean iniciado = api.iniciarSesion(textFieldUsuario.getText(), passwordField.getText());
-				if (iniciado) {
-					JOptionPane.showMessageDialog(null, "Usuario iniciado");
-					VentanaPrincipal v1 = new VentanaPrincipal(api);
-					v1.setVisible(true);
-					Login.this.dispose();
-				
-					
-				}
-				else {
-					throw new ErrorDatosNoEncontradosExeption("Usuario o contraseña incorrectos");}
-				
-				
-			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) { 
-				
-				JOptionPane.showMessageDialog(null, e1.getMessage());
-			}
-	
-		});
-		btnBotonIniciar.setBounds(101, 176, 89, 23);
-		contentPane.add(btnBotonIniciar);
+        passwordField = new JPasswordField();
+        passwordField.setBounds(30, 123, 219, 20);
+        contentPane.add(passwordField);
 
-		JButton btnBotonOlvideContraseña = new JButton("Olvide mi contraseña");
-		btnBotonOlvideContraseña.addActionListener(e -> {
-		});
-		btnBotonOlvideContraseña.setBounds(74, 227, 137, 23);
-		contentPane.add(btnBotonOlvideContraseña);
+        JButton btnBotonIniciar = new JButton(recursos.getString("login.iniciar"));
+        btnBotonIniciar.addActionListener(e -> {
+            try {
+                boolean iniciado = api.iniciarSesion(textFieldUsuario.getText(), passwordField.getText());
+                if (iniciado) {
+                    JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioIniciado"));
+                    VentanaPrincipal v1 = new VentanaPrincipal(api , idiomaSeleccionado);
+                    v1.setVisible(true);
+                    Login.this.dispose();
+                } else {
+                    throw new ErrorDatosNoEncontradosExeption(recursos.getString("login.error"));
+                }
+            } catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+                JOptionPane.showMessageDialog(null, e1.getMessage());
+            }
+        });
+        btnBotonIniciar.setBounds(101, 176, 89, 23);
+        contentPane.add(btnBotonIniciar);
 
-		JButton btnBotonCrearUsuario = new JButton("Crear Usuario");
-		btnBotonCrearUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "FALTA CREAR EL DAO PARA BUSCAR ROL");
-				/*AltaUsuario aU = new AltaUsuario(api);
-				aU.setVisible(true);
-				Login.this.dispose();*/
-			}
-		});
-		btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
-		contentPane.add(btnBotonCrearUsuario);
+        JButton btnBotonOlvideContraseña = new JButton(recursos.getString("login.olvidarContraseña"));
+        btnBotonOlvideContraseña.addActionListener(e -> {});
+        btnBotonOlvideContraseña.setBounds(74, 227, 137, 23);
+        contentPane.add(btnBotonOlvideContraseña);
 
-		JButton btnBotonInvitado = new JButton("Iniciar como invitado");
-		btnBotonInvitado.addActionListener(e -> {
-			int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea iniciar como invitado?",
-					"Usted perdera los beneficios de estar registrado", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-			if (response == 0) {
-				JOptionPane.showMessageDialog(null, "Usuario iniciado como invitado");
-				VentanaPrincipal v1 = new VentanaPrincipal(api);
-				v1.setVisible(true);
-				Login.this.dispose();
-			} else {
-				JOptionPane.showMessageDialog(null, "Usuario no iniciado como invitado");
-			}
+        JButton btnBotonCrearUsuario = new JButton(recursos.getString("login.crearUsuario"));
+        btnBotonCrearUsuario.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, recursos.getString("login.faltaCrearUsuario"));
+            }
+        });
+        btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
+        contentPane.add(btnBotonCrearUsuario);
 
-			/*
-			 * if (response == JOptionPane.YES_OPTION) { // Lógica para activar la
-			 * habitación JOptionPane.showMessageDialog(null, "Habitación activada."); }
-			 */
-		});
-		btnBotonInvitado.setBounds(136, 306, 143, 23);
-		contentPane.add(btnBotonInvitado);
-	}
+        JButton btnBotonInvitado = new JButton(recursos.getString("login.iniciarInvitado"));
+        btnBotonInvitado.addActionListener(e -> {
+            int response = JOptionPane.showConfirmDialog(null, recursos.getString("login.confirmarInvitado"),
+                    recursos.getString("login.perdidaBeneficios"), JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (response == 0) {
+                JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioInvitado"));
+                VentanaPrincipal v1 = new VentanaPrincipal(api , idiomaSeleccionado);
+                v1.setVisible(true);
+                Login.this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioNoInvitado"));
+            }
+        });
+        btnBotonInvitado.setBounds(136, 306, 143, 23);
+        contentPane.add(btnBotonInvitado);
+    }
 }

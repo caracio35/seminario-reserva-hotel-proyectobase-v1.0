@@ -61,11 +61,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 		}finally {
 		
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 
@@ -90,11 +86,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 
@@ -124,11 +116,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 		return null;
@@ -149,11 +137,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 
@@ -185,11 +169,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 		return caracteristicasList;
@@ -220,11 +200,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 			throw new ErrorConsultaExeption();
 		} finally {
 			if (miConexion != null) {
-				try {
-					miConexion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 

@@ -46,7 +46,7 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 				if (pStamentConsutaCrearCalificacion != null)
 					pStamentConsutaCrearCalificacion.close();
 				if (miConexion != null)
-					miConexion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
@@ -87,7 +87,7 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 				if (pStatementConsultaBuscarCalificacion != null)
 					pStatementConsultaBuscarCalificacion.close();
 				if (miConexion != null)
-					miConexion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}

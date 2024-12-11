@@ -63,11 +63,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 
 		} finally {
 			if (miConexion != null) {
-				try {
-					miConexion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 
 		}
@@ -120,11 +116,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				}
 			}
 			if (miConexion != null) {
-				try {
-					miConexion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar la conexión");
-				}
+				Coneccion.disconnect();
 			}
 		}
 		return null;
@@ -191,7 +183,7 @@ public class ImplementacionUsuarioDAO implements UsuarioDAO {
 				if (pStamentConsultaUsuario != null)
 					pStamentConsultaUsuario.close();
 				if (miConexion != null)
-					miConexion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}

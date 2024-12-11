@@ -43,11 +43,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 
@@ -73,11 +69,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 
@@ -109,11 +101,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 		return null;
@@ -135,11 +123,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 
@@ -173,11 +157,7 @@ public class ImplementaionServicioDAO implements ServicioDAO {
 			throw new ErrorDatosNoEncontradosExeption();
 		} finally {
 			if (miConeccion != null) {
-				try {
-					miConeccion.close();
-				} catch (SQLException e) {
-					throw new ConexionFallidaExeption("Error al cerrar los recursos");
-				}
+				Coneccion.disconnect();
 			}
 		}
 		return servicioList;

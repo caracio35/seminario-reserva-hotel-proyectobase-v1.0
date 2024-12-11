@@ -48,7 +48,7 @@ public class ImplementacionFacturaDAO implements FacturaDAO {
 				if (pStamentConsutaCreFactura != null)
 					pStamentConsutaCreFactura.close();
 				if (miConeccion != null)
-					miConeccion.close();
+					Coneccion.disconnect();
 			} catch (SQLException e) {
 				throw new ConexionFallidaExeption("Error al cerrar los recursos");
 			}
