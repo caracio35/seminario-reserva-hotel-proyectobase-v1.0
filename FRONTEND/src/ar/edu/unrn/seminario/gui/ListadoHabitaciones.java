@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -41,17 +43,19 @@ public class ListadoHabitaciones extends JFrame {
 	private String fechaFormateada;
 	private int numHabitacionSelected;
 	private JTextField textField;
+	private Locale idiomaSeleccionado;
+    private ResourceBundle recursos;
 
-	public ListadoHabitaciones(IApi api) throws ConexionFallidaExeption {
-
+	public ListadoHabitaciones(IApi api , Locale idioma) throws ConexionFallidaExeption {
+		this.idiomaSeleccionado = idioma;
+	    this.recursos = ResourceBundle.getBundle("labels", idioma);
+		this.api = api;
+		
 		setBackground(SystemColor.textHighlight);
 		getContentPane().setBackground(new Color(240, 240, 240));
 		getContentPane().setForeground(new Color(255, 255, 255));
 		setForeground(new Color(0, 0, 102));
-		// Configurar el JFrame
-		// this.habitacionDTOs = habitacionDTOs;
-		this.api = api;
-		setTitle("Lista de Habitaciones");
+		setTitle(recursos.getString("listaHabitaciones.titulo"));
 		setSize(996, 298); // Establece el tamaño del JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
 		setLocationRelativeTo(null); // Centrar la ventana en la pantalla
@@ -63,8 +67,11 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		// Crear el modelo de la tabla
-		model = new DefaultTableModel(new Object[][] {}, new String[] { "Numero de Habitacion", "Cama Matrim",
-				"Cant Camas", "Disponible", "No disponible Hasta" }) {
+		model = new DefaultTableModel(new Object[][] {}, new String[] { recursos.getString("listaHabitaciones.numeroHabitacion"), 
+				recursos.getString("listaHabitaciones.camaMatrimonial"),
+				recursos.getString("listaHabitaciones.cantCamas"),
+				recursos.getString("listaHabitaciones.disponible"), 
+				recursos.getString("listaHabitaciones.noDisponibleHasta")}) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -92,7 +99,7 @@ public class ListadoHabitaciones extends JFrame {
 		scrollPane.setViewportView(table);
 		table.getTableHeader().setBackground(new Color(52, 73, 94)); // #34495E
 		table.getTableHeader().setForeground(Color.WHITE);
-		JButton btnActivarHabitacion = new JButton("Activar ");
+		JButton btnActivarHabitacion = new JButton(recursos.getString("listaHabitaciones.activar"));
 		btnActivarHabitacion.setForeground(new Color(255, 255, 255));
 		btnActivarHabitacion.setBackground(new Color(90, 155, 213));
 		btnActivarHabitacion.addActionListener(e -> {
@@ -128,7 +135,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnActivarHabitacion.setBounds(7, 66, 99, 21);
 		getContentPane().add(btnActivarHabitacion);
 
-		JButton btnDesactivar = new JButton("Desactivar ");
+		JButton btnDesactivar = new JButton(recursos.getString("listaHabitaciones.desactivar"));
 		btnDesactivar.setForeground(new Color(255, 255, 255));
 		btnDesactivar.setBackground(new Color(90, 155, 213));
 		btnDesactivar.addActionListener(e -> {
@@ -188,7 +195,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnDesactivar.setBounds(7, 143, 99, 21);
 		getContentPane().add(btnDesactivar);
 
-		JButton btnEditarHabitacion = new JButton("Editar");
+		JButton btnEditarHabitacion = new JButton(recursos.getString("listaHabitaciones.editar"));
 		btnEditarHabitacion.setForeground(new Color(255, 255, 255));
 		btnEditarHabitacion.setBackground(new Color(90, 155, 213));
 		btnEditarHabitacion.addActionListener(e -> {
@@ -201,7 +208,7 @@ public class ListadoHabitaciones extends JFrame {
 				int numero = ((Number) valor).intValue();
 				try {
 					api.habitacionAModificar(numero);
-					CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true);
+					CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true , idioma);
 					modificarHabitacion.setVisible(true);
 				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
 						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
@@ -215,7 +222,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnEditarHabitacion.setBounds(874, 66, 99, 21);
 		getContentPane().add(btnEditarHabitacion);
 
-		JButton btnEliminarHabitacion = new JButton("Eliminar ");
+		JButton btnEliminarHabitacion = new JButton(recursos.getString("listaHabitaciones.eliminar"));
 		btnEliminarHabitacion.setForeground(new Color(255, 255, 255));
 		btnEliminarHabitacion.setBackground(new Color(90, 155, 213));
 		btnEliminarHabitacion.addActionListener(e -> {
@@ -247,7 +254,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnEliminarHabitacion.setBounds(874, 143, 99, 21);
 		getContentPane().add(btnEliminarHabitacion);
 
-		JButton btnSalir = new JButton("Salir");
+		JButton btnSalir = new JButton(recursos.getString("listaHabitaciones.salir"));
 		btnSalir.setForeground(new Color(255, 255, 255));
 		btnSalir.setBackground(new Color(231, 76, 60));
 		btnSalir.addActionListener(e -> {
@@ -299,7 +306,7 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(textField);
 		textField.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Buscar Habitacion");
+		JLabel lblNewLabel = new JLabel(recursos.getString("listaHabitaciones.buscar"));
 		lblNewLabel.setBounds(110, 11, 122, 14);
 		getContentPane().add(lblNewLabel);
 	}

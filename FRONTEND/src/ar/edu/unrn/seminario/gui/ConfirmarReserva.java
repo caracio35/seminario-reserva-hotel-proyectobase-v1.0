@@ -5,7 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -50,15 +52,19 @@ public class ConfirmarReserva extends JFrame {
 	private java.util.List<Integer> habitacionesSeleccionadas;
 	private List<HabitacionDTO> habitaciones;
 	private Boolean pago;
+	private Locale idiomaSeleccionado;
+    private ResourceBundle recursos;
 
 	@SuppressWarnings("unchecked")
 	public ConfirmarReserva(String fechaInicio, String fechaFin, IApi api,
-			java.util.List<Integer> habitacionesSeleccionadas) {
+			java.util.List<Integer> habitacionesSeleccionadas , Locale idioma) {
 
 		{
 			this.api = api;
 			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
+			this.idiomaSeleccionado = idioma;
+	        this.recursos = ResourceBundle.getBundle("labels", idioma);
 
 			UsuarioDTO usuario = null;
 			try {
@@ -69,7 +75,7 @@ public class ConfirmarReserva extends JFrame {
 			} catch (ErrorDatosNoEncontradosExeption e) {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
-
+			setTitle(recursos.getString("detalleReserva.titulo"));
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 528, 526);
 			contentPane = new JPanel();
@@ -112,12 +118,12 @@ public class ConfirmarReserva extends JFrame {
 			comboBoxMetodoPago.addItem("Tarjeta de Credito");
 			panel.add(comboBoxMetodoPago);
 
-			JRadioButton rdbtnPrecioMinimo = new JRadioButton("Precio Minimo $");
+			JRadioButton rdbtnPrecioMinimo = new JRadioButton(recursos.getString("detalleReserva.precioMinimo"));
 			buttonGroup.add(rdbtnPrecioMinimo);
 			rdbtnPrecioMinimo.setBounds(320, 367, 128, 21);
 			panel.add(rdbtnPrecioMinimo);
 
-			JRadioButton rdbtnPagoTotal = new JRadioButton("Pago Total $");
+			JRadioButton rdbtnPagoTotal = new JRadioButton(recursos.getString("detalleReserva.pagoTotal"));
 			rdbtnPagoTotal.setSelected(true);
 			buttonGroup.add(rdbtnPagoTotal);
 			rdbtnPagoTotal.setBounds(190, 367, 128, 21);
@@ -194,7 +200,8 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {},
-					new String[] { "Camas", "Descripcion", "Precio", "Numero de Habitacion" });
+					new String[] { recursos.getString("detalleReserva.camas"), recursos.getString("detalleReserva.descripcion"),
+							recursos.getString("detalleReserva.precio"), recursos.getString("detalleReserva.numeroHabitacion") });
 			tabla_Habitaciones = new JTable(modelo);
 			scrollPane.setViewportView(tabla_Habitaciones);
 			try {
@@ -209,27 +216,27 @@ public class ConfirmarReserva extends JFrame {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 
-			JLabel lblNombre = new JLabel("Nombre");
+			JLabel lblNombre = new JLabel(recursos.getString("detalleReserva.nombre"));
 			lblNombre.setBounds(10, 60, 45, 13);
 			panel.add(lblNombre);
 
-			JLabel lblApellido = new JLabel("Apellido");
+			JLabel lblApellido = new JLabel(recursos.getString("detalleReserva.apellido"));
 			lblApellido.setBounds(10, 105, 58, 13);
 			panel.add(lblApellido);
 
-			JLabel lblDNIPasaporte = new JLabel("DNI o Pasaporte");
+			JLabel lblDNIPasaporte = new JLabel(recursos.getString("detalleReserva.dniPasaporte"));
 			lblDNIPasaporte.setBounds(10, 152, 96, 13);
 			panel.add(lblDNIPasaporte);
 
-			JLabel lblMetodoDePago = new JLabel("Metodo de Pago");
+			JLabel lblMetodoDePago = new JLabel(recursos.getString("detalleReserva.PAGO"));
 			lblMetodoDePago.setBounds(10, 197, 96, 13);
 			panel.add(lblMetodoDePago);
 
-			JLabel lblFechaIngreso = new JLabel("Fecha Ingreso");
+			JLabel lblFechaIngreso = new JLabel(recursos.getString("detalleReserva.fechaIngresa"));
 			lblFechaIngreso.setBounds(10, 249, 96, 13);
 			panel.add(lblFechaIngreso);
 
-			JLabel lblFechaSalida = new JLabel("Fecha Salida");
+			JLabel lblFechaSalida = new JLabel(recursos.getString("detalleReserva.fechaSalida"));
 			lblFechaSalida.setBounds(10, 299, 96, 13);
 			panel.add(lblFechaSalida);
 
@@ -240,7 +247,7 @@ public class ConfirmarReserva extends JFrame {
 			textFieldUsuario.setText(usuario.getUsuario());
 			textFieldUsuario.setEditable(false);
 
-			JLabel lblNewLabel = new JLabel("Usuario");
+			JLabel lblNewLabel = new JLabel(recursos.getString("detalleReserva.nombre"));
 			lblNewLabel.setBounds(9, 22, 46, 14);
 			panel.add(lblNewLabel);
 
@@ -258,9 +265,9 @@ public class ConfirmarReserva extends JFrame {
 			texFilFechaSalida.setText(fechaFin);
 			texFilFechaSalida.setEditable(false);
 
-			JLabel lblNewLabel_1 = new JLabel("Personas");
-			lblNewLabel_1.setBounds(9, 346, 128, 14);
-			panel.add(lblNewLabel_1);
+			JLabel lblNewLabel_pesona = new JLabel(recursos.getString("detalleReserva.personas"));
+			lblNewLabel_pesona.setBounds(9, 346, 128, 14);
+			panel.add(lblNewLabel_pesona);
 
 		}
 	}

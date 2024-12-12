@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
 import javax.swing.ButtonGroup;
@@ -50,17 +52,26 @@ public class CargarHabitacion extends JFrame {
 	private TextField textFieldPrecioRegistrado = new TextField();
 	private JScrollPane scrollPane = new JScrollPane();
 	private ButtonGroup group = new ButtonGroup();
-	private JRadioButton buttonDesabilitado = new JRadioButton("Desabilitado");
-	private JRadioButton buttonHabilitado = new JRadioButton("Habilitado");
+	private JRadioButton buttonDesabilitado ;
+	private JRadioButton buttonHabilitado ;
+	private Locale idiomaSeleccionado;
+    private ResourceBundle recursos;
 
 	private boolean modificar;
 
-	public CargarHabitacion(IApi api, boolean modificar) {
+	public CargarHabitacion(IApi api, boolean modificar , Locale idioma) {
 		try {
 
 			this.api = api;
 			this.caracteristicasEspeciales = api.obtenerCaracteristica();
 			this.modificar = modificar;
+			this.idiomaSeleccionado = idioma;
+	        this.recursos = ResourceBundle.getBundle("labels", idioma);
+	        
+	        buttonDesabilitado = new JRadioButton(recursos.getString("cargarHabitacion.deshabilitado"));
+	        JRadioButton buttonHabilitado = new JRadioButton(recursos.getString("cargarHabitacion.habilitado"));
+	        
+	        setTitle(recursos.getString("cargarHabitacion.titulo"));
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 495, 420);
 			contentPane = new JPanel();
@@ -90,7 +101,7 @@ public class CargarHabitacion extends JFrame {
 			textFieldPrecioRegistrado.setBounds(10, 150, 150, 21);
 			panel.add(textFieldPrecioRegistrado);
 
-			JLabel lblNewLabel = new JLabel("Estado De Habitacion");
+			JLabel lblNewLabel = new JLabel(recursos.getString("cargarHabitacion.estado"));
 			lblNewLabel.setBounds(203, 19, 151, 14);
 			panel.add(lblNewLabel);
 
@@ -104,7 +115,7 @@ public class CargarHabitacion extends JFrame {
 			group.add(buttonDesabilitado);
 			group.add(buttonHabilitado);
 
-			JButton btnSubirInformacion = new JButton("Cargar");
+			JButton btnSubirInformacion = new JButton(recursos.getString("cargarHabitacion.cargar"));
 			btnSubirInformacion.addActionListener(e -> {
 
 				boolean habilitado = false;
@@ -172,27 +183,27 @@ public class CargarHabitacion extends JFrame {
 			btnSubirInformacion.setBounds(328, 331, 115, 21);
 			panel.add(btnSubirInformacion);
 
-			JButton btnCargarImagen = new JButton("Cargar Imagen");
+			JButton btnCargarImagen = new JButton(recursos.getString("cargarHabitacion.cargarImagen"));
 			btnCargarImagen.setBounds(10, 268, 150, 21);
 			panel.add(btnCargarImagen);
 
-			JLabel lblNumeroHabitacion = new JLabel("Numero Habitacion");
+			JLabel lblNumeroHabitacion = new JLabel(recursos.getString("cargarHabitacion.numeroHabitacion"));
 			lblNumeroHabitacion.setBounds(10, 20, 130, 13);
 			panel.add(lblNumeroHabitacion);
 
-			JLabel lblCamas = new JLabel("Camas");
+			JLabel lblCamas = new JLabel(recursos.getString("cargarHabitacion.camas"));
 			lblCamas.setBounds(10, 196, 45, 13);
 			panel.add(lblCamas);
 
-			JLabel lblDescripcion = new JLabel("Descripccion");
+			JLabel lblDescripcion = new JLabel(recursos.getString("cargarHabitacion.descripcion"));
 			lblDescripcion.setBounds(10, 77, 107, 13);
 			panel.add(lblDescripcion);
 
-			JLabel lblPrecioRegistrado = new JLabel("Precio Registrado");
+			JLabel lblPrecioRegistrado = new JLabel(recursos.getString("cargarHabitacion.precioRegistrado"));
 			lblPrecioRegistrado.setBounds(10, 131, 106, 13);
 			panel.add(lblPrecioRegistrado);
 
-			JButton btnSalircancelar = new JButton("Salir");
+			JButton btnSalircancelar = new JButton(recursos.getString("cargarHabitacion.salir"));
 			btnSalircancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					api.resetearMemoria();
@@ -205,7 +216,8 @@ public class CargarHabitacion extends JFrame {
 			scrollPane.setBounds(203, 69, 239, 251);
 			panel.add(scrollPane);
 
-			modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Caracteristica", "Estado" }) {
+			modelo = new DefaultTableModel(new Object[][] {}, new String[] { recursos.getString("cargarHabitacion.caracteristica"), 
+					recursos.getString("cargarHabitacion.estado") }) {
 				public boolean isCellEditable(int row, int column) {
 					return column != 0;
 				}

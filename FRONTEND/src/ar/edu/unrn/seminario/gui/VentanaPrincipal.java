@@ -23,8 +23,8 @@ public class VentanaPrincipal extends JFrame {
     private JPanel contentPane;
 
     public VentanaPrincipal(IApi api, Locale seleccion) {
-        // Cargar archivo de propiedades con el idioma deseado
-        ResourceBundle labels = ResourceBundle.getBundle("labels", seleccion); // Usar el idioma seleccionado
+     
+        ResourceBundle labels = ResourceBundle.getBundle("labels", seleccion); 
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
@@ -32,7 +32,7 @@ public class VentanaPrincipal extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-        // Menú Usuarios
+        
         JMenu usuarioMenu = new JMenu(labels.getString("menu.usuarios"));
         menuBar.add(usuarioMenu);
 
@@ -52,13 +52,13 @@ public class VentanaPrincipal extends JFrame {
         });
         usuarioMenu.add(listadoUsuarioMenuItem);
 
-        // Menú Habitaciones
+        
         JMenu mnHabitaciones = new JMenu(labels.getString("menu.habitaciones"));
         menuBar.add(mnHabitaciones);
 
         JMenuItem mntmCargarHabitacion = new JMenuItem(labels.getString("menuitem.cargar_habitacion"));
         mntmCargarHabitacion.addActionListener(e -> {
-            CargarHabitacion cargaH = new CargarHabitacion(api, false);
+            CargarHabitacion cargaH = new CargarHabitacion(api, false , seleccion);
             api.modificarFalse();
             cargaH.setVisible(true);
         });
@@ -67,7 +67,7 @@ public class VentanaPrincipal extends JFrame {
         JMenuItem mntmListadoHabitaciones = new JMenuItem(labels.getString("menuitem.listado_habitaciones"));
         mntmListadoHabitaciones.addActionListener(e -> {
             try {
-                ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(api);
+                ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(api,seleccion);
                 listaHabitaciones.setVisible(true);
             } catch (ConexionFallidaExeption e1) {
                 JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -75,13 +75,13 @@ public class VentanaPrincipal extends JFrame {
         });
         mnHabitaciones.add(mntmListadoHabitaciones);
 
-        // Menú Reservas
+      
         JMenu mnReservas = new JMenu(labels.getString("menu.reservas"));
         menuBar.add(mnReservas);
 
         JMenuItem mntmBuscarHabitacion = new JMenuItem(labels.getString("menuitem.buscar_habitacion"));
         mntmBuscarHabitacion.addActionListener(e -> {
-            BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones(api);
+            BusquedaDeHabitaciones busqueda = new BusquedaDeHabitaciones(api, seleccion);
             busqueda.setVisible(true);
         });
         mnReservas.add(mntmBuscarHabitacion);
@@ -89,7 +89,7 @@ public class VentanaPrincipal extends JFrame {
         JMenuItem mntmMisReservas = new JMenuItem(labels.getString("menuitem.mis_reservas"));
         mntmMisReservas.addActionListener(e -> {
             try {
-                VerReservas misReservas = new VerReservas(api);
+                VerReservas misReservas = new VerReservas(api,seleccion);
                 misReservas.setVisible(true);
             } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
                 JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -97,7 +97,7 @@ public class VentanaPrincipal extends JFrame {
         });
         mnReservas.add(mntmMisReservas);
 
-        // Menú Configuración
+        
         JMenu configuracionMenu = new JMenu(labels.getString("menu.configuracion"));
         menuBar.add(configuracionMenu);
 

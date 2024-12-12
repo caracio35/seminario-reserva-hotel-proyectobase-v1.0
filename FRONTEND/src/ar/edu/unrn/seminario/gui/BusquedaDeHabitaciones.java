@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -49,15 +51,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 	private JTextField textFieldPrecio;
 	private int precioMinimo = 0;
 	private int camas = 0;
+	private Locale idiomaSeleccionado;
+	private ResourceBundle recursos;
 
 	/**
 	 * Create the frame.
 	 */
-	public BusquedaDeHabitaciones(IApi api) {
+	public BusquedaDeHabitaciones(IApi api , Locale idioma) {
 		this.api = api;
+		this.idiomaSeleccionado = idioma;
+	    this.recursos = ResourceBundle.getBundle("labels", idioma);
 
 		// Configurar el JFrame
-		setTitle("Búsqueda de Habitaciones");
+		setTitle(recursos.getString("busquedaHabitaciones.titulo"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1153, 416);
 		getContentPane().setLayout(null);
@@ -70,8 +76,9 @@ public class BusquedaDeHabitaciones extends JFrame {
 		scrollPane.setBounds(189, 53, 938, 277);
 		getContentPane().add(scrollPane);
 
-		modelo = new DefaultTableModel(new Object[][] {}, new String[] { "Camas", "Descripcion", "Precio",
-				"Numero de Habitacion", "  Caracteristicas Especiales   ", "Seleccionado" }) {
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] { recursos.getString("busquedaHabitaciones.camas"), recursos.getString("busquedaHabitaciones.descripcion")
+				, recursos.getString("busquedaHabitaciones.precio"),recursos.getString("busquedaHabitaciones.numeroHabitacion"),
+				recursos.getString("busquedaHabitaciones.caracteristicasEspeciales"), recursos.getString("busquedaHabitaciones.seleccionado") }) {
 			public boolean isCellEditable(int row, int column) {
 				// Only the "Seleccionado" column is editable
 				return column == 5;
@@ -107,23 +114,23 @@ public class BusquedaDeHabitaciones extends JFrame {
 
 		scrollPane.setViewportView(table_1);
 
-		JLabel lblNewLabel = new JLabel("Fecha Ingreso");
+		JLabel lblNewLabel = new JLabel(recursos.getString("busquedaHabitaciones.fechaIngreso"));
 		lblNewLabel.setBounds(10, 192, 85, 13);
 		getContentPane().add(lblNewLabel);
 
-		JLabel JcalederFechaSalida = new JLabel("Fecha Salida");
+		JLabel JcalederFechaSalida = new JLabel(recursos.getString("busquedaHabitaciones.fechaSalida"));
 		JcalederFechaSalida.setBounds(10, 236, 96, 13);
 		getContentPane().add(JcalederFechaSalida);
 
-		lblNewLabel_2 = new JLabel("Camas");
+		lblNewLabel_2 = new JLabel(recursos.getString("busquedaHabitaciones.camas"));
 		lblNewLabel_2.setBounds(10, 280, 96, 13);
 		getContentPane().add(lblNewLabel_2);
 
-		lblNewLabel_4 = new JLabel("Descripción");
+		lblNewLabel_4 = new JLabel(recursos.getString("busquedaHabitaciones.descripcion"));
 		lblNewLabel_4.setBounds(10, 5, 85, 13);
 		getContentPane().add(lblNewLabel_4);
 
-		lblNewLabel_5 = new JLabel("Calificación");
+		lblNewLabel_5 = new JLabel(recursos.getString("busquedaHabitaciones.calificacion"));
 		lblNewLabel_5.setBounds(10, 105, 85, 13);
 		getContentPane().add(lblNewLabel_5);
 
@@ -134,7 +141,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		table = new JTable();
 		scrollPane_1.setViewportView(table);
 
-		lblNewLabel_6 = new JLabel("Precio");
+		lblNewLabel_6 = new JLabel(recursos.getString("busquedaHabitaciones.precio"));
 		lblNewLabel_6.setBounds(10, 149, 45, 13);
 		getContentPane().add(lblNewLabel_6);
 
@@ -142,7 +149,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		comboBox.setBounds(10, 120, 140, 19);
 		getContentPane().add(comboBox);
 
-		JButton btnReservar = new JButton("Reservar");
+		JButton btnReservar = new JButton(recursos.getString("busquedaHabitaciones.reservar"));
 		btnReservar.addActionListener(e -> {
 			List<Integer> habitacionesSeleccionadas = new ArrayList<>();
 			for (int i = 0; i < table_1.getRowCount(); i++) {
@@ -164,7 +171,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 			}
 
 			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, api,
-					habitacionesSeleccionadas);
+					habitacionesSeleccionadas , idioma);
 			confirmacion.setVisible(true);
 		});
 		btnReservar.setBounds(189, 349, 116, 21);
@@ -175,7 +182,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		textFieldHuespedes.setBounds(10, 293, 140, 19);
 		getContentPane().add(textFieldHuespedes);
 
-		btnCancelarsalir = new JButton("Salir");
+		btnCancelarsalir = new JButton(recursos.getString("reservas.salir"));
 		btnCancelarsalir.addActionListener(e -> dispose());
 		btnCancelarsalir.setBounds(1011, 349, 116, 21);
 		getContentPane().add(btnCancelarsalir);
@@ -217,7 +224,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(textFieldPrecio);
 		textFieldPrecio.setColumns(10);
 
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton(recursos.getString("busquedaHabitaciones.buscar"));
 		btnBuscar.setBounds(10, 323, 85, 21);
 		getContentPane().add(btnBuscar);
 		btnBuscar.addActionListener(e -> {

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -36,9 +38,16 @@ public class VerReservas extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTable table;
+    private Locale idiomaSeleccionado;
+    private ResourceBundle recursos;
 
-    public VerReservas(IApi api) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
-    	setTitle("Reservas");
+
+    public VerReservas(IApi api ,Locale idioma) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+    	
+    	this.idiomaSeleccionado = idioma;
+        this.recursos = ResourceBundle.getBundle("labels", idioma);
+        
+    	setTitle(recursos.getString("reservas.titulo"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 1097, 447);
         contentPane = new JPanel();
@@ -54,8 +63,14 @@ public class VerReservas extends JFrame {
         DefaultTableModel model = new DefaultTableModel(
                 new Object[][] {},
                 new String[] {
-                        "ID Reserva", "Num Habitaciones", "Check-in", "ingreso", "Check-out", "salida",
-                        "Mi Calificacion", "Servicios"
+                		recursos.getString("reservas.idReserva"), 
+                		recursos.getString("reservas.numHabitaciones"), 
+                		recursos.getString("reservas.checkIn"), 
+                		recursos.getString("reservas.ingreso"), 
+                		recursos.getString("reservas.checkOut"),
+                		recursos.getString("reservas.ingreso"),
+                		recursos.getString("reservas.calificacion"), 
+                		recursos.getString("reservas.servicios")
                 }) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -99,7 +114,7 @@ public class VerReservas extends JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
-        JButton btnMostrarDetalles = new JButton("Mostrar Detalles");
+        JButton btnMostrarDetalles = new JButton(recursos.getString("reservas.mostrarDetalles"));
         btnMostrarDetalles.setBounds(0, 37, 150, 25);
         btnMostrarDetalles.addActionListener(e -> {
         	
@@ -108,7 +123,7 @@ public class VerReservas extends JFrame {
         });
         contentPane.add(btnMostrarDetalles);
 
-        JButton btnCancelarReserva = new JButton("Cancelar Reserva");
+        JButton btnCancelarReserva = new JButton(recursos.getString("reservas.cancelarReserva"));
         btnCancelarReserva.setBounds(0, 188, 150, 25);
         btnCancelarReserva.addActionListener(e -> {
         	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
@@ -116,7 +131,7 @@ public class VerReservas extends JFrame {
         contentPane.add(btnCancelarReserva);
 
         // Botón "Modificar Fechas"
-        JButton btnModificarFechas = new JButton("Modificar Fechas");
+        JButton btnModificarFechas = new JButton(recursos.getString("reservas.modificarFechas"));
         btnModificarFechas.setBounds(0, 115, 150, 25);
         btnModificarFechas.addActionListener(e -> {
         	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
@@ -124,7 +139,7 @@ public class VerReservas extends JFrame {
         contentPane.add(btnModificarFechas);
 
         // Botón "Calificar"
-        JButton btnCalificar = new JButton("Calificar");
+        JButton btnCalificar = new JButton(recursos.getString("reservas.calificar"));
         btnCalificar.setBounds(0, 270, 150, 25);
         btnCalificar.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
@@ -140,7 +155,7 @@ public class VerReservas extends JFrame {
         });
         contentPane.add(btnCalificar);
 
-        JButton btnSalir = new JButton("Salir");
+        JButton btnSalir = new JButton(recursos.getString("reservas.salir"));
         btnSalir.setBounds(921, 371, 150, 25);
         btnSalir.addActionListener(e -> dispose());
         contentPane.add(btnSalir);
