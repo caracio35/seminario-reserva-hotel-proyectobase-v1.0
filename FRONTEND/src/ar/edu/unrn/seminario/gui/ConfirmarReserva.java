@@ -230,11 +230,11 @@ public class ConfirmarReserva extends JFrame {
 			lblDNIPasaporte.setBounds(10, 152, 96, 13);
 			panel.add(lblDNIPasaporte);
 
-			JLabel lblMetodoDePago = new JLabel(recursos.getString("detalleReserva.PAGO"));
+			JLabel lblMetodoDePago = new JLabel(recursos.getString("detalleReserva.metodoPago"));
 			lblMetodoDePago.setBounds(10, 197, 96, 13);
 			panel.add(lblMetodoDePago);
 
-			JLabel lblFechaIngreso = new JLabel(recursos.getString("detalleReserva.fechaIngresa"));
+			JLabel lblFechaIngreso = new JLabel(recursos.getString("detalleReserva.fechaIngreso"));
 			lblFechaIngreso.setBounds(10, 249, 96, 13);
 			panel.add(lblFechaIngreso);
 
@@ -319,7 +319,7 @@ public class ConfirmarReserva extends JFrame {
 		int cantidadPersonas = personas;
 		String[] serviciosObtenido = { "Desayuno" };
 		try {
-			api.generarReserva(numerosHabitacion, textFieldUsuario.getText(), textFieldFechaIngreso.getText(),
+			api.generarReserva(numerosHabitacion, api.obtenerUsuario().getUsuario(), textFieldFechaIngreso.getText(),
 					texFilFechaSalida.getText(), fechaReserva, cantidadPersonas, serviciosObtenido, pago);
 			dispose();
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
