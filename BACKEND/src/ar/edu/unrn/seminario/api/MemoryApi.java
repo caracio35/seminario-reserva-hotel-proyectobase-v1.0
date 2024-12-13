@@ -178,10 +178,12 @@ public class MemoryApi implements IApi {
 	}
 
 	private Rol buscarRol(Integer codigo) {
-		/*for (Rol rol : roles) {
-			if (rol.getCodigo().equals(codigo))
-				return rol;
-		}*/
+		/*
+		 * for (Rol rol : roles) {
+		 * if (rol.getCodigo().equals(codigo))
+		 * return rol;
+		 * }
+		 */
 		return null;
 	}
 
@@ -630,6 +632,12 @@ public class MemoryApi implements IApi {
 	public boolean iniciarSesion(String text, String text2) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'iniciarSesion'");
+	}
+
+	@Override
+	public UsuarioDTO obtenerUsuario() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'obtenerUsuario'");
 	}
 
 }

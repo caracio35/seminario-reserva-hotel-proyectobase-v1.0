@@ -13,7 +13,6 @@ import acceso.ImplementacionCalificacionDAO;
 import acceso.ImplementacionCaracteristicasEspecialDAO;
 import acceso.ImplementacionHabitacionDAO;
 import acceso.ImplementacionReservaDAO;
-import acceso.ImplementacionRolDAO;
 import acceso.ImplementacionUsuarioDAO;
 import acceso.ImplementaionServicioDAO;
 import ar.edu.unrn.seminario.dto.CalificacionDTO;
@@ -34,7 +33,6 @@ import ar.edu.unrn.seminario.modelo.Calificacion;
 import ar.edu.unrn.seminario.modelo.CaracteristicaEspecial;
 import ar.edu.unrn.seminario.modelo.Habitacion;
 import ar.edu.unrn.seminario.modelo.Reserva;
-import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Servicio;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
@@ -42,6 +40,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public class PersistenceApi implements IApi {
 	private int habitacionAModificar = 0;
 	private Habitacion habitacion;
+	private Usuario usuario;
 
 	public void resetearMemoria() {
 		this.habitacionAModificar = 0;
@@ -97,6 +96,11 @@ public class PersistenceApi implements IApi {
 		return usuarioDTO;
 	}
 
+	public UsuarioDTO obtenerUsuario() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		return new UsuarioDTO(usuario.getUsuario(), usuario.getContrasenia(), usuario.getNombre(),
+				usuario.getApellido(), usuario.getEmail(), usuario.getDni(), usuario.getTelefono());
+	}
+
 	@Override
 	public void eliminarUsuario(String username) {
 
@@ -120,15 +124,18 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public RolDTO obtenerRolPorCodigo(int codigo) { //TENGO QUE SEGUIR CON ESTE CAMBIO
-		/*ImplementacionRolDAO rolDAO = new ImplementacionRolDAO();
-		ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new ImplementacionCaracteristicasEspecialDAO();
-
-
-		Rol rol = rolDAO.find(codigo);
-
-		
-		return rol; */
+	public RolDTO obtenerRolPorCodigo(int codigo) { // TENGO QUE SEGUIR CON ESTE CAMBIO
+		/*
+		 * ImplementacionRolDAO rolDAO = new ImplementacionRolDAO();
+		 * ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new
+		 * ImplementacionCaracteristicasEspecialDAO();
+		 * 
+		 * 
+		 * Rol rol = rolDAO.find(codigo);
+		 * 
+		 * 
+		 * return rol;
+		 */
 		return null;
 	}
 
@@ -461,6 +468,11 @@ public class PersistenceApi implements IApi {
 			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionUsuarioDAO implementacionUsuarioDAO = new ImplementacionUsuarioDAO();
 		Usuario usuario = ImplementacionUsuarioDAO.authenticate(user, pass);
-		return usuario != null;
+		if (usuario != null) {
+			this.usuario = usuario;
+			return true;
+		}
+		return false;
+
 	}
 }

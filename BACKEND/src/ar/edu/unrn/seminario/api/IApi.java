@@ -32,6 +32,8 @@ public interface IApi {
 
 	UsuarioDTO obtenerUsuario(int idUsuario) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
+	public UsuarioDTO obtenerUsuario() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+
 	void eliminarUsuario(String username);
 
 	List<RolDTO> obtenerRoles();

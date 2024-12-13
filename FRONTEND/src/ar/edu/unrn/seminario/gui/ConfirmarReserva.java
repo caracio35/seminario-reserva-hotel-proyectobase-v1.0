@@ -53,22 +53,22 @@ public class ConfirmarReserva extends JFrame {
 	private List<HabitacionDTO> habitaciones;
 	private Boolean pago;
 	private Locale idiomaSeleccionado;
-    private ResourceBundle recursos;
+	private ResourceBundle recursos;
 
 	@SuppressWarnings("unchecked")
 	public ConfirmarReserva(String fechaInicio, String fechaFin, IApi api,
-			java.util.List<Integer> habitacionesSeleccionadas , Locale idioma) {
+			java.util.List<Integer> habitacionesSeleccionadas, Locale idioma) {
 
 		{
 			this.api = api;
 			habitaciones = new ArrayList<>();
 			this.habitacionesSeleccionadas = habitacionesSeleccionadas;
 			this.idiomaSeleccionado = idioma;
-	        this.recursos = ResourceBundle.getBundle("labels", idioma);
+			this.recursos = ResourceBundle.getBundle("labels", idioma);
 
 			UsuarioDTO usuario = null;
 			try {
-				usuario = api.obtenerUsuario(2);
+				usuario = api.obtenerUsuario();
 			} catch (ConexionFallidaExeption e) {
 
 				JOptionPane.showMessageDialog(null, e.getMessage());
@@ -200,8 +200,10 @@ public class ConfirmarReserva extends JFrame {
 			panel.add(scrollPane);
 
 			modelo = new DefaultTableModel(new Object[][] {},
-					new String[] { recursos.getString("detalleReserva.camas"), recursos.getString("detalleReserva.descripcion"),
-							recursos.getString("detalleReserva.precio"), recursos.getString("detalleReserva.numeroHabitacion") });
+					new String[] { recursos.getString("detalleReserva.camas"),
+							recursos.getString("detalleReserva.descripcion"),
+							recursos.getString("detalleReserva.precio"),
+							recursos.getString("detalleReserva.numeroHabitacion") });
 			tabla_Habitaciones = new JTable(modelo);
 			scrollPane.setViewportView(tabla_Habitaciones);
 			try {
