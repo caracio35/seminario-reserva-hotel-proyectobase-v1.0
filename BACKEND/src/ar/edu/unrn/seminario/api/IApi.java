@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.api;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
@@ -42,7 +43,7 @@ public interface IApi {
 
 	void guardarRol(Integer codigo, String descripcion, boolean estado); // crear el objeto de dominio �Rol�
 
-	RolDTO obtenerRolPorCodigo(int codigo); // recuperar el rol almacenado
+	RolDTO obtenerRolPorCodigo(int codigo) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, ErrorConsultaExeption; // recuperar el rol almacenado
 
 	void activarRol(Integer codigo); // recuperar el objeto Rol, implementar el comportamiento de estado.
 

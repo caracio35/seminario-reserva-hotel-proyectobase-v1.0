@@ -88,7 +88,9 @@ public class Login extends JFrame {
         JButton btnBotonCrearUsuario = new JButton(recursos.getString("login.crearUsuario"));
         btnBotonCrearUsuario.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, recursos.getString("login.faltaCrearUsuario"));
+            	AltaUsuario alta = new AltaUsuario(api);
+            	alta.setVisible(true);
+                //JOptionPane.showMessageDialog(null, recursos.getString("login.faltaCrearUsuario"));
             }
         });
         btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
