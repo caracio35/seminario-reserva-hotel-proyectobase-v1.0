@@ -475,4 +475,11 @@ public class PersistenceApi implements IApi {
 		return false;
 
 	}
+
+	@Override
+	public boolean esAdmin() {
+		return usuario.queRolTiene() == "admin";
+		
+		
+	}
 }

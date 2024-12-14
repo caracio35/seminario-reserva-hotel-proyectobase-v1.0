@@ -640,6 +640,12 @@ public class MemoryApi implements IApi {
 		throw new UnsupportedOperationException("Unimplemented method 'obtenerUsuario'");
 	}
 
+	@Override
+	public boolean esAdmin() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
 
 // Dar de baja una habitación

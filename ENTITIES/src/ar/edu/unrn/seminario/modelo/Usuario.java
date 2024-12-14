@@ -80,6 +80,11 @@ public class Usuario {
 		this.apelliido = apellido;
 	}
 
+	public String queRolTiene() {
+		return rol.getNombre();
+		
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -133,4 +133,6 @@ public interface IApi {
 
 	boolean iniciarSesion(String text, String text2) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
+	boolean esAdmin();
+
 }
