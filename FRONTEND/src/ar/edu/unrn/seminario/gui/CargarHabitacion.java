@@ -52,8 +52,8 @@ public class CargarHabitacion extends JFrame {
 	private TextField textFieldPrecioRegistrado = new TextField();
 	private JScrollPane scrollPane = new JScrollPane();
 	private ButtonGroup group = new ButtonGroup();
-	private JRadioButton buttonDesabilitado ;
-	private JRadioButton buttonHabilitado ;
+	private JRadioButton buttonDesabilitado = new JRadioButton("habilitado");
+	private JRadioButton buttonHabilitado =  new JRadioButton("desabilitado");
 	private Locale idiomaSeleccionado;
     private ResourceBundle recursos;
 
@@ -68,8 +68,7 @@ public class CargarHabitacion extends JFrame {
 			this.idiomaSeleccionado = idioma;
 	        this.recursos = ResourceBundle.getBundle("labels", idioma);
 	        
-	        buttonDesabilitado = new JRadioButton(recursos.getString("cargarHabitacion.deshabilitado"));
-	        JRadioButton buttonHabilitado = new JRadioButton(recursos.getString("cargarHabitacion.habilitado"));
+	  
 	        
 	        setTitle(recursos.getString("cargarHabitacion.titulo"));
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

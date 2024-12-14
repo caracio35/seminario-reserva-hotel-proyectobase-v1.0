@@ -150,7 +150,7 @@ public class VerReservas extends JFrame {
                 CalificarHabitaciones calificar = new CalificarHabitaciones(api, reservaId);
                 calificar.setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona una reserva para calificar.");
+                JOptionPane.showMessageDialog(null, recursos.getString("reserva.avisoSelecion"));
             }
         });
         contentPane.add(btnCalificar);
