@@ -143,14 +143,14 @@ public class CargarHabitacion extends JFrame {
 								Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 								Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
 						dispose();
-						JOptionPane.showMessageDialog(null, "habitacion agregada con exito");
+						JOptionPane.showMessageDialog(null, recursos.getString("cargarHabitacion.avisoAgregacionHabitacion"));
 					} catch (NumeroHabitacionExistenteException | ConexionFallidaExeption | EnterosEnCeroExeption
 							| CampoVacioExeption | PrecioCeroExeption | DuplicadaExeption | ErrorDatosNoEncontradosExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null,
-								"Los campos no pueden estar vacios");
+								recursos.getString("cargarHabitacion.camposVacios"));
 					} catch (ErrorConsultaExeption e1) {
 						JOptionPane.showConfirmDialog(null, e1.getMessage());
 					}
@@ -163,7 +163,7 @@ public class CargarHabitacion extends JFrame {
 									Double.parseDouble(textFieldPrecioRegistrado.getText()), habilitado,
 									Integer.parseInt(textFieldNumeroHabitacion.getText()), caracteristicas);
 
-							JOptionPane.showMessageDialog(null, "Habitación modificada exitosamente", "Éxito",
+							JOptionPane.showMessageDialog(null, 	recursos.getString("cargarHabitacion.modificacionExitosa"), "Éxito",
 									JOptionPane.INFORMATION_MESSAGE);
 
 							dispose();
