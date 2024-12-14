@@ -23,8 +23,8 @@ public class VentanaPrincipal extends JFrame {
     private JPanel contentPane;
 
     public VentanaPrincipal(IApi api, Locale seleccion) {
-     
-        ResourceBundle labels = ResourceBundle.getBundle("labels", seleccion); 
+
+        ResourceBundle labels = ResourceBundle.getBundle("labels", seleccion);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
@@ -32,7 +32,6 @@ public class VentanaPrincipal extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-      
         JMenu mnReservas = new JMenu(labels.getString("menu.reservas"));
         menuBar.add(mnReservas);
 
@@ -46,66 +45,63 @@ public class VentanaPrincipal extends JFrame {
         JMenuItem mntmMisReservas = new JMenuItem(labels.getString("menuitem.mis_reservas"));
         mntmMisReservas.addActionListener(e -> {
             try {
-                VerReservas misReservas = new VerReservas(api,seleccion);
+                VerReservas misReservas = new VerReservas(api, seleccion);
                 misReservas.setVisible(true);
             } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
                 JOptionPane.showMessageDialog(null, e1.getMessage());
             }
         });
         mnReservas.add(mntmMisReservas);
-        
-                
-                JMenu usuarioMenu = new JMenu(labels.getString("menu.usuarios"));
-                usuarioMenu.setVisible(api.esAdmin());
-                menuBar.add(usuarioMenu);
-                
-                        JMenuItem altaUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.alta_usuario"));
-                        altaUsuarioMenuItem.addActionListener(arg0 -> {
-                            AltaUsuario alta = new AltaUsuario(api);
-                            alta.setLocationRelativeTo(null);
-                            alta.setVisible(true);
-                        });
-                        usuarioMenu.add(altaUsuarioMenuItem);
-                        
-                                JMenuItem listadoUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.listado_usuario"));
-                                listadoUsuarioMenuItem.addActionListener(arg0 -> {
-                                    ListadoUsuario listado = new ListadoUsuario(api);
-                                    listado.setLocationRelativeTo(null);
-                                    listado.setVisible(true);
-                                });
-                                usuarioMenu.add(listadoUsuarioMenuItem);
-                                
-                                        
-                                        JMenu mnHabitaciones = new JMenu(labels.getString("menu.habitaciones"));
-                                        mnHabitaciones.setVisible(api.esAdmin());
-                                        menuBar.add(mnHabitaciones);
-                                        
-                                                JMenuItem mntmCargarHabitacion = new JMenuItem(labels.getString("menuitem.cargar_habitacion"));
-                                                mntmCargarHabitacion.addActionListener(e -> {
-                                                    CargarHabitacion cargaH = new CargarHabitacion(api, false , seleccion);
-                                                    api.modificarFalse();
-                                                    cargaH.setVisible(true);
-                                                });
-                                                mnHabitaciones.add(mntmCargarHabitacion);
-                                                
-                                                        JMenuItem mntmListadoHabitaciones = new JMenuItem(labels.getString("menuitem.listado_habitaciones"));
-                                                        mntmListadoHabitaciones.addActionListener(e -> {
-                                                            try {
-                                                                ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(api,seleccion);
-                                                                listaHabitaciones.setVisible(true);
-                                                            } catch (ConexionFallidaExeption e1) {
-                                                                JOptionPane.showMessageDialog(null, e1.getMessage());
-                                                            }
-                                                        });
-                                                        mnHabitaciones.add(mntmListadoHabitaciones);
-                                                        
-                                                                
-                                                                JMenu configuracionMenu = new JMenu(labels.getString("menu.configuracion"));
-                                                                menuBar.add(configuracionMenu);
-                                                                
-                                                                        JMenuItem salirMenuItem = new JMenuItem(labels.getString("menuitem.salir"));
-                                                                        salirMenuItem.addActionListener(e -> VentanaPrincipal.this.dispose());
-                                                                        configuracionMenu.add(salirMenuItem);
+
+        JMenu usuarioMenu = new JMenu(labels.getString("menu.usuarios"));
+        usuarioMenu.setVisible(api.esAdmin());
+        menuBar.add(usuarioMenu);
+
+        JMenuItem altaUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.alta_usuario"));
+        altaUsuarioMenuItem.addActionListener(arg0 -> {
+            AltaUsuario alta = new AltaUsuario(api);
+            alta.setLocationRelativeTo(null);
+            alta.setVisible(true);
+        });
+        usuarioMenu.add(altaUsuarioMenuItem);
+
+        JMenuItem listadoUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.listado_usuario"));
+        listadoUsuarioMenuItem.addActionListener(arg0 -> {
+            ListadoUsuario listado = new ListadoUsuario(api);
+            listado.setLocationRelativeTo(null);
+            listado.setVisible(true);
+        });
+        usuarioMenu.add(listadoUsuarioMenuItem);
+
+        JMenu mnHabitaciones = new JMenu(labels.getString("menu.habitaciones"));
+        mnHabitaciones.setVisible(api.esAdmin());
+        menuBar.add(mnHabitaciones);
+
+        JMenuItem mntmCargarHabitacion = new JMenuItem(labels.getString("menuitem.cargar_habitacion"));
+        mntmCargarHabitacion.addActionListener(e -> {
+            CargarHabitacion cargaH = new CargarHabitacion(api, false, seleccion);
+            api.modificarFalse();
+            cargaH.setVisible(true);
+        });
+        mnHabitaciones.add(mntmCargarHabitacion);
+
+        JMenuItem mntmListadoHabitaciones = new JMenuItem(labels.getString("menuitem.listado_habitaciones"));
+        mntmListadoHabitaciones.addActionListener(e -> {
+            try {
+                ListadoHabitaciones listaHabitaciones = new ListadoHabitaciones(api, seleccion);
+                listaHabitaciones.setVisible(true);
+            } catch (ConexionFallidaExeption e1) {
+                JOptionPane.showMessageDialog(null, e1.getMessage());
+            }
+        });
+        mnHabitaciones.add(mntmListadoHabitaciones);
+
+        JMenu configuracionMenu = new JMenu(labels.getString("menu.configuracion"));
+        menuBar.add(configuracionMenu);
+
+        JMenuItem salirMenuItem = new JMenuItem(labels.getString("menuitem.salir"));
+        salirMenuItem.addActionListener(e -> VentanaPrincipal.this.dispose());
+        configuracionMenu.add(salirMenuItem);
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

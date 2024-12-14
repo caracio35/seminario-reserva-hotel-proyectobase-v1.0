@@ -1,6 +1,5 @@
 package ar.edu.unrn.seminario.api;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -127,16 +126,18 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public RolDTO obtenerRolPorCodigo(int codigo) throws ErrorConsultaExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption  { // TENGO QUE SEGUIR CON ESTE CAMBIO
-		
-		 ImplementacionRolDAO rolDAO = new ImplementacionRolDAO();
-		 ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new
-		 ImplementacionCaracteristicasEspecialDAO();
-		 
-		 Rol rol = rolDAO.find(codigo); 
-		 
-		return new RolDTO(rol.getCodigo(),rol.getNombre(),true) ;
-		
+	public RolDTO obtenerRolPorCodigo(int codigo)
+			throws ErrorConsultaExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption { // TENGO QUE SEGUIR
+																										// CON ESTE
+																										// CAMBIO
+
+		ImplementacionRolDAO rolDAO = new ImplementacionRolDAO();
+		ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new ImplementacionCaracteristicasEspecialDAO();
+
+		Rol rol = rolDAO.find(codigo);
+
+		return new RolDTO(rol.getCodigo(), rol.getNombre(), true);
+
 	}
 
 	@Override
@@ -478,8 +479,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public boolean esAdmin() {
-		return usuario.queRolTiene() == "admin";
-		
-		
+		return "admin".equals(usuario.queRolTiene());
+
 	}
 }
