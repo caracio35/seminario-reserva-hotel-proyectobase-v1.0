@@ -127,7 +127,7 @@ public class AltaUsuario extends JFrame {
 		emailTextField.setColumns(10);
 		
 		JLabel TipoRol = new JLabel("");
-		TipoRol.setBounds(148, 154, 56, 16);
+		TipoRol.setBounds(148, 154, 160, 16);
 		contentPane.add(TipoRol);
 		TipoRol.setText(rol.getNombre());
 		
