@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import acceso.ImplementacionCalificacionDAO;
 import acceso.ImplementacionCaracteristicasEspecialDAO;
@@ -443,6 +444,32 @@ public class PersistenceApi implements IApi {
 			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
 		listaReseva = reservaDAO.findAll();
+	}
+
+	public List<ReservaDTO> obtenerReservaPorUsuario() throws CampoVacioExeption, EnterosEnCeroExeption,
+			PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		getReservas();
+		Stream<Reserva> reservaUsuario = listaReseva.stream().filter(r-> r.getUsuario().getUsuario()==usuario.getUsuario().collect(Collectors.toList());
+		List<ReservaDTO> reservasDTOS = reservaUsuario.map(r -> {
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+			int[] numHabitaciones = r.getHabitacion().stream().mapToInt(Habitacion::getNumHabitaciones).toArray();
+
+			String[] servicios = r.getServicios().stream().map(Servicio::getNombre).toArray(String[]::new);
+
+			Calificacion calificacion = r.getCalificacion();
+			CalificacionDTO calificacionDTO = new CalificacionDTO(calificacion.getValor(),
+					calificacion.getComentario());
+
+			ReservaDTO reservaDTO = new ReservaDTO(numHabitaciones, r.getUsuario().getNombre(),
+					r.getFechaDeInicio().format(formato), r.getFechaDESalida().format(formato),
+					r.getCantidadDePersonas(), servicios, r.isCheckIn(), r.isCheckOut(), 1,
+					r.getFechaDeReserva().format(formato), null, r.getPagoMinimo(), r.getId());
+
+			reservaDTO.setCalificacion(calificacionDTO);
+			return reservaDTO;
+		}).collect(Collectors.toList());
+		return reservasDTOS;
 	}
 
 	public void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception {
