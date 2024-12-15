@@ -77,13 +77,13 @@ public class VerReservas extends JFrame {
 		List<ReservaDTO> reservas;
 
 		try {
-			reservas = api.obtenerReservaPorUsuario();
-			reservas.stream().sorted(Comparator.comparingInt(ReservaDTO::getId)).forEach(reserva -> {
-				Object[] rowData = { reserva.getId(), numeroDehabitaciones(reserva.getHabitacion()),
-						reserva.isCheckIn(), reserva.getFechaDeInicio(), reserva.isCheckOut(),
-						reserva.getFechaDeSalida(), calificacion(reserva), String.join(", ", reserva.getServicios()) };
-				model.addRow(rowData);
-			});
+			if (api.esAdmin()) {
+				reservas = api.obtenerReserva();
+				pintarReservas(model, reservas);
+			} else {
+				reservas = api.obtenerReservaPorUsuario();
+				pintarReservas(model, reservas);
+			}
 		} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption | EnterosEnCeroExeption
 				| PrecioCeroExeption e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -169,6 +169,16 @@ public class VerReservas extends JFrame {
 		btnSalir.setBounds(921, 371, 150, 25);
 		btnSalir.addActionListener(e -> dispose());
 		contentPane.add(btnSalir);
+	}
+
+	private void pintarReservas(DefaultTableModel model, List<ReservaDTO> reservas) {
+		reservas.stream().sorted(Comparator.comparingInt(ReservaDTO::getId)).forEach(reserva -> {
+			Object[] rowData = { reserva.getId(), numeroDehabitaciones(reserva.getHabitacion()),
+					reserva.isCheckIn(), reserva.getFechaDeInicio(), reserva.isCheckOut(),
+					reserva.getFechaDeSalida(), calificacion(reserva),
+					String.join(", ", reserva.getServicios()) };
+			model.addRow(rowData);
+		});
 	}
 
 	private String calificacion(ReservaDTO reserva) {
