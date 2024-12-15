@@ -92,8 +92,8 @@ public class PersistenceApi implements IApi {
 		ImplementacionUsuarioDAO usuarioDAO = new ImplementacionUsuarioDAO();
 		Usuario usuarioEnti = usuarioDAO.find(idUsuario);
 		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioEnti.getUsuario(), usuarioEnti.getContrasenia(),
-				usuarioEnti.getNombre(),
-				usuarioEnti.getApellido(), usuarioEnti.getEmail(), usuarioEnti.getDni(), usuarioEnti.getTelefono());
+				usuarioEnti.getNombre(), usuarioEnti.getApellido(), usuarioEnti.getEmail(), usuarioEnti.getDni(),
+				usuarioEnti.getTelefono());
 
 		return usuarioDTO;
 	}
@@ -373,9 +373,9 @@ public class PersistenceApi implements IApi {
 		// Eliminar depues metodo sobre cargado para que no falle memoryApi al ejecutar
 	}
 
-	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion) throws ConexionFallidaExeption,
-			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
-			ErrorConsultaExeption {
+	private Habitacion buscarHabitacionPorNumero(int idNumHabitacion)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption,
+			PrecioCeroExeption, ErrorConsultaExeption {
 		ImplementacionHabitacionDAO habitacionDAO = new ImplementacionHabitacionDAO();
 		ImplementacionCaracteristicasEspecialDAO caracteristicasDAO = new ImplementacionCaracteristicasEspecialDAO();
 
@@ -480,6 +480,11 @@ public class PersistenceApi implements IApi {
 	@Override
 	public boolean esAdmin() {
 		return "admin".equals(usuario.queRolTiene());
+
+	}
+
+	@Override
+	public void cancelarReserva(int numReserva) {
 
 	}
 }

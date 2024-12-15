@@ -179,10 +179,7 @@ public class MemoryApi implements IApi {
 
 	private Rol buscarRol(Integer codigo) {
 		/*
-		 * for (Rol rol : roles) {
-		 * if (rol.getCodigo().equals(codigo))
-		 * return rol;
-		 * }
+		 * for (Rol rol : roles) { if (rol.getCodigo().equals(codigo)) return rol; }
 		 */
 		return null;
 	}
@@ -644,6 +641,12 @@ public class MemoryApi implements IApi {
 	public boolean esAdmin() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void cancelarReserva(int numReserva) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

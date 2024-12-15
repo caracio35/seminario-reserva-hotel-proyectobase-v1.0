@@ -1,6 +1,5 @@
 package ar.edu.unrn.seminario.api;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import ar.edu.unrn.seminario.dto.CaracteristicaEspecialDTO;
@@ -43,7 +42,9 @@ public interface IApi {
 
 	void guardarRol(Integer codigo, String descripcion, boolean estado); // crear el objeto de dominio �Rol�
 
-	RolDTO obtenerRolPorCodigo(int codigo) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, ErrorConsultaExeption; // recuperar el rol almacenado
+	RolDTO obtenerRolPorCodigo(int codigo)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, ErrorConsultaExeption; // recuperar el rol
+																									// almacenado
 
 	void activarRol(Integer codigo); // recuperar el objeto Rol, implementar el comportamiento de estado.
 
@@ -68,9 +69,9 @@ public interface IApi {
 																	// usuario y contrasena
 
 	void generarReserva(int habitacion[], String usuario, String fechaInicio, String fechaFin, String fechaReserva,
-			int cantidadPersonas, String servicio[], boolean pagoMinimo) throws ConexionFallidaExeption,
-			ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
-			ErrorConsultaExeption;// Genera una
+			int cantidadPersonas, String servicio[], boolean pagoMinimo)
+			throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption,
+			PrecioCeroExeption, ErrorConsultaExeption;// Genera una
 	// reserva para
 	// una o mas
 	// habitaciones durante un periodo
@@ -134,5 +135,7 @@ public interface IApi {
 	boolean iniciarSesion(String text, String text2) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 	boolean esAdmin();
+
+	void cancelarReserva(int numReserva);
 
 }
