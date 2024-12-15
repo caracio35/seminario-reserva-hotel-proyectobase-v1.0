@@ -490,7 +490,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void cancelarReserva(int numReserva) {
-
+	public void cancelarReserva(int numReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		ImplementacionReservaDAO implementacionReservaDAO = new ImplementacionReservaDAO();
+		implementacionReservaDAO.remove(numReserva);
 	}
 }

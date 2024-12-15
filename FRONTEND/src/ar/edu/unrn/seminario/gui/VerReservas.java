@@ -113,7 +113,11 @@ public class VerReservas extends JFrame {
 					JOptionPane.showMessageDialog(null, "Reserva cancelada");
 					int numReserva = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 
-					api.cancelarReserva(numReserva);
+					try {
+						api.cancelarReserva(numReserva);
+					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					}
 
 					break;
 				case 1:
