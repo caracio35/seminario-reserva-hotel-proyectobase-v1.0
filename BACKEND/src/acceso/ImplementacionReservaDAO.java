@@ -210,7 +210,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	}
 
 	@Override
-	public void remove(String nombre) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public void remove(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
 		Connection miConexion = null;
 		PreparedStatement pStmtDeleteReserva = null;
 		PreparedStatement pStmtDeleteReservaHabitacion = null;
@@ -223,22 +223,22 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 			// Primero eliminar registros en tablas relacionadas
 			String deleteReservaHabitacion = "DELETE FROM reserva_habitacion WHERE reserva_id = ?";
 			pStmtDeleteReservaHabitacion = (PreparedStatement) miConexion.prepareStatement(deleteReservaHabitacion);
-			pStmtDeleteReservaHabitacion.setInt(1, Integer.parseInt(nombre));
+			pStmtDeleteReservaHabitacion.setInt(1, idReserva);
 			pStmtDeleteReservaHabitacion.executeUpdate();
 
 			String deleteReservaServicio = "DELETE FROM reserva_servicio WHERE reserva_id = ?";
 			pStmtDeleteReservaServicio = (PreparedStatement) miConexion.prepareStatement(deleteReservaServicio);
-			pStmtDeleteReservaServicio.setInt(1, Integer.parseInt(nombre));
+			pStmtDeleteReservaServicio.setInt(1, idReserva);
 			pStmtDeleteReservaServicio.executeUpdate();
 
 			// Finalmente eliminar la reserva
 			String deleteReserva = "DELETE FROM Reserva WHERE id = ?";
 			pStmtDeleteReserva = (PreparedStatement) miConexion.prepareStatement(deleteReserva);
-			pStmtDeleteReserva.setInt(1, Integer.parseInt(nombre));
+			pStmtDeleteReserva.setInt(1, idReserva);
 			int rowsAffected = pStmtDeleteReserva.executeUpdate();
 
 			if (rowsAffected == 0) {
-				throw new ErrorDatosNoEncontradosExeption("No se encontró la reserva con ID: " + nombre);
+				throw new ErrorDatosNoEncontradosExeption("No se encontró la reserva con ID: " + idReserva);
 			}
 
 			miConexion.commit(); // Confirmar transacción
