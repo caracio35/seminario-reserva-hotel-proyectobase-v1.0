@@ -136,6 +136,6 @@ public interface IApi {
 
 	boolean esAdmin();
 
-	void cancelarReserva(int numReserva);
+	void cancelarReserva(int numReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
 }
