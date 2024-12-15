@@ -1,5 +1,10 @@
 package ar.edu.unrn.seminario.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,10 +17,6 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
-import java.awt.event.ActionListener;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
@@ -67,7 +68,7 @@ public class Login extends JFrame {
                 boolean iniciado = api.iniciarSesion(textFieldUsuario.getText(), passwordField.getText());
                 if (iniciado) {
                     JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioIniciado"));
-                    VentanaPrincipal v1 = new VentanaPrincipal(api , idiomaSeleccionado);
+                    VentanaPrincipal v1 = new VentanaPrincipal(api, idiomaSeleccionado);
                     v1.setVisible(true);
                     Login.this.dispose();
                 } else {
@@ -77,20 +78,26 @@ public class Login extends JFrame {
                 JOptionPane.showMessageDialog(null, e1.getMessage());
             }
         });
+
         btnBotonIniciar.setBounds(101, 176, 89, 23);
         contentPane.add(btnBotonIniciar);
 
+        // Set the "Iniciar" button as the default button
+        getRootPane().setDefaultButton(btnBotonIniciar);
+
         JButton btnBotonOlvideContraseña = new JButton(recursos.getString("login.olvidarContraseña"));
-        btnBotonOlvideContraseña.addActionListener(e -> {});
+        btnBotonOlvideContraseña.addActionListener(e -> {
+        });
         btnBotonOlvideContraseña.setBounds(74, 227, 137, 23);
         contentPane.add(btnBotonOlvideContraseña);
 
         JButton btnBotonCrearUsuario = new JButton(recursos.getString("login.crearUsuario"));
         btnBotonCrearUsuario.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	AltaUsuario alta = new AltaUsuario(api);
-            	alta.setVisible(true);
-                //JOptionPane.showMessageDialog(null, recursos.getString("login.faltaCrearUsuario"));
+                AltaUsuario alta = new AltaUsuario(api);
+                alta.setVisible(true);
+                // JOptionPane.showMessageDialog(null,
+                // recursos.getString("login.faltaCrearUsuario"));
             }
         });
         btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
@@ -103,7 +110,7 @@ public class Login extends JFrame {
                     JOptionPane.QUESTION_MESSAGE);
             if (response == 0) {
                 JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioInvitado"));
-                VentanaPrincipal v1 = new VentanaPrincipal(api , idiomaSeleccionado);
+                VentanaPrincipal v1 = new VentanaPrincipal(api, idiomaSeleccionado);
                 v1.setVisible(true);
                 Login.this.dispose();
             } else {

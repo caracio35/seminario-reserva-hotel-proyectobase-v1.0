@@ -44,13 +44,13 @@ public class ListadoHabitaciones extends JFrame {
 	private int numHabitacionSelected;
 	private JTextField textField;
 	private Locale idiomaSeleccionado;
-    private ResourceBundle recursos;
+	private ResourceBundle recursos;
 
-	public ListadoHabitaciones(IApi api , Locale idioma) throws ConexionFallidaExeption {
+	public ListadoHabitaciones(IApi api, Locale idioma) throws ConexionFallidaExeption {
 		this.idiomaSeleccionado = idioma;
-	    this.recursos = ResourceBundle.getBundle("labels", idioma);
+		this.recursos = ResourceBundle.getBundle("labels", idioma);
 		this.api = api;
-		
+
 		setBackground(SystemColor.textHighlight);
 		getContentPane().setBackground(new Color(240, 240, 240));
 		getContentPane().setForeground(new Color(255, 255, 255));
@@ -67,11 +67,12 @@ public class ListadoHabitaciones extends JFrame {
 		getContentPane().add(scrollPane);
 
 		// Crear el modelo de la tabla
-		model = new DefaultTableModel(new Object[][] {}, new String[] { recursos.getString("listaHabitaciones.numeroHabitacion"), 
-				recursos.getString("listaHabitaciones.camaMatrimonial"),
-				recursos.getString("listaHabitaciones.cantCamas"),
-				recursos.getString("listaHabitaciones.disponible"), 
-				recursos.getString("listaHabitaciones.noDisponibleHasta")}) {
+		model = new DefaultTableModel(new Object[][] {},
+				new String[] { recursos.getString("listaHabitaciones.numeroHabitacion"),
+						recursos.getString("listaHabitaciones.camaMatrimonial"),
+						recursos.getString("listaHabitaciones.cantCamas"),
+						recursos.getString("listaHabitaciones.disponible"),
+						recursos.getString("listaHabitaciones.noDisponibleHasta") }) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -141,7 +142,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnDesactivar.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow == -1) {
-				JOptionPane.showMessageDialog(null,recursos.getString("listaHabitaciones.seleccionHabitacion"));
+				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.seleccionHabitacion"));
 				return;
 			}
 
@@ -185,7 +186,8 @@ public class ListadoHabitaciones extends JFrame {
 				api.desactivarHabitacion(numHabitacionSelected, fechaFormateada);
 				llenarTabla();
 
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.avisoDesac") + fechaFormateada + ".");
+				JOptionPane.showMessageDialog(null,
+						recursos.getString("listaHabitaciones.avisoDesac") + fechaFormateada + ".");
 
 			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
 					| EnterosEnCeroExeption | PrecioCeroExeption e1) {
@@ -208,7 +210,7 @@ public class ListadoHabitaciones extends JFrame {
 				int numero = ((Number) valor).intValue();
 				try {
 					api.habitacionAModificar(numero);
-					CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true , idioma);
+					CargarHabitacion modificarHabitacion = new CargarHabitacion(api, true, idioma);
 					modificarHabitacion.setVisible(true);
 				} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption | CampoVacioExeption
 						| EnterosEnCeroExeption | PrecioCeroExeption e1) {
@@ -245,7 +247,8 @@ public class ListadoHabitaciones extends JFrame {
 				((DefaultTableModel) table.getModel()).removeRow(selectedRow);
 				api.eliminarHabitacion(numHabitacionSelected);
 
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.avisoConfirmacionEliminacion"));
+				JOptionPane.showMessageDialog(null,
+						recursos.getString("listaHabitaciones.avisoConfirmacionEliminacion"));
 
 			} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -258,7 +261,8 @@ public class ListadoHabitaciones extends JFrame {
 		btnSalir.setForeground(new Color(255, 255, 255));
 		btnSalir.setBackground(new Color(231, 76, 60));
 		btnSalir.addActionListener(e -> {
-			int response = JOptionPane.showConfirmDialog(null, recursos.getString("listaHabitacionPreguntaSalir"), "Confirmación",
+			int response = JOptionPane.showConfirmDialog(null, recursos.getString("listaHabitacionPreguntaSalir"),
+					"Confirmación",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (response == JOptionPane.YES_OPTION) {
