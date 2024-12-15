@@ -43,6 +43,7 @@ public class PersistenceApi implements IApi {
 	private int habitacionAModificar = 0;
 	private Habitacion habitacion;
 	private Usuario usuario;
+	private Set<Reserva> listaReseva;
 
 	public void resetearMemoria() {
 		this.habitacionAModificar = 0;
@@ -415,8 +416,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public List<ReservaDTO> obtenerReserva() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
 			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
-		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
-		Set<Reserva> listaReseva = reservaDAO.findAll();
+		getReservas();
 		List<ReservaDTO> reservasDTOS = listaReseva.stream().map(r -> {
 			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -437,6 +437,12 @@ public class PersistenceApi implements IApi {
 			return reservaDTO;
 		}).collect(Collectors.toList());
 		return reservasDTOS;
+	}
+
+	private void getReservas() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		ImplementacionReservaDAO reservaDAO = new ImplementacionReservaDAO();
+		listaReseva = reservaDAO.findAll();
 	}
 
 	public void updateCalificacionReserva(int reservaId, int ratingValue) throws Exception {
