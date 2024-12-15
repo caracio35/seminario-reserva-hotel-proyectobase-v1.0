@@ -1,12 +1,7 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -20,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import com.toedter.calendar.JDateChooser;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ReservaDTO;
@@ -30,9 +24,6 @@ import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
 import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
-import javax.swing.JCheckBox;
-import javax.swing.table.TableCellRenderer;
-
 public class VerReservas extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -41,13 +32,12 @@ public class VerReservas extends JFrame {
     private Locale idiomaSeleccionado;
     private ResourceBundle recursos;
 
+    public VerReservas(IApi api, Locale idioma) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 
-    public VerReservas(IApi api ,Locale idioma) throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
-    	
-    	this.idiomaSeleccionado = idioma;
+        this.idiomaSeleccionado = idioma;
         this.recursos = ResourceBundle.getBundle("labels", idioma);
-        
-    	setTitle(recursos.getString("reservas.titulo"));
+
+        setTitle(recursos.getString("reservas.titulo"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 1097, 447);
         contentPane = new JPanel();
@@ -63,14 +53,14 @@ public class VerReservas extends JFrame {
         DefaultTableModel model = new DefaultTableModel(
                 new Object[][] {},
                 new String[] {
-                		recursos.getString("reservas.idReserva"), 
-                		recursos.getString("reservas.numHabitaciones"), 
-                		recursos.getString("reservas.checkIn"), 
-                		recursos.getString("reservas.ingreso"), 
-                		recursos.getString("reservas.checkOut"),
-                		recursos.getString("reservas.ingreso"),
-                		recursos.getString("reservas.calificacion"), 
-                		recursos.getString("reservas.servicios")
+                        recursos.getString("reservas.idReserva"),
+                        recursos.getString("reservas.numHabitaciones"),
+                        recursos.getString("reservas.checkIn"),
+                        recursos.getString("reservas.ingreso"),
+                        recursos.getString("reservas.checkOut"),
+                        recursos.getString("reservas.ingreso"),
+                        recursos.getString("reservas.calificacion"),
+                        recursos.getString("reservas.servicios")
                 }) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -117,16 +107,40 @@ public class VerReservas extends JFrame {
         JButton btnMostrarDetalles = new JButton(recursos.getString("reservas.mostrarDetalles"));
         btnMostrarDetalles.setBounds(0, 37, 150, 25);
         btnMostrarDetalles.addActionListener(e -> {
-        	
-        	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
-        	
+
+            JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+
         });
         contentPane.add(btnMostrarDetalles);
 
         JButton btnCancelarReserva = new JButton(recursos.getString("reservas.cancelarReserva"));
         btnCancelarReserva.setBounds(0, 188, 150, 25);
         btnCancelarReserva.addActionListener(e -> {
-        	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+            Object[] options = { "Cancelar Reserva", "Cancelar Acción", "Modificar Reserva" };
+            int choice = JOptionPane.showOptionDialog(
+                    null,
+                    "Selecciona una opción:",
+                    "Opciones de Reserva",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            switch (choice) {
+                case 0:
+                    JOptionPane.showMessageDialog(null, "Reserva cancelada.");
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(null, "Acción cancelada.");
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(null, "Modificar reserva.");
+                    break;
+                default:
+                    // No se seleccionó ninguna opción
+                    break;
+            }
         });
         contentPane.add(btnCancelarReserva);
 
@@ -134,7 +148,7 @@ public class VerReservas extends JFrame {
         JButton btnModificarFechas = new JButton(recursos.getString("reservas.modificarFechas"));
         btnModificarFechas.setBounds(0, 115, 150, 25);
         btnModificarFechas.addActionListener(e -> {
-        	JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+            JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
         });
         contentPane.add(btnModificarFechas);
 
@@ -144,9 +158,9 @@ public class VerReservas extends JFrame {
         btnCalificar.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-            	
+
                 int reservaId = (int) table.getValueAt(selectedRow, 0);
-                
+
                 CalificarHabitaciones calificar = new CalificarHabitaciones(api, reservaId);
                 calificar.setVisible(true);
             } else {

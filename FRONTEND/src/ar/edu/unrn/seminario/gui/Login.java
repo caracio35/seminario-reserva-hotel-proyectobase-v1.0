@@ -50,12 +50,15 @@ public class Login extends JFrame {
         contentPane.add(lblUsuario);
 
         textFieldUsuario = new JTextField();
+
         textFieldUsuario.setBounds(30, 67, 219, 20);
         contentPane.add(textFieldUsuario);
+        textFieldUsuario.setText("admin");
         textFieldUsuario.setColumns(10);
 
         JLabel lblPassword = new JLabel(recursos.getString("login.password"));
         lblPassword.setBounds(30, 98, 49, 14);
+        lblPassword.setText("clave1234");
         contentPane.add(lblPassword);
 
         passwordField = new JPasswordField();
