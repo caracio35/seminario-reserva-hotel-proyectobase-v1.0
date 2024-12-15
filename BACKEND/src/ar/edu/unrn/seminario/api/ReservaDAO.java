@@ -19,7 +19,8 @@ public interface ReservaDAO {
 
 	Optional<Reserva> find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	void remove(String nombre);
+	void remove(String nombre) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
-	Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+	Set<Reserva> findAll() throws CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption,
+			ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 }

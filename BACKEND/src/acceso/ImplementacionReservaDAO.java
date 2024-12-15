@@ -210,8 +210,64 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	}
 
 	@Override
-	public void remove(String nombre) {
+	public void remove(String nombre) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+		Connection miConexion = null;
+		PreparedStatement pStmtDeleteReserva = null;
+		PreparedStatement pStmtDeleteReservaHabitacion = null;
+		PreparedStatement pStmtDeleteReservaServicio = null;
 
+		try {
+			miConexion = Coneccion.conectar();
+			miConexion.setAutoCommit(false); // Iniciar transacción
+
+			// Primero eliminar registros en tablas relacionadas
+			String deleteReservaHabitacion = "DELETE FROM reserva_habitacion WHERE reserva_id = ?";
+			pStmtDeleteReservaHabitacion = (PreparedStatement) miConexion.prepareStatement(deleteReservaHabitacion);
+			pStmtDeleteReservaHabitacion.setInt(1, Integer.parseInt(nombre));
+			pStmtDeleteReservaHabitacion.executeUpdate();
+
+			String deleteReservaServicio = "DELETE FROM reserva_servicio WHERE reserva_id = ?";
+			pStmtDeleteReservaServicio = (PreparedStatement) miConexion.prepareStatement(deleteReservaServicio);
+			pStmtDeleteReservaServicio.setInt(1, Integer.parseInt(nombre));
+			pStmtDeleteReservaServicio.executeUpdate();
+
+			// Finalmente eliminar la reserva
+			String deleteReserva = "DELETE FROM Reserva WHERE id = ?";
+			pStmtDeleteReserva = (PreparedStatement) miConexion.prepareStatement(deleteReserva);
+			pStmtDeleteReserva.setInt(1, Integer.parseInt(nombre));
+			int rowsAffected = pStmtDeleteReserva.executeUpdate();
+
+			if (rowsAffected == 0) {
+				throw new ErrorDatosNoEncontradosExeption("No se encontró la reserva con ID: " + nombre);
+			}
+
+			miConexion.commit(); // Confirmar transacción
+
+		} catch (SQLException e) {
+			try {
+				if (miConexion != null) {
+					miConexion.rollback(); // Revertir cambios en caso de error
+				}
+			} catch (SQLException ex) {
+				throw new ConexionFallidaExeption("Error al realizar rollback: " + ex.getMessage());
+			}
+			throw new ConexionFallidaExeption("Error al eliminar la reserva: " + e.getMessage());
+		} finally {
+			try {
+				if (pStmtDeleteReservaHabitacion != null)
+					pStmtDeleteReservaHabitacion.close();
+				if (pStmtDeleteReservaServicio != null)
+					pStmtDeleteReservaServicio.close();
+				if (pStmtDeleteReserva != null)
+					pStmtDeleteReserva.close();
+				if (miConexion != null) {
+					miConexion.setAutoCommit(true); // Restaurar autocommit
+					Coneccion.disconnect();
+				}
+			} catch (SQLException e) {
+				throw new ConexionFallidaExeption("Error al cerrar los recursos: " + e.getMessage());
+			}
+		}
 	}
 
 	@Override
