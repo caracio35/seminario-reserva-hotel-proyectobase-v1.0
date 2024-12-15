@@ -138,4 +138,7 @@ public interface IApi {
 
 	void cancelarReserva(int numReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
+	List<ReservaDTO> obtenerReservaPorUsuario() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
+
 }

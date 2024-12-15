@@ -446,10 +446,11 @@ public class PersistenceApi implements IApi {
 		listaReseva = reservaDAO.findAll();
 	}
 
-	public List<ReservaDTO> obtenerReservaPorUsuario() throws CampoVacioExeption, EnterosEnCeroExeption,
-			PrecioCeroExeption, ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public List<ReservaDTO> obtenerReservaPorUsuario() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		getReservas();
-		Stream<Reserva> reservaUsuario = listaReseva.stream().filter(r-> r.getUsuario().getUsuario()==usuario.getUsuario().collect(Collectors.toList());
+		Stream<Reserva> reservaUsuario = listaReseva.stream()
+				.filter(r -> r.getUsuario().getUsuario().equals(this.usuario.getUsuario()));
 		List<ReservaDTO> reservasDTOS = reservaUsuario.map(r -> {
 			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

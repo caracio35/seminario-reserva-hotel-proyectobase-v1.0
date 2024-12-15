@@ -58,11 +58,11 @@ public class VerReservas extends JFrame {
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				switch (columnIndex) {
-				case 2: // Check-in
-				case 4: // Check-out
-					return Boolean.class;
-				default:
-					return Object.class;
+					case 2: // Check-in
+					case 4: // Check-out
+						return Boolean.class;
+					default:
+						return Object.class;
 				}
 			}
 
@@ -75,8 +75,9 @@ public class VerReservas extends JFrame {
 		scrollPane.setViewportView(table);
 
 		List<ReservaDTO> reservas;
+
 		try {
-			reservas = api.obtenerReserva();
+			reservas = api.obtenerReservaPorUsuario();
 			reservas.stream().sorted(Comparator.comparingInt(ReservaDTO::getId)).forEach(reserva -> {
 				Object[] rowData = { reserva.getId(), numeroDehabitaciones(reserva.getHabitacion()),
 						reserva.isCheckIn(), reserva.getFechaDeInicio(), reserva.isCheckOut(),
@@ -109,26 +110,27 @@ public class VerReservas extends JFrame {
 						options, options[0]);
 
 				switch (choice) {
-				case 0:
-					JOptionPane.showMessageDialog(null, "Reserva cancelada");
-					int numReserva = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+					case 0:
+						JOptionPane.showMessageDialog(null, "Reserva cancelada");
+						int numReserva = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 
-					try {
-						api.cancelarReserva(numReserva);
-					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					}
+						try {
+							api.cancelarReserva(numReserva);
+						} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
 
-					break;
-				case 1:
-					JOptionPane.showMessageDialog(null, "Modificar Reserva se Implementara el la proxima actulizacion");
-					break;
-				case 2:
-					JOptionPane.showMessageDialog(null, "Acción cancelada.");
-					break;
-				default:
-					// No se seleccionó ninguna opción
-					break;
+						break;
+					case 1:
+						JOptionPane.showMessageDialog(null,
+								"Modificar Reserva se Implementara el la proxima actulizacion");
+						break;
+					case 2:
+						JOptionPane.showMessageDialog(null, "Acción cancelada.");
+						break;
+					default:
+						// No se seleccionó ninguna opción
+						break;
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Seleccion una Reserva");
