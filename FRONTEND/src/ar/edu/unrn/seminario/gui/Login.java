@@ -58,7 +58,7 @@ public class Login extends JFrame {
 
 		JLabel lblPassword = new JLabel(recursos.getString("login.password"));
 		lblPassword.setBounds(30, 98, 49, 14);
-		lblPassword.setText("clave1234");
+		lblPassword.setText("contraseña");
 		contentPane.add(lblPassword);
 
 		passwordField = new JPasswordField();
@@ -91,6 +91,7 @@ public class Login extends JFrame {
 
 		JButton btnBotonOlvideContraseña = new JButton(recursos.getString("login.olvidarContraseña"));
 		btnBotonOlvideContraseña.addActionListener(e -> {
+			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
 		});
 		btnBotonOlvideContraseña.setBounds(74, 227, 137, 23);
 		contentPane.add(btnBotonOlvideContraseña);
@@ -109,17 +110,7 @@ public class Login extends JFrame {
 
 		JButton btnBotonInvitado = new JButton(recursos.getString("login.iniciarInvitado"));
 		btnBotonInvitado.addActionListener(e -> {
-			int response = JOptionPane.showConfirmDialog(null, recursos.getString("login.confirmarInvitado"),
-					recursos.getString("login.perdidaBeneficios"), JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-			if (response == 0) {
-				JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioInvitado"));
-				VentanaPrincipal v1 = new VentanaPrincipal(api, idiomaSeleccionado);
-				v1.setVisible(true);
-				Login.this.dispose();
-			} else {
-				JOptionPane.showMessageDialog(null, recursos.getString("login.usuarioNoInvitado"));
-			}
+			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
 		});
 		btnBotonInvitado.setBounds(136, 306, 143, 23);
 		contentPane.add(btnBotonInvitado);
