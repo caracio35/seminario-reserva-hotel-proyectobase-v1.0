@@ -56,7 +56,7 @@ public class ImplementacionCaracteristicasEspecialDAO implements CaracteristicaE
 
 				}
 			} catch (SQLException ex) {
-				throw new ConexionFallidaExeption();
+				throw new ConexionFallidaExeption("Ocurrio un problema con la conexion");
 			}
 		}finally {
 		

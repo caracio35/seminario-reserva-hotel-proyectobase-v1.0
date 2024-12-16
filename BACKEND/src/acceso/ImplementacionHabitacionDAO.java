@@ -68,8 +68,7 @@ public class ImplementacionHabitacionDAO implements HabitacionDAO {
 					miConeccion.rollback();
 				}
 			} catch (SQLException ex) {
-				System.out.println("Error al hacer rollback");
-				throw new ConexionFallidaExeption();
+				throw new ConexionFallidaExeption("Ocurrio un problema con la conexion");
 			}
 			
 		} finally {

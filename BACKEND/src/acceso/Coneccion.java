@@ -34,7 +34,7 @@ public class Coneccion {
                     prop.getProperty("password")
             );
         } catch (SQLException sqlEx) {
-        	throw new ConexionFallidaExeption("no se conecto");
+        	throw new ConexionFallidaExeption();
         
         }
     }

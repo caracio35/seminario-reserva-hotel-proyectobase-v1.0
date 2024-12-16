@@ -101,7 +101,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 				}
 			} catch (SQLException ex) {
-				throw new ConexionFallidaExeption();
+				throw new ConexionFallidaExeption("Ocurrio un problema con la conexion");
 			}
 		} finally {
 			try {
@@ -151,7 +151,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 	}
 
 	@Override
-	public Optional<Reserva> find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption {
+	public Optional<Reserva> find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
 		Connection conn = null;
 		Reserva reserva = null;
 		conn = Coneccion.conectar();
@@ -199,9 +199,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();
-		} catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e) {
-			System.out.println("Error de consistencia en los datos de la reserva: " + e.getMessage());
-		} finally {
+		}  finally {
 			if (conn != null)
 				Coneccion.disconnect();
 		}
@@ -265,7 +263,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 					Coneccion.disconnect();
 				}
 			} catch (SQLException e) {
-				throw new ConexionFallidaExeption("Error al cerrar los recursos: " + e.getMessage());
+				throw new ConexionFallidaExeption("Error al cerrar los recursos: ");
 			}
 		}
 	}

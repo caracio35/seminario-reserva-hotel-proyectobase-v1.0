@@ -39,7 +39,7 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 
 				}
 			} catch (SQLException ex) {
-				throw new ConexionFallidaExeption();
+				throw new ConexionFallidaExeption("Ocurrio un problema con la conexion");
 			}
 		} finally {
 			try {

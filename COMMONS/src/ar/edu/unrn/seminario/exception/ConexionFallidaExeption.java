@@ -7,6 +7,6 @@ public class ConexionFallidaExeption extends SQLException {
 		super(mensaje);
 	}
 	public ConexionFallidaExeption() {
-		super("Coneccion fallida con la base de datos");
+		super("Conexion fallida con la base de datos");
 }
 }

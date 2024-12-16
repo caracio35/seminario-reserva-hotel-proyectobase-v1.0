@@ -62,14 +62,18 @@ public class ImplementacionRolDAO implements RolDAO{
 				}
 			}catch(SQLException e) {
 				throw new ErrorConsultaExeption();
-			}
+			}finally {
+				if (pStmt != null)
+					pStmt.close();}
 	
 		return null;
 	} catch (SQLException e1) {
-		// TODO Auto-generated catch block
 		throw new ErrorDatosNoEncontradosExeption();
+	} finally {
+		if (miConexion != null)
+			Coneccion.disconnect();
 	}
-	}
+}
 }
 		
 	

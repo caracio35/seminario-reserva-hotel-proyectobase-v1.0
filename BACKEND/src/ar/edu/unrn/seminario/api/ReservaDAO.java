@@ -17,7 +17,7 @@ public interface ReservaDAO {
 
 	void update(Reserva reserva) throws ConexionFallidaExeption, ErrorConsultaExeption;
 
-	Optional<Reserva> find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
+	Optional<Reserva> find(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption, CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption;
 
 	void remove(int idReserva) throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption;
 
