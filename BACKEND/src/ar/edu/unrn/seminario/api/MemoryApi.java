@@ -649,6 +649,13 @@ public class MemoryApi implements IApi {
 
 	}
 
+	@Override
+	public List<ReservaDTO> obtenerReservaPorUsuario() throws ConexionFallidaExeption, ErrorDatosNoEncontradosExeption,
+			CampoVacioExeption, EnterosEnCeroExeption, PrecioCeroExeption {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
 
 // Dar de baja una habitación
