@@ -1,7 +1,5 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -57,7 +55,7 @@ public class Login extends JFrame {
 		textFieldUsuario.setColumns(10);
 
 		JLabel lblPassword = new JLabel(recursos.getString("login.password"));
-		lblPassword.setBounds(30, 98, 49, 14);
+		lblPassword.setBounds(30, 98, 89, 14);
 		lblPassword.setText("contraseña");
 		contentPane.add(lblPassword);
 
@@ -97,13 +95,8 @@ public class Login extends JFrame {
 		contentPane.add(btnBotonOlvideContraseña);
 
 		JButton btnBotonCrearUsuario = new JButton(recursos.getString("login.crearUsuario"));
-		btnBotonCrearUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				AltaUsuario alta = new AltaUsuario(api);
-				alta.setVisible(true);
-				// JOptionPane.showMessageDialog(null,
-				// recursos.getString("login.faltaCrearUsuario"));
-			}
+		btnBotonCrearUsuario.addActionListener(e -> {
+			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
 		});
 		btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
 		contentPane.add(btnBotonCrearUsuario);
