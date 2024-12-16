@@ -1,5 +1,7 @@
 package ar.edu.unrn.seminario.gui;
 
+import java.util.Locale;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -13,7 +15,10 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
+import ar.edu.unrn.seminario.exception.EnterosEnCeroExeption;
+import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 
 @SuppressWarnings("unused")
 public class CalificarHabitaciones extends JFrame {
@@ -24,7 +29,7 @@ public class CalificarHabitaciones extends JFrame {
 	
 	
 	@SuppressWarnings("unchecked")
-	public CalificarHabitaciones(IApi api , int idReserva ) {
+	public CalificarHabitaciones(IApi api , int idReserva, Locale idioma) {
 
 		setTitle("Calificar Habitaciones");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,6 +55,12 @@ public class CalificarHabitaciones extends JFrame {
 		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.addActionListener((e) -> {
 			dispose();
+			  try {
+	                VerReservas misReservas = new VerReservas(api, idioma);
+	                misReservas.setVisible(true);
+	            } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+	                JOptionPane.showMessageDialog(null, e1.getMessage());
+	            }
 		});
 		btnNewButton.setBounds(222, 184, 89, 23);
 		contentPane.add(btnNewButton);
@@ -78,6 +89,12 @@ public class CalificarHabitaciones extends JFrame {
 				api.generarCalificacionHabitacion(idReserva, calificacionSeleccionada, comentario);
 				JOptionPane.showMessageDialog(contentPane, "Reserva calificada");
 				dispose();
+				  try {
+		                VerReservas misReservas = new VerReservas(api, idioma);
+		                misReservas.setVisible(true);
+		            } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+		                JOptionPane.showMessageDialog(null, e1.getMessage());
+		            }
 			} catch (ConexionFallidaExeption e1) {
 				JOptionPane.showConfirmDialog(null, e1.getMessage());
 			}

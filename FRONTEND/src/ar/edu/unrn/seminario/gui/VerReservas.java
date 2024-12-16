@@ -102,20 +102,26 @@ public class VerReservas extends JFrame {
 		btnCancelarReserva.setBounds(0, 188, 150, 25);
 		btnCancelarReserva.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
-
+			
 			if (selectedRow != -1) {
 				Object[] options = { "Cancelar Reserva", "Modificar Reserva", "Cancelar Acción" };
 				int choice = JOptionPane.showOptionDialog(null, "Al cancelar la reserva el pago minimo se perdera",
 						"Opciones de Reserva", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 						options, options[0]);
-
+				
 				switch (choice) {
 					case 0:
 						JOptionPane.showMessageDialog(null, "Reserva cancelada");
 						int numReserva = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-
 						try {
+							dispose();
 							api.cancelarReserva(numReserva);
+							 try {
+					                VerReservas misReservas = new VerReservas(api, idioma);
+					                misReservas.setVisible(true);
+					            } catch (CampoVacioExeption | EnterosEnCeroExeption | PrecioCeroExeption e1) {
+					                JOptionPane.showMessageDialog(null, e1.getMessage());
+					            }
 						} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
@@ -124,6 +130,7 @@ public class VerReservas extends JFrame {
 					case 1:
 						JOptionPane.showMessageDialog(null,
 								"Modificar Reserva se Implementara el la proxima actulizacion");
+						 
 						break;
 					case 2:
 						JOptionPane.showMessageDialog(null, "Acción cancelada.");
@@ -157,8 +164,9 @@ public class VerReservas extends JFrame {
 
 				int reservaId = (int) table.getValueAt(selectedRow, 0);
 
-				CalificarHabitaciones calificar = new CalificarHabitaciones(api, reservaId);
+				CalificarHabitaciones calificar = new CalificarHabitaciones(api, reservaId , idioma);
 				calificar.setVisible(true);
+				dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, recursos.getString("reserva.avisoSelecion"));
 			}

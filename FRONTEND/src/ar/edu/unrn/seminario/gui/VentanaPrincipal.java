@@ -1,9 +1,7 @@
 package ar.edu.unrn.seminario.gui;
-
 import java.awt.BorderLayout;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -11,7 +9,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.exception.CampoVacioExeption;
 import ar.edu.unrn.seminario.exception.ConexionFallidaExeption;
@@ -21,7 +18,6 @@ import ar.edu.unrn.seminario.exception.PrecioCeroExeption;
 public class VentanaPrincipal extends JFrame {
 
     private JPanel contentPane;
-
     public VentanaPrincipal(IApi api, Locale seleccion) {
 
         ResourceBundle labels = ResourceBundle.getBundle("labels", seleccion);
@@ -67,9 +63,7 @@ public class VentanaPrincipal extends JFrame {
 
         JMenuItem listadoUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.listado_usuario"));
         listadoUsuarioMenuItem.addActionListener(arg0 -> {
-            ListadoUsuario listado = new ListadoUsuario(api);
-            listado.setLocationRelativeTo(null);
-            listado.setVisible(true);
+        	 JOptionPane.showMessageDialog(null, "se implementara el la proxima actualizacion");
         });
         usuarioMenu.add(listadoUsuarioMenuItem);
 
