@@ -80,13 +80,11 @@ public class BusquedaDeHabitaciones extends JFrame {
 				, recursos.getString("busquedaHabitaciones.precio"),recursos.getString("busquedaHabitaciones.numeroHabitacion"),
 				recursos.getString("busquedaHabitaciones.caracteristicasEspeciales"), recursos.getString("busquedaHabitaciones.seleccionado") }) {
 			public boolean isCellEditable(int row, int column) {
-				// Only the "Seleccionado" column is editable
 				return column == 5;
 			}
 
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
-				// Return Boolean.class for the "Seleccionado" column to handle it as a checkbox
 				if (columnIndex == 5) {
 					return Boolean.class;
 				}
@@ -97,7 +95,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 		table_1 = new JTable(modelo) {
 			@Override
 			public Class<?> getColumnClass(int column) {
-				// This is for rendering the checkbox in the "Seleccionado" column
+				
 				if (column == 5) {
 					return Boolean.class;
 				}
@@ -105,7 +103,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 			}
 		};
 
-		// Ensure the scroll pane contains the table
+		
 		scrollPane.setViewportView(table_1);
 		table_1.setShowGrid(false);
 
@@ -153,10 +151,9 @@ public class BusquedaDeHabitaciones extends JFrame {
 		btnReservar.addActionListener(e -> {
 			List<Integer> habitacionesSeleccionadas = new ArrayList<>();
 			for (int i = 0; i < table_1.getRowCount(); i++) {
-				Boolean estado = (Boolean) table_1.getValueAt(i, 5); // Assuming the "Seleccionado" column index is 5
+				Boolean estado = (Boolean) table_1.getValueAt(i, 5); 
 				if (estado != null && estado) {
-					Integer numeroHabitacion = (Integer) table_1.getValueAt(i, 3); // Assuming the "Numero de
-																					// Habitacion" column index is 3
+					Integer numeroHabitacion = (Integer) table_1.getValueAt(i, 3); 
 					habitacionesSeleccionadas.add(numeroHabitacion);
 				}
 			}
@@ -173,6 +170,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 			ConfirmarReserva confirmacion = new ConfirmarReserva(fechaReservaInicio, fechaReservaFin, api,
 					habitacionesSeleccionadas , idioma);
 			confirmacion.setVisible(true);
+			dispose();
 		});
 		btnReservar.setBounds(189, 349, 116, 21);
 		getContentPane().add(btnReservar);
@@ -236,7 +234,6 @@ public class BusquedaDeHabitaciones extends JFrame {
 			}
 			try {
 				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
-				// aplicando filtro de precio minimo con stream
 				List<HabitacionDTO> filtrado = habitaciones.stream().filter(h -> h.getPrecio() >= precioMinimo)
 						.filter(h -> h.getCantidadDeCamas() >= camas)
 						.sorted(Comparator.comparingDouble(HabitacionDTO::getPrecio)).collect(Collectors.toList());
