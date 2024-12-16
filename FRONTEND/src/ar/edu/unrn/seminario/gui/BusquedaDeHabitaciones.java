@@ -205,10 +205,19 @@ public class BusquedaDeHabitaciones extends JFrame {
 		getContentPane().add(btnBuscar);
 		btnBuscar.addActionListener(e -> {
 			if (!textFieldPrecio.getText().isEmpty()) {
-				precioMinimo = Integer.parseInt(textFieldPrecio.getText());
+				try{ 
+					precioMinimo = Integer.parseInt(textFieldPrecio.getText());
+				}catch(NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null,"por favor ingrese un numero valido ");
+				}
+				
 			}
 			if (!textFieldHuespedes.getText().isEmpty()) {
-				camas = Integer.parseInt(textFieldHuespedes.getText());
+				try{ 
+					camas = Integer.parseInt(textFieldHuespedes.getText());
+				}catch(NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null,"por favor ingrese un numero valido ");
+				}
 			}
 			try {
 				List<HabitacionDTO> habitaciones = api.obtenerHabitacionesHabilitada();
