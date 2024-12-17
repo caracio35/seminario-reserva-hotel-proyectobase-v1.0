@@ -106,7 +106,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnActivarHabitacion.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow == -1) {
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.selecionHabitacion"));
+				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.seleccionHabitacion"));
 				return;
 			}
 
@@ -172,8 +172,8 @@ public class ListadoHabitaciones extends JFrame {
 			String fechaFormateada = new SimpleDateFormat("yyyy/MM/dd").format(fecha);
 
 			int response = JOptionPane.showConfirmDialog(null,
-					recursos.getString("listaHabitaciones.avisoDesactivacion") + fechaFormateada + "?",
-					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					recursos.getString("listaHabitaciones.avisoDesactivacion") + fechaFormateada + "?", "Confirmación",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (response != JOptionPane.YES_OPTION) {
 				return;
@@ -262,8 +262,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnSalir.setBackground(new Color(231, 76, 60));
 		btnSalir.addActionListener(e -> {
 			int response = JOptionPane.showConfirmDialog(null, recursos.getString("listaHabitacionPreguntaSalir"),
-					"Confirmación",
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (response == JOptionPane.YES_OPTION) {
 				dispose();
