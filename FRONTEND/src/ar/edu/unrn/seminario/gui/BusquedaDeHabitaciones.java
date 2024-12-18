@@ -138,11 +138,11 @@ public class BusquedaDeHabitaciones extends JFrame {
 			}
 
 			if (habitacionesSeleccionadas.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Por favor, seleccione una habitacion.");
+				JOptionPane.showMessageDialog(null, recursos.getString("busquedaHabitaciones.seleccionarHabitacion"));
 				return;
 			}
 			if (fechaReservaInicio == null || fechaReservaFin == null) {
-				JOptionPane.showMessageDialog(null, "Por favor, seleccione las fecha de ingreso y salida.");
+				JOptionPane.showMessageDialog(null,recursos.getString("busquedaHabitaciones.seleccionarFechaSalidaIngreso"));
 				return;
 			}
 
@@ -208,7 +208,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 				try{ 
 					precioMinimo = Integer.parseInt(textFieldPrecio.getText());
 				}catch(NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null,"por favor ingrese un numero valido ");
+					JOptionPane.showMessageDialog(null,recursos.getString("busquedaHabitaciones.buscar"));
 				}
 				
 			}
@@ -216,7 +216,7 @@ public class BusquedaDeHabitaciones extends JFrame {
 				try{ 
 					camas = Integer.parseInt(textFieldHuespedes.getText());
 				}catch(NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null,"por favor ingrese un numero valido ");
+					JOptionPane.showMessageDialog(null,recursos.getString("busquedaHabitaciones.buscar"));
 				}
 			}
 			try {

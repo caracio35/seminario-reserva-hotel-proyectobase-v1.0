@@ -114,8 +114,8 @@ public class ConfirmarReserva extends JFrame {
 			JComboBox comboBoxMetodoPago = new JComboBox();
 			// dos metodos de pago en el combobox mercado pago y tarjeta de credito
 			comboBoxMetodoPago.setBounds(10, 217, 137, 21);
-			comboBoxMetodoPago.addItem("MercadoPago");
-			comboBoxMetodoPago.addItem("Tarjeta de Credito");
+			comboBoxMetodoPago.addItem(recursos.getString("detalleReserva.pagoReserva"));
+			comboBoxMetodoPago.addItem(recursos.getString("detalleReserva.pagoReservaTarjeta"));
 			panel.add(comboBoxMetodoPago);
 
 			JRadioButton rdbtnPrecioMinimo = new JRadioButton(recursos.getString("detalleReserva.precioMinimo"));
@@ -152,18 +152,18 @@ public class ConfirmarReserva extends JFrame {
 				} else if (rdbtnPagoTotal.isSelected()) { // Cambiado a rdbtnPagoTotal
 					this.pago = false;
 				}
-				if ("Tarjeta de Credito".equals(metodoPago)) {
+				if (recursos.getString("detalleReserva.pagoReservaTarjeta").equals(metodoPago)) {
 					// 30% de probabilidad de falla por monto insuficiente
 					if (random.nextInt(100) < 30) {
 						JOptionPane.showMessageDialog(contentPane,
-								"El pago con Tarjeta de Crédito falló. Monto insuficiente.");
+								recursos.getString("detalleReserva.falloTarjeta"));
 					} else {
-						JOptionPane.showMessageDialog(contentPane, "Pago con Tarjeta de Crédito exitoso!");
+						JOptionPane.showMessageDialog(contentPane, recursos.getString("detalleReserva.avisoPagoExitoso"));
 						generarReserva(pago, cantidadPersonas);
 					}
-				} else if ("MercadoPago".equals(metodoPago)) {
+				} else if (recursos.getString("detalleReserva.pagoReserva").equals(metodoPago)) {
 					// Mostrar un JOptionPane con QR
-					JOptionPane.showMessageDialog(this, "Mostrando QR para MercadoPago...");
+					JOptionPane.showMessageDialog(this, recursos.getString("detalleReserva.mostrarQR"));
 
 					// Generar tiempo de visualización aleatorio entre 5 y 10 segundos
 
@@ -174,9 +174,9 @@ public class ConfirmarReserva extends JFrame {
 						// 30% de probabilidad de fallo del pago
 						if (random.nextInt(100) < 30) {
 							JOptionPane.showMessageDialog(contentPane,
-									"El pago con MercadoPago falló. Intente nuevamente.");
+									recursos.getString("detalleReserva.falloPagoMercadoPago"));
 						} else {
-							JOptionPane.showMessageDialog(contentPane, "Pago con MercadoPago exitoso!");
+							JOptionPane.showMessageDialog(contentPane, recursos.getString("detalleReserva.pagoExitosoMercadoPago"));
 							// Lógica para generar la reserva
 							generarReserva(pago, cantidadPersonas);
 						}
@@ -188,7 +188,7 @@ public class ConfirmarReserva extends JFrame {
 			btnRealizarPago.setBounds(365, 434, 117, 21);
 			panel.add(btnRealizarPago);
 
-			JButton btnCancelar = new JButton("Salir");
+			JButton btnCancelar = new JButton(recursos.getString("detalleReserva.salir"));
 			btnCancelar.addActionListener(e -> {
 				dispose();
 			});

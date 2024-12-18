@@ -89,21 +89,21 @@ public class Login extends JFrame {
 
 		JButton btnBotonOlvideContraseña = new JButton(recursos.getString("login.olvidarContraseña"));
 		btnBotonOlvideContraseña.addActionListener(e -> {
-			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+			JOptionPane.showMessageDialog(null, recursos.getString("login.aviso"));
 		});
 		btnBotonOlvideContraseña.setBounds(74, 227, 137, 23);
 		contentPane.add(btnBotonOlvideContraseña);
 
 		JButton btnBotonCrearUsuario = new JButton(recursos.getString("login.crearUsuario"));
 		btnBotonCrearUsuario.addActionListener(e -> {
-			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+			JOptionPane.showMessageDialog(null, recursos.getString("login.aviso"));
 		});
 		btnBotonCrearUsuario.setBounds(10, 306, 117, 23);
 		contentPane.add(btnBotonCrearUsuario);
 
 		JButton btnBotonInvitado = new JButton(recursos.getString("login.iniciarInvitado"));
 		btnBotonInvitado.addActionListener(e -> {
-			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+			JOptionPane.showMessageDialog(null, recursos.getString("login.aviso"));
 		});
 		btnBotonInvitado.setBounds(136, 306, 143, 23);
 		contentPane.add(btnBotonInvitado);

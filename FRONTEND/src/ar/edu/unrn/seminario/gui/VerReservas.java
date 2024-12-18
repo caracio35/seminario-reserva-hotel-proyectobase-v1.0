@@ -93,7 +93,7 @@ public class VerReservas extends JFrame {
 		btnMostrarDetalles.setBounds(0, 37, 150, 25);
 		btnMostrarDetalles.addActionListener(e -> {
 
-			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+			JOptionPane.showMessageDialog(null, recursos.getString("login.aviso"));
 
 		});
 		contentPane.add(btnMostrarDetalles);
@@ -104,14 +104,14 @@ public class VerReservas extends JFrame {
 			int selectedRow = table.getSelectedRow();
 			
 			if (selectedRow != -1) {
-				Object[] options = { "Cancelar Reserva", "Modificar Reserva", "Cancelar Acción" };
-				int choice = JOptionPane.showOptionDialog(null, "Al cancelar la reserva el pago minimo se perdera",
+				Object[] options = { recursos.getString("reserva.botonCancelar"),recursos.getString("reserva.botonModificar"), recursos.getString("reserva.botonCancelarAcion") };
+				int choice = JOptionPane.showOptionDialog(null,  recursos.getString("reserva.avisoPago"),
 						"Opciones de Reserva", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 						options, options[0]);
 				
 				switch (choice) {
 					case 0:
-						JOptionPane.showMessageDialog(null, "Reserva cancelada");
+						JOptionPane.showMessageDialog(null,recursos.getString("reserva.confimacionDeCacelacion"));
 						int numReserva = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
 						try {
 							dispose();
@@ -129,18 +129,18 @@ public class VerReservas extends JFrame {
 						break;
 					case 1:
 						JOptionPane.showMessageDialog(null,
-								"Modificar Reserva se Implementara el la proxima actulizacion");
+								recursos.getString("login.aviso"));
 						 
 						break;
 					case 2:
-						JOptionPane.showMessageDialog(null, "Acción cancelada.");
+						JOptionPane.showMessageDialog(null, recursos.getString("reserva.avisoAccion"));
 						break;
 					default:
 						// No se seleccionó ninguna opción
 						break;
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Seleccion una Reserva");
+				JOptionPane.showMessageDialog(null, recursos.getString("reserva.selecionReserva"));
 
 			}
 
@@ -151,7 +151,7 @@ public class VerReservas extends JFrame {
 		JButton btnModificarFechas = new JButton(recursos.getString("reservas.modificarFechas"));
 		btnModificarFechas.setBounds(0, 115, 150, 25);
 		btnModificarFechas.addActionListener(e -> {
-			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+			JOptionPane.showMessageDialog(null, recursos.getString("login.aviso"));
 		});
 		contentPane.add(btnModificarFechas);
 

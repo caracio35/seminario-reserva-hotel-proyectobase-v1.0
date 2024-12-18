@@ -59,7 +59,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem altaUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.alta_usuario"));
 		altaUsuarioMenuItem.addActionListener(arg0 -> {
-			JOptionPane.showMessageDialog(null, "Se Implementara el la proxima actulizacion");
+			JOptionPane.showMessageDialog(null, labels.getString("login.aviso"));
 //            AltaUsuario alta = new AltaUsuario(api);
 //            alta.setLocationRelativeTo(null);
 //            alta.setVisible(true);
@@ -68,7 +68,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem listadoUsuarioMenuItem = new JMenuItem(labels.getString("menuitem.listado_usuario"));
 		listadoUsuarioMenuItem.addActionListener(arg0 -> {
-			JOptionPane.showMessageDialog(null, "se implementara el la proxima actualizacion");
+			JOptionPane.showMessageDialog(null, labels.getString("login.aviso"));
 		});
 		usuarioMenu.add(listadoUsuarioMenuItem);
 

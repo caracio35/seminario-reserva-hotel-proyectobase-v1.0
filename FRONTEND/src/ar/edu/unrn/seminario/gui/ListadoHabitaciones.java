@@ -106,7 +106,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnActivarHabitacion.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow == -1) {
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.seleccionHabitacion"));
+				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.selecionHabitacion"));
 				return;
 			}
 
@@ -142,7 +142,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnDesactivar.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow == -1) {
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.seleccionHabitacion"));
+				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.selecionHabitacion"));
 				return;
 			}
 
@@ -217,7 +217,7 @@ public class ListadoHabitaciones extends JFrame {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.seleccionHabitacion"));
+				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.selecionHabitacion"));
 			}
 
 		});
@@ -230,7 +230,7 @@ public class ListadoHabitaciones extends JFrame {
 		btnEliminarHabitacion.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow == -1) {
-				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.seleccionHabitacion"));
+				JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.selecionHabitacion"));
 				return;
 			}
 
@@ -297,7 +297,7 @@ public class ListadoHabitaciones extends JFrame {
 					} catch (ConexionFallidaExeption | ErrorDatosNoEncontradosExeption e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					} catch (NumberFormatException e1) {
-						JOptionPane.showMessageDialog(null, "Revisar los buscar habitacion tiene que ser un numero ");
+						JOptionPane.showMessageDialog(null, recursos.getString("listaHabitaciones.avisoBuscarHabitacion"));
 					}
 				} else {
 					llenarTabla();

@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,12 +27,16 @@ public class CalificarHabitaciones extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
+	private Locale idiomaSeleccionado;
+	private ResourceBundle recursos;
 	
 	
 	@SuppressWarnings("unchecked")
 	public CalificarHabitaciones(IApi api , int idReserva, Locale idioma) {
-
-		setTitle("Calificar Habitaciones");
+		this.idiomaSeleccionado = idioma;
+		this.recursos = ResourceBundle.getBundle("labels", idioma);
+		
+		setTitle(recursos.getString("calificarHabitacion.titulo") );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 255);
 		contentPane = new JPanel();
@@ -40,7 +45,7 @@ public class CalificarHabitaciones extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("Califique del 1 al 5:");
+		JLabel lblNewLabel_1 = new JLabel(recursos.getString("calificarHabitacion.calificar"));
 		lblNewLabel_1.setBounds(10, 11, 113, 14);
 		contentPane.add(lblNewLabel_1);
 
@@ -48,11 +53,11 @@ public class CalificarHabitaciones extends JFrame {
 		TextFieldComentario.setBounds(10, 89, 410, 84);
 		contentPane.add(TextFieldComentario);
 
-		JLabel lblNewLabel_2 = new JLabel("Comentario:");
+		JLabel lblNewLabel_2 = new JLabel(recursos.getString("calificarHabitacion.comentario"));
 		lblNewLabel_2.setBounds(10, 64, 113, 14);
 		contentPane.add(lblNewLabel_2);
 
-		JButton btnNewButton = new JButton("Salir");
+		JButton btnNewButton = new JButton(recursos.getString("calificarHabitacion.salir"));
 		btnNewButton.addActionListener((e) -> {
 			dispose();
 			  try {
@@ -65,7 +70,7 @@ public class CalificarHabitaciones extends JFrame {
 		btnNewButton.setBounds(222, 184, 89, 23);
 		contentPane.add(btnNewButton);
 
-		JButton btnNewButton_1 = new JButton("Calificar");
+		JButton btnNewButton_1 = new JButton(recursos.getString("calificarHabitacion.generarCalificacion"));
 
 		btnNewButton_1.setBounds(331, 184, 89, 23);
 		contentPane.add(btnNewButton_1);
@@ -87,7 +92,7 @@ public class CalificarHabitaciones extends JFrame {
 		    
 		    try {
 				api.generarCalificacionHabitacion(idReserva, calificacionSeleccionada, comentario);
-				JOptionPane.showMessageDialog(contentPane, "Reserva calificada");
+				JOptionPane.showMessageDialog(contentPane, recursos.getString("calificarHabitacion.confirmacionCalificacion"));
 				dispose();
 				  try {
 		                VerReservas misReservas = new VerReservas(api, idioma);
