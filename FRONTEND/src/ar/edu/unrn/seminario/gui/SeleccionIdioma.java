@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 public class SeleccionIdioma {
 
     public static Locale mostrarDialogoIdioma() {
-        Object[] opciones = { "Español", "English" }; // Opciones de idiomas
+        Object[] opciones = { "Español", "English" }; 
         int seleccion = JOptionPane.showOptionDialog(
                 null,
                 "Seleccione un idioma / Select a language:",
@@ -20,8 +20,8 @@ public class SeleccionIdioma {
         );
 
         if (seleccion == 1) {
-            return new Locale("es"); // Inglés
+            return new Locale("en"); 
         }
-        return new Locale("en"); // Español por defecto
+        return new Locale("es"); 
     }
 }
