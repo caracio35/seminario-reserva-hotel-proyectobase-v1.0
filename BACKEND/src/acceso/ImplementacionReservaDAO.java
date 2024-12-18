@@ -187,6 +187,10 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 						.map(Date::toLocalDate);
 				Optional<Calificacion> calificacion = findCalificacionByReservaId(idReserva, conn);
 				calificacion.ifPresent(reserva::setCalificacion);
+				/*
+				 * Es una referencia de método que equivale a escribir una lambda como calif ->
+				 * reserva.setCalificacion(calif).
+				 */
 			}
 
 		} catch (SQLException e) {
