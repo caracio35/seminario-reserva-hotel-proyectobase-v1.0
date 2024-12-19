@@ -362,7 +362,7 @@ public class MemoryApi implements IApi {
 
 	public void generarCalificacionHabitacion(int idReserva, Calificacion calificacion, String comentario) {
 		Reserva reservaObtenida = this.buscarReserva(idReserva);
-		reservaObtenida.setCalificacion(new Calificacion(calificacion.getValor(), comentario, idReserva));
+		reservaObtenida.setCalificacion(new Calificacion(calificacion.getValor(), comentario));
 
 	}
 

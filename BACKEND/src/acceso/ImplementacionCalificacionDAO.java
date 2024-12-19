@@ -1,7 +1,6 @@
 package acceso;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
@@ -20,14 +19,14 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 
 	@Override
 
-	public void create(Calificacion calificacion) throws ConexionFallidaExeption {
+	public void create(int idReserva, Calificacion calificacion) throws ConexionFallidaExeption {
 		Connection miConexion = null;
 		PreparedStatement pStamentConsutaCrearCalificacion = null;
 		miConexion = Coneccion.conectar();
 		try {
 
 			pStamentConsutaCrearCalificacion = (PreparedStatement) miConexion.prepareStatement(nuevoCalificacion);
-			pStamentConsutaCrearCalificacion.setInt(1, calificacion.getIdReservaFK());
+			pStamentConsutaCrearCalificacion.setInt(1, idReserva);
 			pStamentConsutaCrearCalificacion.setInt(2, calificacion.getValor());
 			pStamentConsutaCrearCalificacion.setString(3, calificacion.getComentario());
 			pStamentConsutaCrearCalificacion.executeUpdate();
@@ -76,7 +75,7 @@ public class ImplementacionCalificacionDAO implements CalificacionDAO {
 			if (resultSet.next()) {
 				int valor = resultSet.getInt("valor");
 				String comentario = resultSet.getString("comentario");
-				calificacionObtenida = new Calificacion(valor, comentario, idReserva);
+				calificacionObtenida = new Calificacion(valor, comentario);
 			}
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption();

@@ -302,7 +302,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 						.map(Date::toLocalDate);
 				Optional<Calificacion> calificacion = findCalificacionByReservaId(reservaId, conn);
 				calificacion.ifPresent(reserva::setCalificacion);
-
+				/* .map(date -> date.toLocalDate()).orElse(null); */
 				// Establece true si el Optional tiene un valor (fecha no nula), false si está
 				// vacío (fecha nula)
 				reserva.setCheckIn(fechaCheckIn.isPresent());
@@ -449,7 +449,7 @@ public class ImplementacionReservaDAO implements ReservaDAO {
 				String comentario = rs.getString("descripcion");
 				int idReservaFK = rs.getInt("reserva_id");
 
-				calificacion = new Calificacion(valor, comentario, idReservaFK);
+				calificacion = new Calificacion(valor, comentario);
 			}
 		} catch (SQLException e) {
 			throw new ErrorDatosNoEncontradosExeption("Problemas al buscar la calificacion");

@@ -38,7 +38,7 @@ public class Reserva {
 		this.calificacion = null;
 		this.pagoMinimo = pagoMinimo;
 		this.saldoFavor = 0;
-		
+
 	}
 
 	public Reserva(int id, ArrayList<Habitacion> habitaciones, LocalDate fechaDeInicio, LocalDate fechaDESalida,
@@ -164,7 +164,7 @@ public class Reserva {
 
 	public Calificacion getCalificacion() {
 		if (calificacion == null) {
-			this.setCalificacion(new Calificacion(0, "No ha calificado", 0));
+			this.setCalificacion(new Calificacion(0, "No ha calificado"));
 		}
 		return calificacion;
 	}

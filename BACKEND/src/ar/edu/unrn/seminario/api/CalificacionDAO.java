@@ -7,7 +7,7 @@ import ar.edu.unrn.seminario.exception.ErrorDatosNoEncontradosExeption;
 import ar.edu.unrn.seminario.modelo.Calificacion;
 
 public interface CalificacionDAO {
-	void create(Calificacion calificacion) throws ConexionFallidaExeption;
+	// void create(Calificacion calificacion) throws ConexionFallidaExeption;
 
 	void update(Calificacion calificacion);
 
@@ -16,4 +16,6 @@ public interface CalificacionDAO {
 	void remove(int id_calificacion);
 
 	Set<Calificacion> findAll();
+
+	void create(int idReserva, Calificacion calificacion) throws ConexionFallidaExeption;
 }

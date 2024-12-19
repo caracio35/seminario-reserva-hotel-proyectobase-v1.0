@@ -187,9 +187,9 @@ public class PersistenceApi implements IApi {
 			throws ConexionFallidaExeption {
 		ImplementacionCalificacionDAO calificacionDAO = new ImplementacionCalificacionDAO();
 
-		Calificacion calificion = new Calificacion(calificacion, cometario, idReserva);
+		Calificacion calificion = new Calificacion(calificacion, cometario);
 
-		calificacionDAO.create(calificion);
+		calificacionDAO.create(idReserva, calificion);
 
 	}
 
@@ -485,7 +485,7 @@ public class PersistenceApi implements IApi {
 
 		// Set the new rating on the reservation
 		Reserva reserva = reservaOptional.get();
-		Calificacion calificacion = new Calificacion(ratingValue, "este es un comentario", reservaId);
+		Calificacion calificacion = new Calificacion(ratingValue, "este es un comentario");
 		reserva.setCalificacion(calificacion);
 
 		// Persist the changes
